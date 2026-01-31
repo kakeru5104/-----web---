@@ -329,6 +329,92 @@ h1, h2, .logo, .time, .menu-btn {
     transform: rotate(-2deg);
 }
 
+/* Goods (Refined) */
+.goods-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    align-items: start; /* 追加：高さが違っても伸びないように */
+}
+@media(min-width: 768px) {
+    .goods-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.goods-item {
+    background: var(--white);
+    border: 2px solid var(--black); /* 修正：枠を少し細く */
+    padding: 15px; /* 修正：余白を広げる */
+    text-align: center;
+    transition: transform 0.3s;
+}
+
+.goods-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 5px 5px 0px rgba(0,0,0,0.2);
+}
+
+.goods-img-box {
+    position: relative;
+    background: #eee;
+    margin-bottom: 15px; /* 修正：余白調整 */
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    /* 修正：画像の黒枠を削除してスッキリさせる */
+}
+
+.goods-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.goods-tag {
+    position: absolute;
+    top: 0; left: 0;
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Anton', sans-serif;
+    font-size: 0.8rem;
+    padding: 4px 10px; /* 修正：タグを少し大きく */
+}
+.tag-red { background: var(--primary-red); }
+
+.goods-name {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.2;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    word-break: break-word;
+}
+
+.goods-var {
+    font-size: 0.85rem; /* 修正：文字サイズを大きく */
+    color: #555;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.goods-price {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.3rem; /* 修正：価格を強調 */
+    color: var(--primary-red);
+}
+
+.panel-item {
+    background: #fffbe6;
+    grid-column: span 2;
+    border-color: var(--primary-red);
+    border-width: 3px;
+}
+@media(max-width: 600px) {
+    .panel-item { grid-column: span 1; }
+}
+
 /* Access */
 .access-block {
     text-align: center;
@@ -543,3 +629,91 @@ footer {
 }
 .delay-1 { transition-delay: 0.2s; }
 .delay-2 { transition-delay: 0.4s; }
+
+/* Goods Clickable */
+.goods-item {
+    cursor: pointer; /* マウスを乗せると指マークにする */
+    position: relative;
+}
+
+/* Goods Modal Layout */
+.goods-modal-content {
+    max-width: 700px; /* チケット画面より少し横長に */
+    text-align: left; /* 文字は左寄せ */
+}
+
+.goods-modal-body {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    flex-direction: column; /* スマホは縦並び */
+}
+
+/* PCなら横並びにする */
+@media(min-width: 600px) {
+    .goods-modal-body {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+}
+
+.goods-modal-img-box {
+    flex: 1;
+    width: 100%;
+    border: 2px solid var(--black);
+    background: #f0f0f0;
+}
+
+#modalGoodsImg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.goods-modal-info {
+    flex: 1;
+    width: 100%;
+}
+
+.modal-goods-name {
+    font-family: 'Anton', sans-serif;
+    font-size: 2rem;
+    line-height: 1.1;
+    margin-bottom: 10px;
+    border-bottom: 2px solid var(--primary-red);
+    padding-bottom: 10px;
+}
+
+.modal-goods-var {
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.modal-goods-price {
+    font-family: 'Anton', sans-serif;
+    font-size: 2.5rem;
+    color: var(--primary-red);
+    margin-bottom: 20px;
+}
+
+.modal-buy-btn {
+    background: var(--black);
+    color: var(--white);
+    text-align: center;
+    padding: 15px;
+    font-family: 'Anton', sans-serif;
+    letter-spacing: 1px;
+}
+
+/* モーダルの説明文（修正版） */
+.modal-goods-desc {
+    margin: 20px 0;
+    line-height: 1.8;
+    color: #333;
+    font-size: 0.95rem;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+    /* white-space: pre-wrap; ← これを削除しました */
+}
