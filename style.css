@@ -717,3 +717,48 @@ footer {
     padding: 15px 0;
     /* white-space: pre-wrap; ← これを削除しました */
 }
+
+/* === モーダルのスマホ対応修正 === */
+
+/* モーダル枠自体の調整 */
+.goods-modal-content {
+    max-width: 700px;
+    text-align: left;
+    /* ↓ スマホで縦長になっても画面内に収まるようにする設定 */
+    max-height: 85vh; /* 画面の高さの85%まで */
+    overflow-y: auto; /* それを超えたらスクロール */
+    padding: 20px;    /* 余白を少し調整 */
+}
+
+/* スマホの時だけ文字などを小さくする */
+@media(max-width: 600px) {
+    /* 画像と情報の隙間を減らす */
+    .goods-modal-body {
+        gap: 15px;
+    }
+
+    /* 商品名を少し小さく */
+    .modal-goods-name {
+        font-size: 1.5rem; /* 2remから縮小 */
+        margin-bottom: 5px;
+    }
+
+    /* 価格を少し小さく */
+    .modal-goods-price {
+        font-size: 1.8rem; /* 2.5remから縮小 */
+        margin-bottom: 15px;
+    }
+
+    /* 説明文の文字サイズ */
+    .modal-goods-desc {
+        font-size: 0.85rem;
+        padding: 10px 0;
+        margin: 10px 0;
+    }
+
+    /* 購入ボタンを押しやすく */
+    .modal-buy-btn {
+        padding: 12px;
+        font-size: 1rem;
+    }
+}
