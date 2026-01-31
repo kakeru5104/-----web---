@@ -1,12 +1,12 @@
 :root {
-    --primary-red: #E60012;   /* ロッキン風の赤 */
-    --accent-blue: #00A0E9;   /* アクセントの青 */
+    --primary-red: #E60012;
+    --accent-blue: #00A0E9;
     --black: #111111;
     --white: #ffffff;
     --border: 3px solid var(--black);
 }
 
-/* 基本リセット */
+/* Base */
 * {
     margin: 0;
     padding: 0;
@@ -20,13 +20,12 @@ body {
     line-height: 1.6;
 }
 
-/* フォント指定 */
 h1, h2, .logo, .time, .menu-btn {
     font-family: 'Anton', sans-serif;
     letter-spacing: 1px;
 }
 
-/* ヘッダー */
+/* Header */
 .header {
     display: flex;
     justify-content: space-between;
@@ -45,9 +44,8 @@ h1, h2, .logo, .time, .menu-btn {
     color: var(--primary-red);
 }
 
-.nav-list {
-    display: none;
-}
+.nav-list { display: none; }
+
 @media(min-width: 768px) {
     .nav-list {
         display: flex;
@@ -70,7 +68,7 @@ h1, h2, .logo, .time, .menu-btn {
     color: var(--white);
 }
 
-/* モバイルメニュー */
+/* Mobile Menu */
 .mobile-menu {
     position: fixed;
     top: 0;
@@ -86,9 +84,8 @@ h1, h2, .logo, .time, .menu-btn {
     transition: 0.3s;
     z-index: 200;
 }
-.mobile-menu.active {
-    transform: translateY(0);
-}
+.mobile-menu.active { transform: translateY(0); }
+
 .mobile-link {
     font-size: 2rem;
     color: var(--white);
@@ -96,6 +93,7 @@ h1, h2, .logo, .time, .menu-btn {
     font-family: 'Anton', sans-serif;
     margin: 20px;
 }
+
 .close-btn {
     margin-top: 40px;
     color: var(--white);
@@ -105,27 +103,25 @@ h1, h2, .logo, .time, .menu-btn {
     cursor: pointer;
 }
 
-/* === ヒーローセクション（ここを修正！） === */
+/* Hero */
 .hero {
     text-align: center;
-    padding: 80px 20px; /* 余白を少し広げました */
-    /* 画像のパスは環境に合わせて確認してください */
+    padding: 80px 20px;
     background: url('image/LIVE_IMAGE.jpg') center/cover;
     position: relative;
 }
 
-/* 画像を暗くするフィルター */
 .hero::before {
     content: '';
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* 暗さを0.6→0.5に少し緩和 */
+    background: rgba(0, 0, 0, 0.5);
     z-index: 0;
 }
 
 .hero-content {
     position: relative;
-    z-index: 1; /* 文字をフィルターより上に */
+    z-index: 1;
 }
 
 .main-title {
@@ -133,157 +129,16 @@ h1, h2, .logo, .time, .menu-btn {
     line-height: 1;
     margin-bottom: 20px;
     text-transform: uppercase;
-    color: var(--white); /* 文字色を白に */
-    /* 文字の周りに黒いフチをつけて読みやすくする */
-    text-shadow: 3px 3px 0px #000; 
+    color: var(--white);
+    text-shadow: 3px 3px 0px #000;
 }
-
-.main-title .line {
-    display: block;
-}
+.main-title .line { display: block; }
 
 .text-red {
     color: var(--primary-red);
-    /* 赤文字の視認性を上げるため、白いフチドリを追加 */
-    text-shadow: 2px 2px 0px #fff; 
+    text-shadow: 2px 2px 0px #fff;
 }
 
-.date {
-    font-size: 1.5rem; /* 少し大きく */
-    font-weight: 900;
-    background: var(--white); /* 背景を白に */
-    color: var(--black);      /* 文字を黒に */
-    display: inline-block;
-    padding: 10px 30px;
-    border: 3px solid var(--black); /* 枠線を追加してパキッとさせる */
-    box-shadow: 5px 5px 0px rgba(0,0,0,0.5); /* 影をつけて浮き上がらせる */
-}
-
-/* === ここまで修正 === */
-
-
-/* 流れる文字（Marquee） */
-.marquee-container {
-    background: var(--primary-red);
-    overflow: hidden;
-    white-space: nowrap;
-    border-top: var(--border);
-    border-bottom: var(--border);
-    padding: 10px 0;
-    /* margin-topを削除して画像と直結させる */
-}
-.marquee-text {
-    display: inline-block;
-    font-family: 'Anton', sans-serif;
-    font-size: 1.5rem;
-    color: var(--white);
-    animation: marquee 10s linear infinite;
-}
-@keyframes marquee {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
-}
-
-/* セクション共通 */
-.section {
-    padding: 60px 20px;
-}
-/* タイトルの中央揃え（修正版） */
-.section-title {
-    font-size: 2.5rem;
-    text-align: center;
-    
-    /* ↓↓↓ 修正箇所：以前の left:50% などをやめて、marginで中央にします ↓↓↓ */
-    display: table;           /* 文字の幅に合わせて枠を縮める */
-    margin: 0 auto 40px auto; /* 上下左右の余白を自動調整して中央へ */
-    /* ↑↑↑ 修正箇所ここまで ↑↑↑ */
-
-    /* デザイン部分はそのまま */
-    background: var(--accent-blue);
-    color: var(--white);
-    padding: 5px 20px;
-    border: 3px solid var(--black);
-    box-shadow: 5px 5px 0px var(--black);
-    
-    /* アニメーション用（position設定は削除してOK） */
-    position: relative; 
-}
-.bg-black { background: var(--black); }
-.text-white { color: var(--white); border-color: var(--white); }
-
-/* タイムテーブル */
-.timetable-container {
-    max-width: 600px;
-    margin: 0 auto;
-    border: var(--border);
-}
-.slot {
-    display: flex;
-    border-bottom: 2px solid var(--black);
-}
-.slot:last-child { border-bottom: none; }
-
-.time {
-    width: 30%;
-    background: #eee;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    font-weight: bold;
-    border-right: 2px solid var(--black);
-}
-.artist {
-    width: 70%;
-    padding: 15px;
-    background: var(--white);
-}
-.artist-name {
-    display: block;
-    font-size: 1.2rem;
-    font-weight: 900;
-}
-.genre {
-    font-size: 0.8rem;
-    color: #666;
-}
-.highlight .time {
-    background: var(--primary-red);
-    color: var(--white);
-}
-
-/* アクセス・ボタン */
-.access-info {
-    text-align: center;
-    color: #ccc;
-}
-.map-btn {
-    display: inline-block;
-    margin-top: 20px;
-    background: var(--white);
-    color: var(--black);
-    padding: 15px 40px;
-    text-decoration: none;
-    font-weight: bold;
-    border: 3px solid var(--white);
-    transition: 0.3s;
-}
-.map-btn:hover {
-    background: var(--black);
-    color: var(--white);
-}
-
-footer {
-    background: var(--black);
-    color: #666;
-    text-align: center;
-    padding: 20px;
-    font-size: 0.8rem;
-}
-
-/* style.css の一番下に追加 */
-
-/* 複数日程の表示デザイン */
 .date-container {
     display: inline-block;
     background: var(--white);
@@ -295,14 +150,12 @@ footer {
 
 .date-row {
     display: flex;
-    flex-wrap: wrap; /* スマホで折り返すように */
+    flex-wrap: wrap;
     gap: 10px;
     padding: 5px 10px;
     border-bottom: 1px solid #ccc;
 }
-.date-row:last-child {
-    border-bottom: none;
-}
+.date-row:last-child { border-bottom: none; }
 
 .date-text {
     font-family: 'Anton', sans-serif;
@@ -318,52 +171,151 @@ footer {
     background: #000;
     color: #fff;
     padding: 0 10px;
-    margin-left: auto; /* 右寄せ */
+    margin-left: auto;
 }
 
-/* アクセスセクションの調整 */
-.access-block {
-    margin-bottom: 40px;
-    border-bottom: 1px solid #333;
-    padding-bottom: 20px;
+/* Marquee */
+.marquee-container {
+    background: var(--primary-red);
+    overflow: hidden;
+    white-space: nowrap;
+    border-top: var(--border);
+    border-bottom: var(--border);
+    padding: 10px 0;
 }
-.access-block:last-child {
-    border-bottom: none;
-}
-.access-block h3 {
+
+.marquee-text {
+    display: inline-block;
     font-family: 'Anton', sans-serif;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
+    color: var(--white);
+    animation: marquee 10s linear infinite;
+}
+@keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+/* Section Common */
+.section { padding: 60px 20px; }
+
+.section-title {
+    font-size: 2.5rem;
+    text-align: center;
+    display: table;
+    margin: 0 auto 40px auto;
+    background: var(--accent-blue);
+    color: var(--white);
+    padding: 5px 20px;
+    border: 3px solid var(--black);
+    box-shadow: 5px 5px 0px var(--black);
+    position: relative;
+}
+
+.bg-black { background: var(--black); }
+.text-white { color: var(--white); border-color: var(--white); }
+
+/* News */
+.news-container {
+    max-width: 800px;
+    margin: 0 auto;
+    border-top: 2px solid var(--white);
+}
+
+.news-item {
+    display: flex;
+    align-items: center;
+    padding: 20px 10px;
+    border-bottom: 2px solid var(--white);
+    text-decoration: none;
+    color: var(--white);
+    transition: background 0.3s ease;
+}
+
+.news-item:hover { background: #333; }
+.news-item:hover .news-arrow {
+    transform: translateX(5px);
     color: var(--primary-red);
-    margin-bottom: 10px;
 }
 
-/* マップのスマホ対応調整 */
-.map-wrapper {
-    margin-top: 15px;
-    border: 3px solid var(--white); /* 白い枠線をつけてカッコよく */
+@media (max-width: 600px) {
+    .news-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .news-arrow { display: none; }
 }
 
-.map-wrapper iframe {
-    width: 100%;       /* 幅を親要素いっぱいに広げる */
-    height: 300px;     /* スマホで見やすい高さに調整 */
-    display: block;    /* 隙間を消す */
+.news-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 180px;
+}
+.news-date {
+    font-family: 'Anton', sans-serif;
+    color: #ccc;
+}
+.news-label {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--white);
+    padding: 2px 10px;
+    border-radius: 2px;
+}
+.label-red { background: var(--primary-red); }
+.label-blue { background: var(--accent-blue); }
+
+.news-title {
+    flex-grow: 1;
+    font-weight: bold;
+    font-size: 1.1rem;
+    line-height: 1.4;
 }
 
-/* style.css の一番下に追加 */
+.news-arrow {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.5rem;
+    margin-left: 20px;
+    transition: transform 0.2s;
+    color: var(--white);
+}
 
-/* ラインナップ画像の調整 */
+.more-btn-container {
+    text-align: right;
+    max-width: 800px;
+    margin: 20px auto 0;
+}
+.view-more {
+    font-family: 'Anton', sans-serif;
+    color: var(--white);
+    text-decoration: none;
+    border-bottom: 2px solid var(--white);
+    padding-bottom: 2px;
+    transition: color 0.3s;
+}
+.view-more:hover {
+    color: var(--primary-red);
+    border-color: var(--primary-red);
+}
+
+/* Lineup */
 .lineup-container {
     text-align: center;
     max-width: 800px;
     margin: 0 auto;
+    padding: 0 10px;
 }
 
 .lineup-img {
-    width: 100%;       /* スマホ幅いっぱいに */
-    max-width: 600px;  /* PCでは大きすぎないように制限 */
+    width: 100%;
+    max-width: 600px;
     height: auto;
-    border: 3px solid var(--black); /* 黒枠をつけて引き締める */
-    box-shadow: 5px 5px 0px rgba(0,0,0,0.2); /* 影をつける */
+    border: 3px solid var(--black);
+    box-shadow: 5px 5px 0px rgba(0,0,0,0.2);
+    display: inline-block;
+    margin: 0 auto;
 }
 
 .coming-soon {
@@ -374,144 +326,41 @@ footer {
     background: #eee;
     display: inline-block;
     padding: 5px 20px;
-    transform: rotate(-2deg); /* 少し傾けてロック感を出す */
+    transform: rotate(-2deg);
 }
 
-/* =========================================
-   アニメーション追加用のCSS
-========================================= */
-
-/* --- 1. スクロールでフワッと現れる動き --- */
-
-/* 初期状態：透明で少し下にいる */
-.fade-up {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-}
-
-/* 画面に現れた時の状態：不透明で元の位置に戻る */
-.fade-up.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* 順番に表示させるための遅延設定 */
-.delay-1 { transition-delay: 0.2s; }
-.delay-2 { transition-delay: 0.4s; }
-
-
-/* --- 2. ボタンのホバーエフェクト強化 --- */
-
-/* マップボタンの動き */
-.map-btn {
-    /* 既存のスタイルに加えて、影のトランジションを追加 */
-    box-shadow: 0px 0px 0px var(--black);
-    transition: all 0.3s ease;
-    position: relative;
-    top: 0;
-}
-
-.map-btn:hover {
-    background: var(--black);
-    color: var(--white);
-    /* ホバー時に少し浮いて、パキッとした影が出る */
-    box-shadow: 5px 5px 0px var(--primary-red);
-    top: -3px; /* 少し上に移動 */
-}
-
-/* =========================================
-   中央揃え修正用のCSS
-   (style.css の一番下に追加してください)
-========================================= */
-
-/* LINEUPセクションの調整 */
-.lineup-container {
-    text-align: center;      /* 中身の文字・画像を中央に */
-    max-width: 800px;        /* PCで広がりすぎないように */
-    margin-left: auto;       /* ブロック自体を画面中央に */
-    margin-right: auto;      /* ブロック自体を画面中央に */
-    padding: 0 10px;         /* スマホで端がキツキツにならないように */
-}
-
-/* 画像が勝手にズレないように念押し */
-.lineup-img {
-    display: inline-block;   /* 中央揃えを効かせる */
-    margin: 0 auto;          /* 念のためのマージンリセット */
-}
-
-
-/* ACCESSセクションの調整 */
+/* Access */
 .access-block {
-    text-align: center;      /* 文字（住所など）を中央揃えに */
-    max-width: 800px;        /* 幅を制限して見やすく */
-    margin: 0 auto 40px auto;/* 上下マージンは維持しつつ、左右をauto（中央）に */
-    padding: 0 10px;         /* スマホ用余白 */
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 40px auto;
+    padding: 0 10px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 20px;
+}
+.access-block:last-child { border-bottom: none; }
+
+.access-block h3 {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.8rem;
+    color: var(--primary-red);
+    margin-bottom: 10px;
 }
 
-/* 地図の入れ物も中央に */
 .map-wrapper {
     margin-top: 15px;
     border: 3px solid var(--white);
-    max-width: 100%;         /* 親要素からはみ出さない */
-    margin-left: auto;       /* 地図自体も中央へ */
-    margin-right: auto;      /* 地図自体も中央へ */
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.map-wrapper iframe {
+    width: 100%;
+    height: 300px;
+    display: block;
 }
 
-/* フッターとSNSボタンのスタイル */
-
-/* フッター全体を少し広げる */
-footer {
-    background: var(--black);
-    color: #666;
-    text-align: center;
-    padding: 60px 20px; /* 余白を増やしてリッチに */
-}
-
-/* X (Twitter) ボタン */
-.twitter-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px; /* アイコンと文字の間隔 */
-    
-    background: var(--white);
-    color: var(--black);
-    font-family: 'Anton', sans-serif;
-    font-size: 1.2rem;
-    text-decoration: none;
-    
-    padding: 15px 40px;
-    border: 3px solid var(--white);
-    /* 赤い影をつけてロック感を出す */
-    box-shadow: 5px 5px 0px var(--primary-red);
-    
-    transition: all 0.3s ease;
-    margin-bottom: 30px; /* コピーライトとの隙間 */
-}
-
-/* ホバー時の動き（黒反転） */
-.twitter-btn:hover {
-    background: var(--black);
-    color: var(--white);
-    border-color: var(--white);
-    box-shadow: 0px 0px 0px var(--primary-red); /* 影が凹む */
-    transform: translate(3px, 3px); /* ボタンが押されたように動く */
-}
-
-/* ロゴアイコンのサイズと色 */
-.x-icon {
-    width: 20px;
-    height: 20px;
-    fill: currentColor; /* 文字色に合わせて色が変わる */
-}
-
-.copyright {
-    font-size: 0.8rem;
-    letter-spacing: 1px;
-}
-
-/* TICKETセクションのデザイン */
+/* Ticket */
 .ticket-box {
     background: var(--black);
     color: var(--white);
@@ -519,7 +368,7 @@ footer {
     padding: 40px 20px;
     max-width: 600px;
     margin: 0 auto;
-    border: 5px solid var(--primary-red); /* 赤枠で囲む */
+    border: 5px solid var(--primary-red);
 }
 
 .ticket-desc {
@@ -532,7 +381,6 @@ footer {
     font-weight: bold;
 }
 
-/* 抽選ボタン（ドキドキさせるアニメーション） */
 .lottery-btn {
     background: var(--primary-red);
     color: var(--white);
@@ -542,7 +390,7 @@ footer {
     cursor: pointer;
     border: 3px solid var(--white);
     transition: 0.2s;
-    animation: pulse 1s infinite; /* ドクンドクン動く */
+    animation: pulse 1s infinite;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -553,6 +401,11 @@ footer {
     font-family: 'Noto Sans JP', sans-serif;
     margin-top: 5px;
 }
+.lottery-btn:hover {
+    background: var(--white);
+    color: var(--primary-red);
+    animation: none;
+}
 
 @keyframes pulse {
     0% { transform: scale(1); }
@@ -560,31 +413,20 @@ footer {
     100% { transform: scale(1); }
 }
 
-.lottery-btn:hover {
-    background: var(--white);
-    color: var(--primary-red);
-    animation: none; /* ホバー時は動きを止める */
-}
-
-
-/* === 当選画面（モーダル）のスタイル === */
+/* Modal */
 .modal-overlay {
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.9); /* 背景を暗く */
+    background: rgba(0, 0, 0, 0.9);
     z-index: 9999;
     display: flex;
     justify-content: center;
     align-items: center;
-    
-    /* 初期状態は隠す */
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s ease;
 }
-
-/* クラスがついたら表示 */
 .modal-overlay.active {
     opacity: 1;
     pointer-events: auto;
@@ -600,9 +442,7 @@ footer {
     transform: scale(0.8);
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-.modal-overlay.active .modal-content {
-    transform: scale(1); /* バン！と飛び出る演出 */
-}
+.modal-overlay.active .modal-content { transform: scale(1); }
 
 .modal-head {
     background: var(--black);
@@ -619,7 +459,7 @@ footer {
     line-height: 1;
     margin: 10px 0;
     text-shadow: 3px 3px 0px var(--black);
-    animation: stamp 0.5s ease forwards; /* スタンプ風にドン！ */
+    animation: stamp 0.5s ease forwards;
 }
 
 @keyframes stamp {
@@ -631,19 +471,10 @@ footer {
     border: 2px dashed var(--black);
     padding: 15px;
     margin: 20px 0;
-    background: #fdf5e6; /* チケットっぽい紙色 */
+    background: #fdf5e6;
 }
-.ticket-name {
-    display: block;
-    font-weight: 900;
-    font-size: 1.2rem;
-}
-.ticket-seat {
-    display: block;
-    color: var(--primary-red);
-    font-family: 'Anton', sans-serif;
-    font-size: 1.5rem;
-}
+.ticket-name { display: block; font-weight: 900; font-size: 1.2rem; }
+.ticket-seat { display: block; color: var(--primary-red); font-family: 'Anton', sans-serif; font-size: 1.5rem; }
 
 .close-modal {
     background: var(--black);
@@ -654,103 +485,61 @@ footer {
     font-family: 'Anton', sans-serif;
     margin-top: 10px;
 }
-.close-modal:hover {
-    background: #555;
+.close-modal:hover { background: #555; }
+
+/* Footer */
+footer {
+    background: var(--black);
+    color: #666;
+    text-align: center;
+    padding: 60px 20px;
 }
 
-/* =========================================
-   NEWSセクションのデザイン（黒背景・白文字版）
-========================================= */
-.news-container {
-    max-width: 800px;
-    margin: 0 auto;
-    border-top: 2px solid var(--white); /* 線を白に変更 */
-}
-
-.news-item {
-    display: flex;
+.twitter-btn {
+    display: inline-flex;
     align-items: center;
-    padding: 20px 10px;
-    border-bottom: 2px solid var(--white); /* 線を白に変更 */
-    text-decoration: none;
-    color: var(--white); /* 文字色を白に変更 */
-    transition: background 0.3s ease;
-}
-
-/* ホバー時の動き（黒背景用） */
-.news-item:hover {
-    background: #333; /* 背景を濃いグレーに変更（白背景だと見えないため） */
-}
-.news-item:hover .news-arrow {
-    transform: translateX(5px);
-    color: var(--primary-red);
-}
-
-/* スマホ対応：画面が狭いときは縦並びにする */
-@media (max-width: 600px) {
-    .news-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-    .news-arrow {
-        display: none;
-    }
-}
-
-/* 日付とラベル */
-.news-meta {
-    display: flex;
-    align-items: center;
+    justify-content: center;
     gap: 10px;
-    min-width: 180px;
-}
-.news-date {
+    background: var(--white);
+    color: var(--black);
     font-family: 'Anton', sans-serif;
-    color: #ccc; /* 薄いグレーに変更（黒背景で見やすく） */
-}
-.news-label {
-    font-size: 0.8rem;
-    font-weight: bold;
-    color: var(--white);
-    padding: 2px 10px;
-    border-radius: 2px;
-}
-.label-red { background: var(--primary-red); }
-.label-blue { background: var(--accent-blue); }
-
-/* タイトル */
-.news-title {
-    flex-grow: 1;
-    font-weight: bold;
-    font-size: 1.1rem;
-    line-height: 1.4;
-}
-
-/* 矢印 */
-.news-arrow {
-    font-family: 'Anton', sans-serif;
-    font-size: 1.5rem;
-    margin-left: 20px;
-    transition: transform 0.2s;
-    color: var(--white); /* 矢印も白に変更 */
-}
-
-/* もっと見るボタン */
-.more-btn-container {
-    text-align: right;
-    max-width: 800px;
-    margin: 20px auto 0;
-}
-.view-more {
-    font-family: 'Anton', sans-serif;
-    color: var(--white); /* 文字色を白に変更 */
+    font-size: 1.2rem;
     text-decoration: none;
-    border-bottom: 2px solid var(--white); /* 下線も白に変更 */
-    padding-bottom: 2px;
-    transition: color 0.3s;
+    padding: 15px 40px;
+    border: 3px solid var(--white);
+    box-shadow: 5px 5px 0px var(--primary-red);
+    transition: all 0.3s ease;
+    margin-bottom: 30px;
 }
-.view-more:hover {
-    color: var(--primary-red);
-    border-color: var(--primary-red);
+
+.twitter-btn:hover {
+    background: var(--black);
+    color: var(--white);
+    border-color: var(--white);
+    box-shadow: 0px 0px 0px var(--primary-red);
+    transform: translate(3px, 3px);
 }
+
+.x-icon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+.copyright {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+/* Animations */
+.fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+.fade-up.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+.delay-1 { transition-delay: 0.2s; }
+.delay-2 { transition-delay: 0.4s; }
