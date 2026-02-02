@@ -213,3 +213,30 @@ sendBtn.addEventListener('click', async () => {
 
 // ページを開いたらコメントを読み込む
 fetchComments();
+
+/* script.js の一番下に追加 */
+
+// === アプリ導入ガイドモーダル ===
+const openAppModalBtn = document.getElementById('openAppModal');
+const appModal = document.getElementById('appModal');
+const closeAppModalBtn = document.getElementById('closeAppModal');
+
+if (openAppModalBtn) {
+    // NEWSをクリックしたら開く
+    openAppModalBtn.addEventListener('click', (e) => {
+        e.preventDefault(); // リンクの動きを止める
+        appModal.classList.add('active');
+    });
+
+    // CLOSEボタンで閉じる
+    closeAppModalBtn.addEventListener('click', () => {
+        appModal.classList.remove('active');
+    });
+
+    // 背景クリックで閉じる
+    appModal.addEventListener('click', (e) => {
+        if (e.target === appModal) {
+            appModal.classList.remove('active');
+        }
+    });
+}

@@ -940,3 +940,160 @@ footer {
     background: rgba(255, 255, 255, 0.9); /* 少しだけ透けさせる */
     border: 2px solid var(--white); /* 枠を白に */
 }
+
+/* === アプリ導入ガイドモーダル === */
+.app-modal-content {
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh; /* 縦長になってもスクロール可能に */
+    overflow-y: auto;
+}
+
+.app-modal-title {
+    font-size: 1.5rem;
+    color: var(--primary-red);
+    margin-bottom: 10px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+.app-modal-desc {
+    font-size: 0.9rem;
+    margin-bottom: 30px;
+    color: #666;
+}
+
+/* ガイドのレイアウト */
+.install-guide-grid {
+    display: flex;
+    gap: 20px;
+    text-align: left;
+}
+
+/* スマホでは縦並び */
+@media (max-width: 600px) {
+    .install-guide-grid {
+        flex-direction: column;
+    }
+}
+
+.install-step {
+    flex: 1;
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.os-title {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: var(--black);
+    text-align: center;
+}
+
+.step-list {
+    padding-left: 20px;
+    font-size: 0.9rem;
+    line-height: 1.8;
+}
+
+.step-list li {
+    margin-bottom: 10px;
+}
+
+.step-list strong {
+    color: var(--primary-red);
+    font-weight: 900;
+}
+
+/* ボタンっぽい装飾 */
+.icon-box {
+    display: inline-block;
+    padding: 2px 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #fff;
+    font-weight: bold;
+    font-size: 0.8rem;
+    margin: 0 2px;
+}
+
+/* =========================================
+   スマホ用ボトムナビゲーション (アプリ風)
+========================================= */
+
+/* デフォルト（PC）では非表示 */
+.bottom-nav {
+    display: none;
+}
+
+/* スマホ (幅768px以下) の時だけ表示 */
+@media (max-width: 768px) {
+    /* 以前のハンバーガーメニューボタンを消す */
+    .menu-btn {
+        display: none !important;
+    }
+
+    /* ボトムバー本体の設定 */
+    .bottom-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 60px; /* バーの高さ */
+        background: var(--black); /* 背景は黒 */
+        border-top: 2px solid var(--primary-red); /* 上に赤い線 */
+        z-index: 9999;
+        justify-content: space-around; /* 均等配置 */
+        align-items: center;
+        padding-bottom: env(safe-area-inset-bottom); /* iPhoneの下バー対策 */
+    }
+
+    /* 各ボタンの設定 */
+    .nav-item {
+        color: #888; /* 通常時はグレー */
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.6rem;
+        width: 100%;
+        height: 100%;
+        transition: 0.2s;
+    }
+
+    /* アイコンのサイズ */
+    .nav-icon {
+        width: 24px;
+        height: 24px;
+        margin-bottom: 2px;
+        stroke: currentColor; /* 文字色と同じ色にする */
+    }
+
+    /* 文字フォント */
+    .nav-label {
+        font-family: 'Anton', sans-serif;
+        letter-spacing: 0.5px;
+    }
+
+    /* タップした時・アクティブな時の色 */
+    .nav-item:active,
+    .nav-item:hover {
+        color: var(--white);
+        background: #222; /* 少し明るく */
+    }
+
+    /* バーが被らないように、ページの一番下に余白を作る */
+    body {
+        padding-bottom: 70px;
+    }
+    
+    /* フッターも隠れないように調整 */
+    footer {
+        padding-bottom: 80px;
+    }
+}

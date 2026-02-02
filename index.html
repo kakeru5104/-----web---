@@ -68,9 +68,22 @@
     </section>
 
     <section id="news" class="section bg-black text-white">
+
+        
+
         <h2 class="section-title text-white fade-up">NEWS</h2>
         
         <div class="news-container fade-up delay-1">
+
+            <a href="#" class="news-item" id="openAppModal">
+                <div class="news-meta">
+                    <span class="news-date">2026.02.03</span>
+                    <span class="news-label label-red">APP</span>
+                </div>
+                <p class="news-title">このサイトをアプリとして保存する方法（ホーム画面に追加）</p>
+                <div class="news-arrow">→</div>
+            </a>
+
             <a href="#timetable" class="news-item">
                 <div class="news-meta">
                     <span class="news-date">2026.02.01</span>
@@ -319,6 +332,39 @@
         </div>
     </div>
 
+        <div class="modal-overlay" id="appModal">
+        <div class="modal-content app-modal-content">
+            <p class="modal-head">HOW TO INSTALL</p>
+            <div class="modal-body">
+                <h2 class="app-modal-title">ホーム画面に追加する方法</h2>
+                <p class="app-modal-desc">このサイトはアプリとして保存できます。<br>通信量を節約し、全画面で楽しめます！</p>
+                
+                <div class="install-guide-grid">
+                    <div class="install-step">
+                        <h3 class="os-title">iPhone (Safari)</h3>
+                        <ol class="step-list">
+                            <li>画面下の<span class="icon-box">共有</span>ボタンをタップ</li>
+                            <li>メニューから<br><strong>「ホーム画面に追加」</strong>を選択</li>
+                            <li>右上の「追加」をタップ</li>
+                        </ol>
+                    </div>
+
+                    <div class="install-step">
+                        <h3 class="os-title">Android (Chrome)</h3>
+                        <ol class="step-list">
+                            <li>画面右上の<span class="icon-box">︙</span>メニューをタップ</li>
+                            <li><strong>「アプリをインストール」</strong><br>または「ホーム画面に追加」を選択</li>
+                            <li>確認画面で「インストール」</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <div class="close-modal" id="closeAppModal">CLOSE</div>
+        </div>
+    </div>
+
+    
+
     <div class="modal-overlay" id="goodsModal">
             <div class="modal-content goods-modal-content">
                 <div class="goods-modal-body">
@@ -341,6 +387,52 @@
     <script src="script.js"></script>
 </body>
 
+<nav class="bottom-nav">
+        <a href="#news" class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1m2 13a2 2 0 0 1-2-2V7m2 13a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+            </svg>
+            <span class="nav-label">NEWS</span>
+        </a>
+        
+        <a href="#timetable" class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span class="nav-label">TIME</span>
+        </a>
+
+        <a href="#bbs" class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <span class="nav-label">MESSAGE</span>
+        </a>
+
+        <a href="#goods" class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0"/>
+            </svg>
+            <span class="nav-label">GOODS</span>
+        </a>
+
+        <a href="#access" class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+            </svg>
+            <span class="nav-label">ACCESS</span>
+        </a>
+
+        <a href="#ticket" class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/>
+            </svg>
+            <span class="nav-label">TICKET</span>
+        </a>
+    </nav>
+
 <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
@@ -354,4 +446,6 @@
             });
         }
     </script>
+
+
 </html>
