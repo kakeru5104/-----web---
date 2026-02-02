@@ -304,6 +304,101 @@
         </div>
     </section>
 
+<section id="game" class="section">
+        <h2 class="section-title fade-up">GAME</h2>
+        
+        <div class="game-container fade-up delay-1">
+            
+            <div id="gameStart" class="game-screen active">
+                
+                <div id="gameLocked" class="game-locked">
+                    <p class="game-intro">SECRET GAME</p> <p class="coming-soon-text">COMING SOON...</p>
+                    <p class="unlock-time-text">2026.03.14 20:00 UNLOCK</p>
+                </div>
+
+                <div id="gameUnlocked" style="display:none;">
+                    <p class="game-intro">推しメンクイズ<br>全問正解チャレンジ</p>
+                    
+                    <input type="text" id="gamePlayerName" class="game-name-input" placeholder="ニックネームを入力" maxlength="15">
+                    <div class="game-btn-start" id="btnToSelect">START</div>
+                </div>
+            </div>
+
+            <div id="gameSelectMember" class="game-screen">
+                <h3 class="select-title">SELECT MEMBER</h3>
+                <p class="select-desc">挑戦するメンバーを選んでください</p>
+                
+                <div id="memberList" class="member-list-container">
+                    </div>
+                
+                <div class="game-btn-back" id="btnBackToStart">BACK</div>
+            </div>
+
+            <div id="gameQuiz" class="game-screen">
+                <div class="quiz-header">
+                    <span id="targetMemberName">MEMBER</span> / Q.<span id="quizNumber">1</span>
+                </div>
+                <p id="quizText" class="quiz-text">問題文</p>
+                
+                <div class="quiz-options" id="quizOptions"></div>
+
+                <button id="btnQuizNext" class="quiz-next-btn" disabled>決定 (NEXT)</button>
+            </div>
+
+            <div id="gameResultNormal" class="game-screen">
+                <p class="result-label">RESULT</p>
+                <div id="resultScore" class="result-score">0 / 8</div>
+                <p id="resultMsg" class="result-msg">ドンマイ！</p>
+                <div class="game-btn-retry" id="btnGameRetry">RETRY</div>
+            </div>
+
+<div id="gameResultSpecial" class="game-screen special-screen">
+                <h3 class="special-title">PERFECT!!</h3>
+                
+                <p class="special-msg">全問正解達成！<br>あなたは本物の <span id="resultMemberName" style="color:red; font-weight:bold;"></span> のファンです。</p>
+                
+                <div class="winner-name-display" id="winnerNameDisplay"></div>
+                <div class="game-btn-retry" id="btnGameRetrySpecial">RETRY</div>
+            </div>
+
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <section id="access" class="section bg-black text-white">
+        <h2 class="section-title text-white fade-up">ACCESS</h2>
+        
+        <div class="access-block fade-up delay-1">
+            <h3>Vi-Code (3/14-15)</h3>
+            <p>大阪府大阪市北区中津3-1-19</p>
+            <div class="map-wrapper">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3279.8065793919263!2d135.48984627506718!3d34.71005818271175!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6000e6842197d729%3A0x94feb8609769b378!2sVi-code!5e0!3m2!1sja!2sjp!4v1769864631164!5m2!1sja!2sjp" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+
+        <div class="access-block fade-up delay-2">
+            <h3>TH-R HALL (3/20-21)</h3>
+            <p>大阪府吹田市江坂町1-18-8</p>
+            <div class="map-wrapper">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3277.308461415218!2d135.50323927507014!3d34.773009179330806!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6000e50b1e251767%3A0x4a21daba6bfe323b!2sTH-R%20HALL!5e0!3m2!1sja!2sjp!4v1769864590666!5m2!1sja!2sjp" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <section id="ticket" class="section">
+        <h2 class="section-title fade-up">TICKET</h2>
+        <div class="ticket-box fade-up delay-1">
+            <p class="ticket-desc">TICKET LOTTERY NOW OPEN</p>
+            <p class="ticket-sub">チケットオフィシャル先行抽選受付中</p>
+            
+            <div class="lottery-btn" id="lotteryBtn">
+                APPLY NOW
+                <span class="small">抽選に応募する</span>
+            </div>
+        </div>
+    </section>
+
     <footer>
         <div class="footer-content">
             <a href="https://x.com/zero_ms0?s=21&t=ekTyEWlnRhz4Sbcqod4dsw" target="_blank" class="twitter-btn">
@@ -332,7 +427,7 @@
         </div>
     </div>
 
-        <div class="modal-overlay" id="appModal">
+    <div class="modal-overlay" id="appModal">
         <div class="modal-content app-modal-content">
             <p class="modal-head">HOW TO INSTALL</p>
             <div class="modal-body">
@@ -363,31 +458,25 @@
         </div>
     </div>
 
-    
-
     <div class="modal-overlay" id="goodsModal">
-            <div class="modal-content goods-modal-content">
-                <div class="goods-modal-body">
-                    <div class="goods-modal-img-box">
-                        <img src="" alt="" id="modalGoodsImg">
-                    </div>
-                    <div class="goods-modal-info">
-                        <h3 id="modalGoodsName" class="modal-goods-name"></h3>
-                        <p id="modalGoodsVar" class="modal-goods-var"></p>
-                        <p id="modalGoodsPrice" class="modal-goods-price"></p>
-                        
-                        <p id="modalGoodsDesc" class="modal-goods-desc"></p>
-                        
-                        <div class="modal-buy-btn">BUY NOW (会場販売)</div>
-                    </div>
+        <div class="modal-content goods-modal-content">
+            <div class="goods-modal-body">
+                <div class="goods-modal-img-box">
+                    <img src="" alt="" id="modalGoodsImg">
                 </div>
-                <div class="close-modal" id="closeGoodsModal">CLOSE</div>
+                <div class="goods-modal-info">
+                    <h3 id="modalGoodsName" class="modal-goods-name"></h3>
+                    <p id="modalGoodsVar" class="modal-goods-var"></p>
+                    <p id="modalGoodsPrice" class="modal-goods-price"></p>
+                    <p id="modalGoodsDesc" class="modal-goods-desc"></p>
+                    <div class="modal-buy-btn">BUY NOW (会場販売)</div>
+                </div>
             </div>
+            <div class="close-modal" id="closeGoodsModal">CLOSE</div>
         </div>
-    <script src="script.js"></script>
-</body>
+    </div>
 
-<nav class="bottom-nav">
+    <nav class="bottom-nav">
         <a href="#news" class="nav-item">
             <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M19 20H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v1m2 13a2 2 0 0 1-2-2V7m2 13a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
@@ -431,9 +520,17 @@
             </svg>
             <span class="nav-label">TICKET</span>
         </a>
+
+        <a href="#game" class="nav-item">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M6 11h4M8 9v4M15 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2zM19 12a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                <rect x="2" y="6" width="20" height="12" rx="2"/>
+            </svg>
+            <span class="nav-label">GAME</span>
+        </a>
     </nav>
 
-<script>
+    <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js')
@@ -447,5 +544,6 @@
         }
     </script>
 
-
+    <script src="script.js"></script>
+</body>
 </html>

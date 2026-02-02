@@ -1097,3 +1097,345 @@ footer {
         padding-bottom: 80px;
     }
 }
+
+/* =========================================
+   GAME Section (クイズ)
+========================================= */
+.game-container {
+    background: #f0f0f0;
+    border: 4px solid var(--black);
+    max-width: 600px;
+    margin: 0 auto;
+    min-height: 400px;
+    position: relative;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 10px 10px 0px var(--primary-red);
+}
+
+/* 画面切り替え用 */
+.game-screen {
+    display: none; /* 基本は隠す */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    min-height: 360px;
+}
+.game-screen.active {
+    display: flex; /* activeがついた画面だけ表示 */
+    animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* スタート画面 */
+.game-intro {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+.game-btn-start,
+.game-btn-retry {
+    background: var(--primary-red);
+    color: var(--white);
+    font-family: 'Anton', sans-serif;
+    font-size: 2rem;
+    padding: 15px 40px;
+    border: 3px solid var(--black);
+    cursor: pointer;
+    transition: 0.1s;
+    box-shadow: 5px 5px 0px var(--black);
+}
+.game-btn-start:active,
+.game-btn-retry:active {
+    transform: translate(3px, 3px);
+    box-shadow: 2px 2px 0px var(--black);
+}
+
+/* クイズ画面 */
+.quiz-header {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.5rem;
+    color: var(--accent-blue);
+    margin-bottom: 20px;
+}
+.quiz-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+    min-height: 3em; /* 問題文の長短でガタつかないように */
+}
+
+.quiz-options {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.option-btn {
+    background: var(--white);
+    border: 2px solid var(--black);
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.option-btn:hover {
+    background: var(--black);
+    color: var(--white);
+}
+
+/* 正解・不正解のアニメーション用クラス */
+.option-btn.correct {
+    background: #4CAF50 !important;
+    color: white !important;
+    border-color: #4CAF50;
+}
+.option-btn.wrong {
+    background: #F44336 !important;
+    color: white !important;
+    border-color: #F44336;
+}
+
+/* 結果画面 */
+.result-label {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.5rem;
+}
+.result-score {
+    font-family: 'Anton', sans-serif;
+    font-size: 5rem;
+    color: var(--primary-red);
+    line-height: 1;
+    margin: 10px 0;
+}
+.result-msg {
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+/* 名前入力欄 */
+.game-name-input {
+    font-size: 1.2rem;
+    padding: 10px;
+    width: 80%;
+    margin-bottom: 20px;
+    border: 2px solid var(--black);
+    text-align: center;
+    border-radius: 5px;
+}
+
+/* 4択ボタンのレイアウト調整 */
+.quiz-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2列にする */
+    gap: 10px;
+}
+.option-btn {
+    padding: 10px;
+    font-size: 1rem;
+    min-height: 60px; /* 高さを揃える */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.2;
+}
+/* スマホなら1列に戻す */
+@media (max-width: 600px) {
+    .quiz-options {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 完全制覇（スペシャル）画面のデザイン */
+.special-screen {
+    background: #ffd700; /* 金色 */
+    color: var(--black);
+    border: 5px solid var(--white);
+    animation: flash 1s;
+}
+@keyframes flash {
+    0% { opacity: 0; transform: scale(1.5); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+.special-title {
+    font-family: 'Anton', sans-serif;
+    font-size: 3rem;
+    color: var(--primary-red);
+    text-shadow: 2px 2px 0px var(--white);
+    margin-bottom: 20px;
+}
+
+.winner-name-display {
+    font-size: 2rem;
+    font-weight: bold;
+    border-bottom: 3px solid var(--black);
+    margin: 20px 0;
+    padding: 0 20px;
+}
+
+/* === ゲーム準備中画面のデザイン === */
+.game-locked {
+    border: 3px dashed #999;
+    padding: 30px;
+    background: #e0e0e0;
+    color: #666;
+}
+
+.coming-soon-text {
+    font-family: 'Anton', sans-serif;
+    font-size: 2.5rem;
+    color: #555;
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+}
+
+.unlock-time-text {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* === メンバー選択画面のデザイン === */
+.select-title {
+    font-family: 'Anton', sans-serif;
+    font-size: 2rem;
+    color: var(--black);
+    margin-bottom: 5px;
+}
+.select-desc {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    color: #666;
+}
+
+/* メンバーボタンが並ぶグリッド */
+.member-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3列 */
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 20px;
+    max-height: 400px;
+    overflow-y: auto; /* 人数が多いのでスクロール可能に */
+}
+
+/* スマホは2列 */
+@media(max-width: 600px) {
+    .member-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.member-btn {
+    background: var(--white);
+    border: 2px solid var(--black);
+    padding: 15px 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50px;
+}
+
+.member-btn:hover {
+    background: var(--black);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.game-btn-back {
+    background: #999;
+    color: var(--white);
+    font-family: 'Anton', sans-serif;
+    padding: 10px 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+/* === メンバー選択リスト (縦スクロール) === */
+.member-list-container {
+    width: 100%;
+    max-height: 400px;
+    overflow-y: auto; /* 縦スクロール */
+    border: 1px solid #ccc;
+    background: #fff;
+    margin-bottom: 20px;
+}
+
+.member-list-item {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    text-align: left;
+    font-weight: bold;
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.2s;
+}
+
+.member-list-item:hover {
+    background: #f9f9f9;
+    color: var(--primary-red);
+}
+
+.member-list-item::after {
+    content: '>'; /* 矢印 */
+    color: #ccc;
+    font-weight: normal;
+}
+
+/* === クイズ選択肢 (選択状態のデザイン) === */
+.option-btn {
+    /* (以前のスタイルを継承しつつ調整) */
+    background: var(--white);
+    border: 2px solid #ccc; /* 最初はグレー */
+    color: #333;
+    transition: 0.2s;
+}
+
+/* 選択された時の見た目 */
+.option-btn.selected {
+    background: var(--black) !important;
+    color: var(--white) !important;
+    border-color: var(--black) !important;
+    transform: scale(1.02);
+}
+
+/* === 決定ボタン === */
+.quiz-next-btn {
+    margin-top: 20px;
+    background: var(--primary-red);
+    color: var(--white);
+    border: none;
+    padding: 12px 40px;
+    font-size: 1.2rem;
+    font-family: 'Anton', sans-serif;
+    cursor: pointer;
+    width: 100%;
+    max-width: 300px;
+    opacity: 1;
+    transition: 0.3s;
+}
+
+/* 選択していない時は押せないように薄くする */
+.quiz-next-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+}

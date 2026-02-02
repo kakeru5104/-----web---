@@ -240,3 +240,235 @@ if (openAppModalBtn) {
         }
     });
 }
+
+
+// =========================================
+// 5. GAME機能 (リスト選択・決定ボタン式)
+// =========================================
+
+// ★解禁日時
+const GAME_RELEASE_DATE = new Date("2026-01-14T20:00:00"); 
+
+// ★クイズデータ（17人分）
+const allMemberQuizData = {
+    // --- 1人目 ---
+    "田中 太郎": [
+        { q: "田中の出身地は？", options: ["大阪", "兵庫", "京都", "奈良"], answer: "兵庫" },
+        { q: "好きな食べ物は？", options: ["カレー", "寿司", "ラーメン", "焼肉"], answer: "ラーメン" },
+        { q: "担当楽器は？", options: ["Gt", "Ba", "Dr", "Vo"], answer: "Vo" },
+        { q: "愛用している機材メーカーは？", options: ["Fender", "Gibson", "Yamaha", "Ibanez"], answer: "Fender" },
+        { q: "誕生日は？", options: ["1月1日", "4月1日", "7月7日", "12月25日"], answer: "1月1日" },
+        { q: "座右の銘は？", options: ["一石二鳥", "七転八起", "焼肉定食", "一期一会"], answer: "七転八起" },
+        { q: "飼っているペットは？", options: ["犬", "猫", "ハムスター", "いない"], answer: "猫" },
+        { q: "初恋の相手の名前は？", options: ["花子", "愛子", "良子", "秘密"], answer: "秘密" },
+    ],
+
+        "長谷川　近似": [
+        { q: "田中の出身地は？", options: ["大阪", "兵庫", "京都", "奈良"], answer: "兵庫" },
+        { q: "好きな食べ物は？", options: ["カレー", "寿司", "ラーメン", "焼肉"], answer: "ラーメン" },
+        { q: "担当楽器は？", options: ["Gt", "Ba", "Dr", "Vo"], answer: "Vo" },
+        { q: "愛用している機材メーカーは？", options: ["Fender", "Gibson", "Yamaha", "Ibanez"], answer: "Fender" },
+        { q: "誕生日は？", options: ["1月1日", "4月1日", "7月7日", "12月25日"], answer: "1月1日" },
+        { q: "座右の銘は？", options: ["一石二鳥", "七転八起", "焼肉定食", "一期一会"], answer: "七転八起" },
+        { q: "飼っているペットは？", options: ["犬", "猫", "ハムスター", "いない"], answer: "猫" },
+        { q: "初恋の相手の名前は？", options: ["花子", "愛子", "良子", "秘密"], answer: "秘密" },
+    ],
+    // ※ここに残り16人分を追加してください
+};
+
+// 変数
+let currentMemberName = "";
+let currentQuizList = [];
+let currentQuizIndex = 0;
+let userAnswers = []; // ユーザーの回答を記録する配列
+let playerName = "";
+let selectedOption = null; // 現在選んでいる選択肢
+
+// 画面要素
+const screenStart = document.getElementById('gameStart');
+const screenSelect = document.getElementById('gameSelectMember');
+const screenQuiz = document.getElementById('gameQuiz');
+const screenResultNormal = document.getElementById('gameResultNormal');
+const screenResultSpecial = document.getElementById('gameResultSpecial');
+
+const memberListEl = document.getElementById('memberList');
+const btnQuizNext = document.getElementById('btnQuizNext');
+
+// 時間チェック
+function checkGameRelease() {
+    const now = new Date();
+    const lockedDiv = document.getElementById('gameLocked');
+    const unlockedDiv = document.getElementById('gameUnlocked');
+    if (now >= GAME_RELEASE_DATE) {
+        if(lockedDiv) lockedDiv.style.display = 'none';
+        if(unlockedDiv) unlockedDiv.style.display = 'block';
+    } else {
+        if(lockedDiv) lockedDiv.style.display = 'block';
+        if(unlockedDiv) unlockedDiv.style.display = 'none';
+    }
+}
+checkGameRelease();
+
+// 画面切り替え
+function showScreen(screen) {
+    document.querySelectorAll('.game-screen').forEach(s => s.classList.remove('active'));
+    screen.classList.add('active');
+}
+
+// 1. スタート → メンバー選択へ
+document.getElementById('btnToSelect').addEventListener('click', () => {
+    const name = document.getElementById('gamePlayerName').value.trim();
+    if (!name) { alert("名前を入力してください！"); return; }
+    playerName = name;
+    createMemberList();
+    showScreen(screenSelect);
+});
+
+// リスト生成
+function createMemberList() {
+    memberListEl.innerHTML = "";
+    Object.keys(allMemberQuizData).forEach(memberName => {
+        // リストアイテムを作成
+        const item = document.createElement('div');
+        item.classList.add('member-list-item');
+        item.textContent = memberName;
+        
+        // クリックでクイズ開始
+        item.addEventListener('click', () => startQuiz(memberName));
+        
+        memberListEl.appendChild(item);
+    });
+}
+
+// 2. クイズ開始初期化
+function startQuiz(memberName) {
+    currentMemberName = memberName;
+    currentQuizList = allMemberQuizData[memberName];
+    
+    if(!currentQuizList || currentQuizList.length === 0) {
+        alert("準備中です"); return;
+    }
+
+    currentQuizIndex = 0;
+    userAnswers = []; // 回答リセット
+    document.getElementById('targetMemberName').textContent = memberName;
+    
+    loadQuestion();
+    showScreen(screenQuiz);
+}
+
+// 問題表示
+function loadQuestion() {
+    const data = currentQuizList[currentQuizIndex];
+    document.getElementById('quizNumber').textContent = currentQuizIndex + 1;
+    document.getElementById('quizText').textContent = data.q;
+    
+    const optionsEl = document.getElementById('quizOptions');
+    optionsEl.innerHTML = "";
+    selectedOption = null; // 選択リセット
+    btnQuizNext.disabled = true; // ボタン無効化
+
+    // 最終問題ならボタンの文字を変える
+    if (currentQuizIndex === currentQuizList.length - 1) {
+        btnQuizNext.textContent = "結果を見る (FINISH)";
+    } else {
+        btnQuizNext.textContent = "決定 (NEXT)";
+    }
+
+    // 選択肢ボタン生成
+    data.options.forEach(opt => {
+        const btn = document.createElement('div');
+        btn.classList.add('option-btn');
+        btn.textContent = opt;
+        
+        // クリック時の処理（選択状態にするだけ）
+        btn.addEventListener('click', () => selectOption(opt, btn));
+        
+        optionsEl.appendChild(btn);
+    });
+}
+
+// 選択肢を選んだ時の処理
+function selectOption(optionText, btnElement) {
+    selectedOption = optionText;
+    
+    // 見た目の更新（全てのボタンからselectedを消して、押したものだけに付ける）
+    const allBtns = document.querySelectorAll('.option-btn');
+    allBtns.forEach(b => b.classList.remove('selected'));
+    btnElement.classList.add('selected');
+    
+    // 決定ボタンを有効化
+    btnQuizNext.disabled = false;
+}
+
+// 決定ボタンを押した時の処理
+btnQuizNext.addEventListener('click', () => {
+    if (!selectedOption) return;
+
+    // 回答を記録
+    userAnswers.push(selectedOption);
+
+    // 次へ進む or 終了
+    currentQuizIndex++;
+    if (currentQuizIndex < currentQuizList.length) {
+        loadQuestion();
+    } else {
+        finishGame(); // 採点へ
+    }
+});
+
+// 3. 採点・結果発表
+async function finishGame() {
+    let score = 0;
+    
+    // 答え合わせ
+    currentQuizList.forEach((quiz, index) => {
+        if (quiz.answer === userAnswers[index]) {
+            score++;
+        }
+    });
+
+    const maxScore = currentQuizList.length;
+
+    // データベースに保存する
+    const { error } = await sb
+        .from('game_results')
+        .insert([
+            { 
+                player_name: playerName,          // プレイヤー名
+                target_member: currentMemberName, // 誰のクイズか
+                score: score                      // 得点 (0〜8)
+            }
+        ]);
+        
+    if(error) console.error('保存エラー:', error);
+
+
+    //満点か、それ以外か
+    if (score === maxScore) {
+        // --- 全問正解（スペシャル画面） ---
+
+        document.getElementById('resultMemberName').textContent = currentMemberName;
+        document.getElementById('winnerNameDisplay').textContent = playerName;
+        showScreen(screenResultSpecial);
+
+    } else {
+        // --- 通常結果（ノーマル画面） ---
+        document.getElementById('resultScore').textContent = `${score} / ${maxScore}`;
+        
+        const msgEl = document.getElementById('resultMsg');
+        if (score >= maxScore - 1) {
+            msgEl.textContent = "惜しい！あと一歩！";
+        } else if (score >= maxScore / 2) {
+            msgEl.textContent = "その調子！";
+        } else {
+            msgEl.textContent = "出直してこい！";
+        }
+        showScreen(screenResultNormal);
+    }
+}
+
+// リトライ
+document.getElementById('btnBackToStart').addEventListener('click', () => showScreen(screenStart));
+document.getElementById('btnGameRetry').addEventListener('click', () => showScreen(screenStart));
+document.getElementById('btnGameRetrySpecial').addEventListener('click', () => showScreen(screenStart));
