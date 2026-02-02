@@ -1,5 +1,5 @@
 // キャッシュの名前（更新したらここを変える）
-const CACHE_NAME = 'grad-live-v1';
+const CACHE_NAME = 'grad-live-v2';
 
 // キャッシュするファイルリスト
 const urlsToCache = [
