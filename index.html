@@ -233,6 +233,28 @@
         </div>
     </section>
 
+    <section id="bbs" class="section">
+        <h2 class="section-title fade-up">MESSAGE BOARD</h2>
+        <p class="bbs-intro">
+            ライブへの意気込みや応援メッセージをぜひお寄せください！<br>
+            皆さんのコメントが運営メンバーの励みになります。
+        </p>
+        
+        <div class="bbs-container fade-up delay-1">
+            <div class="bbs-form">
+                <input type="text" id="bbsName" placeholder="お名前 (NAME)" maxlength="20">
+                <textarea id="bbsContent" placeholder="メッセージを入力 (MESSAGE)" maxlength="100"></textarea>
+                <button id="bbsSendBtn" class="bbs-btn">SEND MESSAGE</button>
+            </div>
+
+            <div id="bbsList" class="bbs-list">
+                <p class="loading-msg">Loading comments...</p>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <section id="access" class="section bg-black text-white">
         <h2 class="section-title text-white fade-up">ACCESS</h2>
         

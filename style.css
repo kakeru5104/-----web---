@@ -762,3 +762,181 @@ footer {
         font-size: 1rem;
     }
 }
+
+/* =========================================
+   BBS Section (吹き出し・横並び版)
+========================================= */
+.bbs-container {
+    max-width: 1000px; /* 横に並ぶので少し広げる */
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.bbs-form {
+    background: #f0f0f0;
+    padding: 20px;
+    border: 2px solid var(--black);
+    margin-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 600px; /* フォームは広がりすぎないように */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bbs-form input, 
+.bbs-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    font-family: inherit;
+}
+
+.bbs-form textarea {
+    height: 80px;
+    resize: none;
+}
+
+.bbs-btn {
+    background: var(--primary-red);
+    color: var(--white);
+    border: none;
+    padding: 10px;
+    font-family: 'Anton', sans-serif;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: 0.3s;
+}
+.bbs-btn:hover { background: var(--black); }
+
+/* コメントリスト（横並びエリア） */
+.bbs-list {
+    display: flex;
+    flex-wrap: wrap; /* 折り返しを許可 */
+    gap: 20px;       /* 吹き出し同士の間隔 */
+    justify-content: center; /* 真ん中寄せ */
+}
+
+
+.bbs-item {
+    /* --- 画像の設定 --- */
+    background-image: url('image/BBS_Bubble.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    
+ 
+    background-color: transparent; /* 背景色を透明に */
+    border: none;                  /* 枠線を消す */
+    box-shadow: none;              /* 四角い影も消す */
+
+
+    /* サイズと配置 */
+    width: 300px;
+    height: 200px;
+    
+    /* 文字の位置調整（画像の形に合わせて調整してください） */
+    padding: 40px 30px 60px 30px; /* 上・右・下・左 */
+    
+    /* 文字の配置 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    
+    /* 動き */
+    transition: transform 0.3s;
+    
+    /* (オプション) 画像自体の形に沿った影をつけたい場合は
+       drop-shadowを使いますが、重くなるので一旦なしでOKです */
+    filter: drop-shadow(5px 5px 2px rgba(0,0,0,0.2));
+}
+
+/* マウスが乗ったら少し浮く */
+.bbs-item:hover {
+    transform: scale(1.05);
+}
+
+/* マウスが乗ったら少し浮く */
+.bbs-item:hover {
+    transform: scale(1.05);
+}
+
+.bbs-meta {
+    font-size: 0.8rem;
+    color: #555;
+    margin-bottom: 5px;
+    width: 100%;
+    display: flex;
+    justify-content: center; /* 日付と名前も中央寄せ */
+    gap: 10px;
+}
+
+.bbs-name {
+    font-weight: bold;
+    color: var(--primary-red);
+}
+
+.bbs-text {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    word-break: break-all;
+    font-weight: bold;
+    color: var(--black); 
+    
+    /* 長すぎる文字は「...」で省略する設定（はみ出し防止） */
+    display: -webkit-box;
+    -webkit-line-clamp: 4; /* 4行まで表示 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* スマホの時は少し小さくする */
+@media (max-width: 600px) {
+    .bbs-item {
+        width: 100%; /* スマホ幅いっぱいに */
+        max-width: 300px;
+        height: 180px;
+        padding: 30px;
+    }
+}
+
+/* =========================================
+   BBSセクションの背景設定
+========================================= */
+#bbs {
+    /* linear-gradientで画像を少し暗くして、文字を見やすくしています */
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('image/BBS_BG.png');
+    
+    /* 背景画像の配置設定 */
+    background-size: cover;    /* 領域いっぱいに画像を広げる */
+    background-position: center; /* 画像の中心を表示 */
+    background-repeat: no-repeat;
+    
+    /* 文字色を白にする */
+    color: var(--white);
+}
+
+/* タイトルも白文字・白枠に変更して見やすくする */
+#bbs .section-title {
+    color: var(--white);
+    border-color: var(--white);
+    background: transparent; /* タイトル背景を透明にしてスッキリさせる */
+    box-shadow: 5px 5px 0px rgba(255, 255, 255, 0.5); /* 影を半透明の白に */
+}
+
+/* BBSセクション導入文のスタイリング */
+.bbs-intro {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 30px;
+    font-size: 0.95rem;
+    line-height: 1.8;
+}
+
+/* 投稿フォームの微調整 */
+.bbs-form {
+    background: rgba(255, 255, 255, 0.9); /* 少しだけ透けさせる */
+    border: 2px solid var(--white); /* 枠を白に */
+}

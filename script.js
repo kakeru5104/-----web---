@@ -121,3 +121,95 @@ goodsModal.addEventListener('click', (e) => {
         goodsModal.classList.remove('active');
     }
 });
+
+/* script.js の一番下に追加 */
+
+// =========================================
+// 4. 掲示板機能 (Supabase)
+// =========================================
+
+// ★ここにSupabaseの情報を貼り付けてください
+const SUPABASE_URL = 'https://ydfkopqlsrcqnwmnnbuu.supabase.co'; 
+const SUPABASE_KEY = 'sb_publishable_l8x_Jv7FqUo0K-EJadAjwQ_e5_vL-9w'; // anon key
+
+// Supabaseクライアントの作成
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const nameInput = document.getElementById('bbsName');
+const msgInput = document.getElementById('bbsContent');
+const sendBtn = document.getElementById('bbsSendBtn');
+const listArea = document.getElementById('bbsList');
+
+// --- コメントを読み込む関数 ---
+async function fetchComments() {
+    // データベースからデータを取得（作成日時の新しい順）
+    const { data, error } = await sb
+        .from('comments')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        console.error('Error:', error);
+        listArea.innerHTML = '<p>コメントの読み込みに失敗しました</p>';
+        return;
+    }
+
+    // HTMLに表示
+    listArea.innerHTML = ''; // 一旦クリア
+    data.forEach(comment => {
+        const date = new Date(comment.created_at).toLocaleDateString();
+        // XSS対策（簡単な無害化）
+        const safeName = comment.name ? comment.name.replace(/</g, "&lt;") : '名無し';
+        const safeMsg = comment.content.replace(/</g, "&lt;");
+
+        const html = `
+            <div class="bbs-item">
+                <div class="bbs-meta">
+                    <span class="bbs-name">${safeName}</span>
+                    <span class="bbs-date">${date}</span>
+                </div>
+                <p class="bbs-text">${safeMsg}</p>
+            </div>
+        `;
+        listArea.insertAdjacentHTML('beforeend', html);
+    });
+}
+
+// --- コメントを送信する関数 ---
+sendBtn.addEventListener('click', async () => {
+    const name = nameInput.value || '名無し';
+    const content = msgInput.value;
+
+    if (!content) {
+        alert('メッセージを入力してください');
+        return;
+    }
+
+    // 送信中はボタンを押せないようにする
+    sendBtn.disabled = true;
+    sendBtn.textContent = 'SENDING...';
+
+    // データベースに追加
+    const { error } = await sb
+        .from('comments')
+        .insert([
+            { name: name, content: content }
+        ]);
+
+    if (error) {
+        console.error('Error:', error);
+        alert('送信に失敗しました');
+    } else {
+        // 成功したらフォームを空にして再読み込み
+        msgInput.value = '';
+        fetchComments();
+    }
+
+    // ボタンを元に戻す
+    sendBtn.disabled = false;
+    sendBtn.textContent = 'SEND MESSAGE';
+});
+
+// ページを開いたらコメントを読み込む
+fetchComments();
