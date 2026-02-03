@@ -1,5 +1,5 @@
 // ▼ 更新するたびに数字を変える（v6 → v7）
-const CACHE_NAME = 'grad-live-v7'; 
+const CACHE_NAME = 'grad-live-v8'; 
 
 const urlsToCache = [
     './',
