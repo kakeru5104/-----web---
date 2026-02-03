@@ -549,7 +549,7 @@ const newsData = [
         date: "2026.02.03",
         label: "APP",
         labelColor: "label-red",
-        title: "このサイトをアプリとして保存する方法（ホーム画面に追加）",
+        title: "このサイトをアプリとして保存する方法",
         link: "#",
         specialId: "openAppModal" // ★アプリ保存のモーダルを開くための目印
     },
