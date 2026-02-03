@@ -136,83 +136,131 @@ const SUPABASE_KEY = 'sb_publishable_l8x_Jv7FqUo0K-EJadAjwQ_e5_vL-9w'; // anon k
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-const nameInput = document.getElementById('bbsName');
-const msgInput = document.getElementById('bbsContent');
-const sendBtn = document.getElementById('bbsSendBtn');
-const listArea = document.getElementById('bbsList');
+// =========================================
+// 4. BBS機能 (トップ3件 + モーダル全件版)
+// =========================================
 
-// --- コメントを読み込む関数 ---
-async function fetchComments() {
-    // データベースからデータを取得（作成日時の新しい順）
+const bbsNameInput = document.getElementById('bbsName');
+const bbsContentInput = document.getElementById('bbsContent');
+const bbsSendBtn = document.getElementById('bbsSendBtn');
+const bbsListEl = document.getElementById('bbsList'); // トップページ用
+const bbsAllListEl = document.getElementById('bbsAllList'); // モーダル用
+
+// モーダル制御
+const openBbsModalBtn = document.getElementById('openBbsModal');
+const bbsModal = document.getElementById('bbsModal');
+const closeBbsModalBtn = document.getElementById('closeBbsModal');
+
+if (openBbsModalBtn) {
+    openBbsModalBtn.addEventListener('click', () => bbsModal.classList.add('active'));
+    closeBbsModalBtn.addEventListener('click', () => bbsModal.classList.remove('active'));
+    bbsModal.addEventListener('click', (e) => {
+        if(e.target === bbsModal) bbsModal.classList.remove('active');
+    });
+}
+
+// 読み込み関数
+async function fetchBbs() {
+    // コンテナをクリア
+    bbsListEl.innerHTML = '<p class="loading-msg">Loading...</p>';
+    if(bbsAllListEl) bbsAllListEl.innerHTML = '';
+
+    // ★ここを修正しました： 'bbs_comments' → 'comments'
     const { data, error } = await sb
-        .from('comments')
+        .from('comments') 
         .select('*')
         .order('created_at', { ascending: false });
 
     if (error) {
         console.error('Error:', error);
-        listArea.innerHTML = '<p>コメントの読み込みに失敗しました</p>';
+        bbsListEl.innerHTML = '<p>Error loading comments.</p>';
         return;
     }
 
-    // HTMLに表示
-    listArea.innerHTML = ''; // 一旦クリア
-    data.forEach(comment => {
-        const date = new Date(comment.created_at).toLocaleDateString();
-        // XSS対策（簡単な無害化）
-        const safeName = comment.name ? comment.name.replace(/</g, "&lt;") : '名無し';
-        const safeMsg = comment.content.replace(/</g, "&lt;");
+    bbsListEl.innerHTML = ''; // Loadingを消す
 
-        const html = `
-            <div class="bbs-item">
-                <div class="bbs-meta">
-                    <span class="bbs-name">${safeName}</span>
-                    <span class="bbs-date">${date}</span>
-                </div>
-                <p class="bbs-text">${safeMsg}</p>
-            </div>
-        `;
-        listArea.insertAdjacentHTML('beforeend', html);
+    // --- 1. トップページ用 (最初の3つだけ) ---
+    const top3 = data.slice(0, 3); 
+    top3.forEach(comment => {
+        const item = createBbsElement(comment);
+        bbsListEl.appendChild(item);
+    });
+
+    // --- 2. モーダル用 (全件) ---
+    if (bbsAllListEl) {
+        data.forEach(comment => {
+            const item = createBbsElement(comment);
+            bbsAllListEl.appendChild(item);
+        });
+    }
+}
+
+// 吹き出し要素を作る便利関数
+function createBbsElement(comment) {
+    const div = document.createElement('div');
+    div.classList.add('bbs-item'); 
+
+    // 日付をフォーマット
+    const dateObj = new Date(comment.created_at);
+    const dateStr = `${dateObj.getFullYear()}/${dateObj.getMonth() + 1}/${dateObj.getDate()}`;
+
+    // XSS対策（名前がない場合の処理なども追加）
+    const safeName = comment.name ? escapeHtml(comment.name) : '名無し';
+    const safeContent = comment.content ? escapeHtml(comment.content) : '';
+
+    div.innerHTML = `
+        <div class="bbs-meta">
+            <span class="bbs-date">${dateStr}</span>
+            <span class="bbs-name">${safeName}</span>
+        </div>
+        <p class="bbs-text">${safeContent}</p>
+    `;
+    return div;
+}
+
+// HTMLエスケープ処理
+function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>"']/g, function(m) {
+        return {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        }[m];
     });
 }
 
-// --- コメントを送信する関数 ---
-sendBtn.addEventListener('click', async () => {
-    const name = nameInput.value || '名無し';
-    const content = msgInput.value;
+// 送信ボタンクリック
+bbsSendBtn.addEventListener('click', async () => {
+    const name = bbsNameInput.value.trim();
+    const content = bbsContentInput.value.trim();
 
     if (!content) {
         alert('メッセージを入力してください');
         return;
     }
 
-    // 送信中はボタンを押せないようにする
-    sendBtn.disabled = true;
-    sendBtn.textContent = 'SENDING...';
-
-    // データベースに追加
+    // ★ここも修正しました： 'bbs_comments' → 'comments'
     const { error } = await sb
         .from('comments')
-        .insert([
-            { name: name, content: content }
-        ]);
+        .insert([{ name: name || '名無し', content: content }]);
 
     if (error) {
-        console.error('Error:', error);
+        console.error('Add Error:', error);
         alert('送信に失敗しました');
     } else {
-        // 成功したらフォームを空にして再読み込み
-        msgInput.value = '';
-        fetchComments();
+        // 成功したら入力欄を空にして再読み込み
+        bbsNameInput.value = '';
+        bbsContentInput.value = '';
+        fetchBbs(); 
+        alert('メッセージを送信しました！');
     }
-
-    // ボタンを元に戻す
-    sendBtn.disabled = false;
-    sendBtn.textContent = 'SEND MESSAGE';
 });
 
-// ページを開いたらコメントを読み込む
-fetchComments();
+// 初回読み込み
+fetchBbs();
 
 /* script.js の一番下に追加 */
 
@@ -247,7 +295,7 @@ if (openAppModalBtn) {
 // =========================================
 
 // ★解禁日時
-const GAME_RELEASE_DATE = new Date("2026-03-14T20:00:00"); 
+const GAME_RELEASE_DATE = new Date("2026-03-21T18:00:00"); 
 
 // ★クイズデータ（17人分）
 const allMemberQuizData = {
@@ -472,3 +520,19 @@ async function finishGame() {
 document.getElementById('btnBackToStart').addEventListener('click', () => showScreen(screenStart));
 document.getElementById('btnGameRetry').addEventListener('click', () => showScreen(screenStart));
 document.getElementById('btnGameRetrySpecial').addEventListener('click', () => showScreen(screenStart));
+
+/* script.js の一番下に追加 */
+
+// =========================================
+// 6. スプラッシュ画面制御
+// =========================================
+window.addEventListener('load', () => {
+    const splash = document.getElementById('splashScreen');
+    
+    if (splash) {
+        // 1.5秒後にフェードアウト開始
+        setTimeout(() => {
+            splash.classList.add('fade-out');
+        }, 1500); // 1500ミリ秒 = 1.5秒 (好きな長さに調整可)
+    }
+});

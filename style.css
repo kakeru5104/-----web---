@@ -903,6 +903,130 @@ footer {
 }
 
 /* =========================================
+   BBS モーダル内専用デザイン（シンプル縦並び）
+========================================= */
+
+/* 1. 親枠の設定：横並びを解除して縦積みに */
+#bbsAllList {
+    display: block; /* flex（横並び）を解除 */
+    padding: 0 20px;
+}
+
+/* 2. 個別の投稿設定：吹き出し画像を消してシンプルに */
+#bbsAllList .bbs-item {
+    /* 背景画像（吹き出し）をなしにする */
+    background-image: none;
+    background-color: transparent;
+    
+    /* サイズ制限を解除 */
+    width: 100%;
+    height: auto;
+    
+    /* デザイン調整 */
+    padding: 15px 0;           /* 上下の余白 */
+    border-bottom: 1px solid #ddd; /* 下に区切り線 */
+    margin: 0;
+    
+    /* テキスト配置 */
+    align-items: flex-start; /* 左寄せ */
+    text-align: left;        /* 左揃え */
+    
+    /* アニメーション無効化 */
+    transform: none !important;
+    box-shadow: none;
+    filter: none;
+}
+
+/* 3. 名前と日付のエリア */
+#bbsAllList .bbs-meta {
+    justify-content: flex-start; /* 左寄せ */
+    margin-bottom: 8px;
+}
+
+/* 4. 本文エリア */
+#bbsAllList .bbs-text {
+    color: var(--black);
+    font-weight: normal; /* 太字を解除して読みやすく */
+    font-size: 1rem;
+    
+    /* 省略設定を解除して、長い文章も全部表示する */
+    display: block;
+    -webkit-line-clamp: unset; 
+    overflow: visible;
+}
+
+/* =========================================
+   スマホ対応：BBSモーダルのスクロール修正
+========================================= */
+
+/* モーダルの箱自体を「縦並びフレックス」にする */
+.bbs-modal-content {
+    display: flex;          /* Flexboxを有効化 */
+    flex-direction: column; /* 縦並びにする */
+    height: 85vh;           /* 高さを画面の85%に制限（はみ出し防止） */
+    max-height: 85vh;
+    padding: 0;             /* 余白は中の要素で調整 */
+    overflow: hidden;       /* 箱からはみ出した部分は隠す */
+}
+
+/* タイトル部分（固定） */
+.bbs-modal-content .modal-head {
+    flex-shrink: 0;         /* 縮まないようにする */
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+/* メッセージ表示エリア（ここだけスクロールさせる） */
+.bbs-modal-content .modal-body {
+    flex: 1;                /* 余ったスペースを全部使う */
+    overflow-y: auto;       /* 縦スクロールを許可 */
+    padding: 20px;          /* 内側の余白 */
+    
+    /* スクロールの慣性を有効にする（スマホで滑らかに） */
+    -webkit-overflow-scrolling: touch; 
+}
+
+/* 閉じるボタン（固定） */
+.bbs-modal-content .close-modal {
+    flex-shrink: 0;         /* 縮まないようにする */
+    margin: 0;
+    padding: 15px 0;
+    background: #f9f9f9;    /* 区切りがわかるように少し色をつける */
+    border-top: 1px solid #eee;
+    width: 100%;            /* 横幅いっぱい */
+}
+
+/* リスト自体の余白調整 */
+#bbsAllList {
+    padding-bottom: 50px; /* 最後のコメントが切れにくくするための予備スペース */
+}
+
+/* === CLOSEボタンを見やすく修正 === */
+.bbs-modal-content .close-modal {
+    flex-shrink: 0;         /* 縮まないように固定 */
+    width: 100%;            /* 横幅いっぱい */
+    padding: 15px 0;        /* 上下の厚み */
+    margin: 0;              /* 余白なし */
+    
+    background: var(--black); /* 背景を「黒」に */
+    color: var(--white);      /* 文字を「白」に */
+    
+    font-family: 'Anton', sans-serif;
+    font-size: 1.2rem;      /* 文字を大きく */
+    font-weight: bold;
+    letter-spacing: 1px;
+    
+    cursor: pointer;
+    border-top: 2px solid var(--primary-red); /* 上に赤いラインを入れてアクセント */
+    transition: background 0.3s;
+}
+
+/* ホバーした時（PC用） */
+.bbs-modal-content .close-modal:hover {
+    background: var(--primary-red); /* 赤色に変化 */
+}
+
+/* =========================================
    BBSセクションの背景設定
 ========================================= */
 #bbs {
@@ -1018,6 +1142,54 @@ footer {
     font-weight: bold;
     font-size: 0.8rem;
     margin: 0 2px;
+}
+
+/* === BBS もっと見るボタン === */
+.view-more-container {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.view-more-btn {
+    display: inline-block;
+    border: 2px solid var(--black); /* 見やすいように黒枠 */
+    background: var(--white);
+    color: var(--black);
+    padding: 10px 40px;
+    font-family: 'Anton', sans-serif;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.5); /* 影をつけてボタンっぽく */
+}
+
+.view-more-btn:hover {
+    background: var(--primary-red);
+    color: var(--white);
+    border-color: var(--primary-red);
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+}
+
+/* === BBSモーダル内調整 === */
+.bbs-modal-content {
+    width: 95%;
+    max-width: 1000px; /* 横並びが見やすいように広めに */
+    height: 90vh; /* 画面いっぱいに */
+    background: rgba(255, 255, 255, 0.95); /* 背景を少し白くして読みやすく */
+}
+
+.bbs-modal-content .modal-body {
+    overflow-y: auto; /* スクロールできるようにする */
+    padding: 20px 0;
+}
+
+/* モーダルの中では文字が見やすいように調整 */
+.bbs-modal-content .bbs-name {
+    color: var(--primary-red);
+}
+.bbs-modal-content .bbs-text {
+    color: var(--black);
 }
 
 /* =========================================
@@ -1438,4 +1610,72 @@ footer {
     background: #ccc;
     cursor: not-allowed;
     opacity: 0.7;
+}
+
+/* =========================================
+   スプラッシュ画面 (アプリ起動風演出)
+========================================= */
+
+/* デフォルト（PC）では非表示 */
+.splash-screen {
+    display: none;
+}
+
+/* スマホ (幅768px以下) の時だけ表示 */
+@media (max-width: 768px) {
+    .splash-screen {
+        display: flex; /* 表示する */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #222; /* 黒に近いグレー */
+        z-index: 99999; /* 最前面に持ってくる */
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.8s ease-out, visibility 0.8s; /* 消えるときのアニメーション */
+    }
+
+    /* 消えるとき用のクラス */
+    .splash-screen.fade-out {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none; /* クリックを通過させる */
+    }
+
+    .splash-content {
+        text-align: center;
+        color: var(--white);
+        animation: logoPop 0.5s ease-out; /* 出現時の動き */
+    }
+
+    /* アイコン画像 */
+    .splash-logo {
+        width: 100px;
+        height: 100px;
+        border-radius: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        margin-bottom: 20px;
+        background: #fff; /* アイコン背景が透明なら白くする */
+    }
+
+    /* タイトル文字 */
+    .splash-title {
+        font-family: 'Anton', sans-serif;
+        font-size: 2rem;
+        line-height: 1.1;
+        letter-spacing: 2px;
+        text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+    }
+    
+    .splash-line {
+        display: block; /* 改行させる */
+    }
+}
+
+/* ポップアップアニメーション */
+@keyframes logoPop {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
 }
