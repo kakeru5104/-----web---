@@ -1,32 +1,50 @@
-// キャッシュの名前（更新したらここを変える）
-const CACHE_NAME = 'grad-live-v4';
+// ▼ 更新するたびに数字を変える（v5 → v6）
+const CACHE_NAME = 'grad-live-v6'; 
 
-// キャッシュするファイルリスト
 const urlsToCache = [
-  './',
-  './index.html',
-  './style.css',
-  './script.js',
-  './image/icon.png'
+    './',
+    './index.html',
+    './style.css',
+    './script.js',
+    './manifest.json',
+    './image/icon.png',
 ];
 
-// インストール時の処理
+// 1. インストール処理
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => {
-        return cache.addAll(urlsToCache);
-      })
-  );
+    self.skipWaiting(); 
+    event.waitUntil(
+        caches.open(CACHE_NAME)
+            .then((cache) => {
+                return cache.addAll(urlsToCache);
+            })
+    );
 });
 
-// リクエスト時の処理
+// 2. 有効化処理（古いキャッシュ削除）
+self.addEventListener('activate', (event) => {
+    const cacheWhitelist = [CACHE_NAME];
+    event.waitUntil(
+        caches.keys().then((cacheNames) => {
+            return Promise.all(
+                cacheNames.map((cacheName) => {
+                    if (cacheWhitelist.indexOf(cacheName) === -1) {
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        }).then(() => {
+            return self.clients.claim();
+        })
+    );
+});
+
+// 3. 通信処理
 self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request)
-      .then((response) => {
-        // キャッシュにあればそれを返す、なければネットワークへ
-        return response || fetch(event.request);
-      })
-  );
+    event.respondWith(
+        caches.match(event.request)
+            .then((response) => {
+                return response || fetch(event.request);
+            })
+    );
 });

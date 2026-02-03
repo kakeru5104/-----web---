@@ -536,3 +536,135 @@ window.addEventListener('load', () => {
         }, 1500); // 1500ミリ秒 = 1.5秒 (好きな長さに調整可)
     }
 });
+
+/* script.js の一番下に追加 */
+
+// =========================================
+// 7. NEWS機能 (トップ3件 + モーダル全件)
+// =========================================
+
+// ★ニュースデータはここで管理！(新しい順に書いてください)
+const newsData = [
+    {
+        date: "2026.02.03",
+        label: "APP",
+        labelColor: "label-red",
+        title: "このサイトをアプリとして保存する方法（ホーム画面に追加）",
+        link: "#",
+        specialId: "openAppModal" // ★アプリ保存のモーダルを開くための目印
+    },
+    {
+        date: "2026.02.01",
+        label: "INFO",
+        labelColor: "label-red",
+        title: "第1弾出演バンド発表！ZERO GRADUATION LIVE 2026 始動",
+        link: "#timetable"
+    },
+    {
+        date: "2026.01.31",
+        label: "INFO",
+        labelColor: "label-red",
+        title: "ZERO卒業ライブ　オリジナルグッズ発売！",
+        link: "#goods"
+    },
+    {
+        date: "2026.01.20",
+        label: "TICKET",
+        labelColor: "label-blue",
+        title: "チケットオフィシャル先行抽選 受付スタート！",
+        link: "#ticket"
+    }
+    // ★新しいニュースはここに追加してください
+];
+
+// 要素取得
+const newsListEl = document.getElementById('newsList');
+const newsAllListEl = document.getElementById('newsAllList');
+const openNewsModalBtn = document.getElementById('openNewsModal');
+const newsModal = document.getElementById('newsModal');
+const closeNewsModalBtn = document.getElementById('closeNewsModal');
+
+// モーダル開閉
+if (openNewsModalBtn) {
+    openNewsModalBtn.addEventListener('click', (e) => {
+        e.preventDefault(); // リンクの動きを止める
+        newsModal.classList.add('active');
+    });
+    closeNewsModalBtn.addEventListener('click', () => newsModal.classList.remove('active'));
+    newsModal.addEventListener('click', (e) => {
+        if(e.target === newsModal) newsModal.classList.remove('active');
+    });
+}
+
+// ニュース表示関数
+function renderNews() {
+    // 1. トップページ用 (最新3件)
+    const top3 = newsData.slice(0, 3);
+    newsListEl.innerHTML = "";
+    top3.forEach(news => {
+        const item = createNewsItem(news);
+        newsListEl.appendChild(item);
+    });
+
+    // 2. モーダル用 (全件)
+    newsAllListEl.innerHTML = "";
+    newsData.forEach(news => {
+        const item = createNewsItem(news);
+        newsAllListEl.appendChild(item);
+    });
+}
+
+// ニュースのHTMLを作る関数
+function createNewsItem(news) {
+    const a = document.createElement('a');
+    a.href = news.link;
+    a.classList.add('news-item');
+    
+    // アプリ保存の説明モーダルを開く特別な処理
+    if (news.specialId === "openAppModal") {
+        a.addEventListener('click', (e) => {
+            e.preventDefault();
+            // ニュースモーダルが開いていたら閉じて、アプリモーダルを開く
+            newsModal.classList.remove('active'); 
+            document.getElementById('appModal').classList.add('active');
+        });
+    } else if (news.link.startsWith('#')) {
+        // ページ内リンクの場合、モーダルを閉じてから移動
+        a.addEventListener('click', () => {
+            newsModal.classList.remove('active');
+        });
+    }
+
+    a.innerHTML = `
+        <div class="news-meta">
+            <span class="news-date">${news.date}</span>
+            <span class="news-label ${news.labelColor}">${news.label}</span>
+        </div>
+        <p class="news-title">${news.title}</p>
+        <div class="news-arrow">→</div>
+    `;
+    return a;
+}
+
+// 実行
+renderNews();
+
+// =========================================
+// 8. アプリモーダルの閉じる処理
+// =========================================
+const appModalEl = document.getElementById('appModal');
+const closeAppModalBtnEl = document.getElementById('closeAppModal');
+
+if (appModalEl && closeAppModalBtnEl) {
+    // CLOSEボタンで閉じる
+    closeAppModalBtnEl.addEventListener('click', () => {
+        appModalEl.classList.remove('active');
+    });
+    
+    // 背景クリックでも閉じる
+    appModalEl.addEventListener('click', (e) => {
+        if (e.target === appModalEl) {
+            appModalEl.classList.remove('active');
+        }
+    });
+}
