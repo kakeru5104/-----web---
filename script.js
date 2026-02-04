@@ -137,7 +137,7 @@ const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // =========================================
-// 4. BBS機能 (トップ3件 + モーダル全件版)
+// 4. BBS機能
 // =========================================
 
 const bbsNameInput = document.getElementById('bbsName');
@@ -145,6 +145,20 @@ const bbsContentInput = document.getElementById('bbsContent');
 const bbsSendBtn = document.getElementById('bbsSendBtn');
 const bbsListEl = document.getElementById('bbsList'); // トップページ用
 const bbsAllListEl = document.getElementById('bbsAllList'); // モーダル用
+
+
+const ngWords = [
+    "死ね", "殺す", "馬鹿", "アホ", "クズ", 
+    "暴力", "犯罪", "差別", "エッチ","陰毛","いんもう","まんこ","ま○こ","ま〇こ","まんk","マソコ","まん個",
+    "オメコ","ヴァギナ","クリトリス","ちんこ","ちんk","ちんちん","チンポ","ペニス","penis","きんたま","肉棒","勃起","ボッキ","精子","射精","ザーメン","●～","○～","〇～","セックス","SEX","S○X","S〇X","体位","淫乱","アナル","anus","おっぱい","oppai","おっぱお","巨乳","きょにゅう","きょにゅー","貧乳","ひんにゅう","ひんにゅー","谷間","たにま","何カップ","なにカップ","手ブラ","てブラ","パンツ","パンティ","パンt","ノーパン","乳首","ちくび","ビーチク","自慰","オナニ","オナ二","オナヌ","マスターベーション","しこって","しこしこ","脱げ","ぬげ","脱いで","ぬいで","脱ごう","ぬごう","喘いで","あえいで","クンニ","フェラ","まんぐり","パイズリ","風俗","ふうぞく","ふーぞく","ソープ","デリヘル","ヘルス","姦","包茎","ほうけい","童貞","どうてい","どうてー","どーてー","どーてい","性器","処女","やりまん","乱交","バイブ","ローター","パイパン","中出し","中田氏","スカトロ","糞","うんこ","パコパコ","ホモ","homo","ぱいぱい","ノーブラ","手コキ","手マン","潮吹","下乳","横乳","指マン","犯し",
+    "きもい","きめえ","変態","馬鹿","ばーか","baka","fuck","f*ck","ファック","不細工","ぶさいく","ブス","気違い","かす",
+    "基地外","ブタ","くたばれ","潰せ","bitch","ビッチ","死す","死な","死ぬ","しぬ","死ね","しね","氏ね","shine","下手","へた","下手くそ","へたくそ","下手糞","へたくそ","無能","むのう","無様","ぶざま","無様な","ぶざまな","無様に","ぶざまに","無様だ","ぶざまだ",
+    "死の","死ん","ﾀﾋ","殺さ","殺し","殺す","ころす","殺せ","ころせ","殺そ","乞食","ばばあ","ばばぁ","BBA","くず","ザコ","ころし","コロシ","糞野郎","くそやろう","クソ野郎","カス野郎","かすやろう","カス野郎","カスヤロウ","痴漢","ちかん","痴女","ちじょ","援交","えんこう","援助交際","レイプ",
+    "大麻","麻薬","覚せい剤","覚醒剤","コカイン","ヘロイン","レイプ","rapist","カス","死体","屍","シタイ","シカイ","屍体","遺体","い体","いたい","強姦","強制わいせつ","強制猥褻","強制性交","輪姦","リンカン","リン姦","売春","ばいしゅん","売春婦","売春婦","売女","性奴隷","せいどれい","セイドレイ",
+    "(0|０)[0-9-０-９ー－]{9,}","創価","■■■■■","☆☆☆☆","★★★★","整形","からきますた","ௌ","e三","引退おめ"
+
+
+];
 
 // モーダル制御
 const openBbsModalBtn = document.getElementById('openBbsModal');
@@ -161,11 +175,9 @@ if (openBbsModalBtn) {
 
 // 読み込み関数
 async function fetchBbs() {
-    // コンテナをクリア
     bbsListEl.innerHTML = '<p class="loading-msg">Loading...</p>';
     if(bbsAllListEl) bbsAllListEl.innerHTML = '';
 
-    // ★ここを修正しました： 'bbs_comments' → 'comments'
     const { data, error } = await sb
         .from('comments') 
         .select('*')
@@ -177,16 +189,16 @@ async function fetchBbs() {
         return;
     }
 
-    bbsListEl.innerHTML = ''; // Loadingを消す
+    bbsListEl.innerHTML = ''; 
 
-    // --- 1. トップページ用 (最初の3つだけ) ---
+    // トップ3件
     const top3 = data.slice(0, 3); 
     top3.forEach(comment => {
         const item = createBbsElement(comment);
         bbsListEl.appendChild(item);
     });
 
-    // --- 2. モーダル用 (全件) ---
+    // モーダル全件
     if (bbsAllListEl) {
         data.forEach(comment => {
             const item = createBbsElement(comment);
@@ -195,16 +207,13 @@ async function fetchBbs() {
     }
 }
 
-// 吹き出し要素を作る便利関数
+// 吹き出し要素生成
 function createBbsElement(comment) {
     const div = document.createElement('div');
     div.classList.add('bbs-item'); 
 
-    // 日付をフォーマット
     const dateObj = new Date(comment.created_at);
     const dateStr = `${dateObj.getFullYear()}/${dateObj.getMonth() + 1}/${dateObj.getDate()}`;
-
-    // XSS対策（名前がない場合の処理なども追加）
     const safeName = comment.name ? escapeHtml(comment.name) : '名無し';
     const safeContent = comment.content ? escapeHtml(comment.content) : '';
 
@@ -218,18 +227,26 @@ function createBbsElement(comment) {
     return div;
 }
 
-// HTMLエスケープ処理
+// HTMLエスケープ
 function escapeHtml(str) {
     if (!str) return '';
     return str.replace(/[&<>"']/g, function(m) {
-        return {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#039;'
-        }[m];
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
     });
+}
+
+// ★NGワードが含まれているかチェックする関数
+function containsNgWord(text) {
+    // 空っぽならセーフ
+    if (!text) return false;
+    
+    // NGワードリストをひとつずつチェック
+    for (const word of ngWords) {
+        if (text.includes(word)) {
+            return true; // 含まれていた！
+        }
+    }
+    return false; // セーフ
 }
 
 // 送信ボタンクリック
@@ -242,7 +259,13 @@ bbsSendBtn.addEventListener('click', async () => {
         return;
     }
 
-    // ★ここも修正しました： 'bbs_comments' → 'comments'
+    // ★ここでNGワードチェックを実行！
+    if (containsNgWord(name) || containsNgWord(content)) {
+        alert("不適切な言葉が含まれているため、送信できません。");
+        return; // ここで処理を中断して、データベースには送らせない
+    }
+
+    // 問題なければ送信処理へ
     const { error } = await sb
         .from('comments')
         .insert([{ name: name || '名無し', content: content }]);
@@ -251,7 +274,6 @@ bbsSendBtn.addEventListener('click', async () => {
         console.error('Add Error:', error);
         alert('送信に失敗しました');
     } else {
-        // 成功したら入力欄を空にして再読み込み
         bbsNameInput.value = '';
         bbsContentInput.value = '';
         fetchBbs(); 
