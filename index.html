@@ -97,6 +97,12 @@
 
 <section id="goods" class="section">
         <h2 class="section-title fade-up">GOODS</h2>
+
+          <div class="reservation-banner fade-up">
+               <p class="res-limit">予約受付：2/13(金) 16:00 まで</p>
+               <div id="openReserveModal" class="reserve-btn">ラバーバンドを<br>予約する</div>
+               <p class="res-note">※完全受注生産 / 当日会場支払い</p>
+             </div>
         
         <div class="goods-grid fade-up delay-1">
             
@@ -288,7 +294,7 @@
                 
                 <div id="gameLocked" class="game-locked">
                     <p class="game-intro">SECRET GAME</p> <p class="coming-soon-text">COMING SOON...</p>
-                    <p class="unlock-time-text">2026.03.21 19:00 UNLOCK</p>
+                    <p class="unlock-time-text">2026.03.15 19:00 UNLOCK</p>
                 </div>
 
                 <div id="gameUnlocked" style="display:none;">
@@ -533,6 +539,83 @@
         }
     </script>
 
+    <div class="modal-overlay" id="reserveModal">
+        <div class="modal-content reserve-modal-content">
+            <p class="modal-head">PRE-ORDER</p>
+            
+            <div id="reserveFormView" class="modal-body">
+                <h2 class="res-title">ラバーバンド予約</h2>
+                <p class="res-desc">
+                    完全受注生産のため、期間内にご予約ください。<br>
+                    お一人様 3個まで。<br>
+                    <span style="color:red; font-weight:bold;">※予約後のキャンセル不可</span>
+                </p>
+
+                <form id="reserveForm" class="res-form">
+                <p style="color:red; font-size:0.8rem; margin-bottom:15px; border:1px solid red; padding:5px;">
+                    なりすまし防止のため、連絡先を記録します。<br>
+                    1端末につき1回のみ予約可能です。
+                </p>
+
+                <div class="res-image-box">
+                    <img src="image/RubberBand.png" alt="ラバーバンド イメージ" class="res-hero-img">
+                    <p class="res-img-note">※写真はイメージです</p>
+                 </div>
+
+                <label>お名前 (必須)</label>
+                <input type="text" id="resName" placeholder="例：山田 太郎" required>
+
+                <label>学籍番号 または 電話番号 (必須)</label>
+                <input type="text" id="resContact" placeholder="本人確認に使用します" required>
+
+                <p style="margin-top:20px; font-weight:bold; border-bottom:1px solid #ddd;">ご注文内容 (合計3個まで)</p>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
+                    <label style="margin:0;">WHITE (白)</label>
+                    <select id="resQtyWhite" style="width:100px;">
+                        <option value="0">0個</option>
+                        <option value="1">1個</option>
+                        <option value="2">2個</option>
+                        <option value="3">3個</option>
+                    </select>
+                </div>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
+                    <label style="margin:0;">MARBLE (マーブル)</label>
+                    <select id="resQtyMarble" style="width:100px;">
+                        <option value="0">0個</option>
+                        <option value="1">1個</option>
+                        <option value="2">2個</option>
+                        <option value="3">3個</option>
+                    </select>
+                </div>
+                <p class="res-total">合計金額: <span id="displayPrice">¥0</span></p>
+
+                <button type="submit" class="res-submit-btn">予約を確定する</button>
+            </form>
+            </div>
+
+            <div id="reserveSuccessView" class="modal-body" style="display:none;">
+                <h2 class="res-title" style="color:var(--primary-red);">RESERVED!</h2>
+                <p class="res-desc">予約が完了しました。<br>当日、この画面を受付でご提示ください。</p>
+                
+                <div class="ticket-card">
+                    <p class="ticket-label">NAME</p>
+                    <p class="ticket-val" id="ticketName">---</p>
+                    
+                    <p class="ticket-label">ITEM</p>
+                    <p class="ticket-val" id="ticketItem">---</p>
+                    
+                    <p class="ticket-label">TOTAL</p>
+                    <p class="ticket-val ticket-price" id="ticketPrice">---</p>
+                </div>
+                
+                <p class="res-note-small">※この画面のスクリーンショットを保存してください</p>
+            </div>
+
+            <div class="close-modal" id="closeReserveModal">CLOSE</div>
+        </div>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>

@@ -317,7 +317,7 @@ if (openAppModalBtn) {
 // =========================================
 
 // ★解禁日時
-const GAME_RELEASE_DATE = new Date("2026-03-21T18:00:00"); 
+const GAME_RELEASE_DATE = new Date("2026-01-21T18:00:00"); 
 
 // ★クイズデータ（17人分）
 const allMemberQuizData = {
@@ -564,6 +564,13 @@ window.addEventListener('load', () => {
 // =========================================
 
 const newsData = [
+            {
+        date: "2026.02.08",
+        label: "INFO",
+        labelColor: "label-red",
+        title: "ラバーバンド受注生産開始！詳しくはグッズへ",
+        link: "#goods"
+    },
         {
         date: "2026.02.04",
         label: "INFO",
@@ -600,7 +607,7 @@ const newsData = [
         title: "チケットオフィシャル先行抽選 受付スタート！",
         link: "#ticket"
     }
-    // ★新しいニュースはここに追加してください
+
 ];
 
 // 要素取得
@@ -693,4 +700,151 @@ if (appModalEl && closeAppModalBtnEl) {
             appModalEl.classList.remove('active');
         }
     });
+}
+
+// =========================================
+// 9. ラバーバンド予約機能 (DB構造最適化版)
+// =========================================
+
+const RESERVE_DEADLINE = new Date("2026-02-13T16:00:00");
+
+// 要素の取得
+const openResBtn = document.getElementById('openReserveModal');
+const resModal = document.getElementById('reserveModal');
+const closeResBtn = document.getElementById('closeReserveModal');
+const resForm = document.getElementById('reserveForm');
+const viewForm = document.getElementById('reserveFormView');
+const viewSuccess = document.getElementById('reserveSuccessView');
+
+// 色別のセレクトボックス
+const resQtyWhite = document.getElementById('resQtyWhite');
+const resQtyMarble = document.getElementById('resQtyMarble');
+const displayPrice = document.getElementById('displayPrice');
+
+// 1. 状態チェック
+function checkReservationStatus() {
+    const now = new Date();
+    if (now > RESERVE_DEADLINE) {
+        disableReserveButton("予約受付は終了しました");
+        return;
+    }
+    if (localStorage.getItem('goods_reserved') === 'true') {
+        disableReserveButton("予約済みです");
+        return;
+    }
+}
+
+function disableReserveButton(msg) {
+    if (openResBtn) {
+        openResBtn.textContent = msg;
+        openResBtn.classList.add('disabled');
+        openResBtn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); alert(msg); };
+    }
+}
+window.addEventListener('load', checkReservationStatus);
+
+// 2. モーダル開閉
+if (openResBtn) {
+    openResBtn.addEventListener('click', () => {
+        if (new Date() > RESERVE_DEADLINE) return;
+        if (localStorage.getItem('goods_reserved')) return;
+        resModal.classList.add('active');
+    });
+    closeResBtn.addEventListener('click', () => resModal.classList.remove('active'));
+    resModal.addEventListener('click', (e) => {
+        if(e.target === resModal) resModal.classList.remove('active');
+    });
+}
+
+// 3. 金額と個数の計算
+function updatePrice() {
+    const qtyW = parseInt(resQtyWhite.value);
+    const qtyM = parseInt(resQtyMarble.value);
+    const totalQty = qtyW + qtyM;
+    const price = totalQty * 500;
+    displayPrice.textContent = `¥${price.toLocaleString()}`;
+}
+
+if (resQtyWhite && resQtyMarble) {
+    resQtyWhite.addEventListener('change', updatePrice);
+    resQtyMarble.addEventListener('change', updatePrice);
+}
+
+// 4. 予約送信処理
+if (resForm) {
+    resForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (localStorage.getItem('goods_reserved')) {
+            alert("すでに予約済みです。");
+            return;
+        }
+
+        const name = document.getElementById('resName').value;
+        const contact = document.getElementById('resContact').value;
+        
+        // 個数を取得
+        const qtyW = parseInt(resQtyWhite.value);
+        const qtyM = parseInt(resQtyMarble.value);
+        const totalQty = qtyW + qtyM;
+        const totalPrice = totalQty * 500;
+
+        // チェック
+        if (totalQty === 0) {
+            alert("個数を選択してください。");
+            return;
+        }
+        if (totalQty > 3) {
+            alert("予約できるのは お一人様 合計3個 までです。\n現在の合計: " + totalQty + "個");
+            return;
+        }
+
+        const submitBtn = resForm.querySelector('button');
+        submitBtn.disabled = true;
+        submitBtn.textContent = "送信中...";
+
+        // ★★★ ここを変更！それぞれの色を別のカラムに保存 ★★★
+        const { error } = await sb
+            .from('goods_orders')
+            .insert([
+                { 
+                    name: name,
+                    contact_info: contact,
+                    color_white: qtyW,    // 白の個数 (数値)
+                    color_marble: qtyM,   // マーブルの個数 (数値)
+                    quantity: totalQty,   // 合計個数 (数値)
+                    total_price: totalPrice
+                }
+            ]);
+
+        if (error) {
+            console.error('予約エラー:', error);
+            alert("エラーが発生しました。");
+            submitBtn.disabled = false;
+            submitBtn.textContent = "予約を確定する";
+        } else {
+            localStorage.setItem('goods_reserved', 'true');
+            
+            // 完了画面用の文字作成（例：WHITE x1, MARBLE x2）
+            let itemDetails = "";
+            if (qtyW > 0) itemDetails += `WHITE x${qtyW}`;
+            if (qtyW > 0 && qtyM > 0) itemDetails += ", ";
+            if (qtyM > 0) itemDetails += `MARBLE x${qtyM}`;
+
+            showSuccessTicket(name, itemDetails, totalPrice);
+            disableReserveButton("予約済みです");
+        }
+    });
+}
+
+// 完了画面
+function showSuccessTicket(name, itemDetails, total) {
+    viewForm.style.display = 'none';
+    viewSuccess.style.display = 'block';
+
+    document.getElementById('ticketName').textContent = name;
+    document.getElementById('ticketItem').textContent = itemDetails;
+    document.getElementById('ticketPrice').textContent = `¥${total.toLocaleString()}`;
+    
+    alert("予約が完了しました！");
 }

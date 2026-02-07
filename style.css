@@ -1732,3 +1732,209 @@ footer {
     100% { transform: scale(1); opacity: 1; }
 }
 
+/* =========================================
+   9. ラバーバンド予約機能のデザイン
+========================================= */
+
+/* バナーエリア */
+.reservation-banner {
+    background: #f9f9f9;
+    padding: 20px;
+    text-align: center;
+    border: 2px solid var(--black);
+    margin-bottom: 30px;
+    border-radius: 8px;
+}
+.res-limit {
+    color: var(--primary-red);
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+/* =========================================
+   予約ボタン（赤色＆鼓動アニメーション）
+========================================= */
+
+/* === 予約ボタン（赤色＆呼吸アニメーション） === */
+.reserve-btn {
+    background: var(--primary-red);
+    color: var(--white);
+    
+    padding: 15px 40px;
+    font-family: 'Anton', sans-serif;
+    font-size: 1.5rem;
+    display: inline-block;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 50px;
+    
+    /* 赤色の発光するような影 */
+    box-shadow: 0 0 15px rgba(230, 0, 18, 0.6);
+    
+    /* アニメーション：1.5秒かけて滑らかに繰り返す */
+    animation: heartbeat 1.5s infinite ease-in-out;
+}
+
+/* ホバーした時 */
+.reserve-btn:hover {
+    background: #cc0000;
+    transform: scale(1.1); /* ホバー時は少し大きく固定 */
+    animation: none;       /* 動きを止める */
+    box-shadow: 0 0 25px rgba(230, 0, 18, 0.8);
+}
+
+/* 予約終了・予約済みで押せない時 */
+.reserve-btn.disabled {
+    background: #999;
+    color: #eee;
+    cursor: not-allowed;
+    box-shadow: none;
+    pointer-events: none;
+    animation: none;
+}
+
+/* ↓ シンプルな「拡大・縮小」の繰り返しに変更しました ↓ */
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); } /* 5%だけ大きくなる */
+    100% { transform: scale(1); }   /* 元に戻る */
+}
+.res-note {
+    font-size: 0.8rem;
+    margin-top: 10px;
+    color: #666;
+}
+
+/* === 予約フォームモーダル（スマホスクロール対応版） === */
+.reserve-modal-content {
+    width: 95%;
+    max-width: 500px;
+    
+    /* ↓ここがスクロールの重要ポイント */
+    max-height: 85vh;       /* 高さは画面の85%まで */
+    display: flex;          /* 縦並びの箱にする */
+    flex-direction: column; 
+    overflow: hidden;       /* 箱からはみ出た分は隠す */
+}
+
+/* タイトルと閉じるボタン以外（中身）をスクロールさせる */
+.reserve-modal-content .modal-body {
+    flex: 1;                /* 余ったスペースを全部使う */
+    overflow-y: auto;       /* 縦スクロール許可 */
+    padding: 20px;
+    -webkit-overflow-scrolling: touch; /* スマホで滑らかに動く */
+}
+
+/* 閉じるボタンは下に固定 */
+.reserve-modal-content .close-modal {
+    flex-shrink: 0;         /* 縮まないように固定 */
+    margin: 0;
+    width: 100%;
+}
+.res-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    text-align: center;
+}
+.res-desc {
+    font-size: 0.9rem;
+    text-align: center;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+.res-form {
+    text-align: left;
+}
+.res-form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-top: 15px;
+    font-size: 0.9rem;
+}
+.res-form input, .res-form select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    background: #fff;
+}
+.res-total {
+    text-align: right;
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin: 25px 0;
+    border-top: 2px solid #eee;
+    padding-top: 15px;
+}
+.res-submit-btn {
+    width: 100%;
+    background: var(--primary-red);
+    color: var(--white);
+    padding: 15px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.res-submit-btn:hover {
+    background: #cc0000;
+}
+.res-submit-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+/* 完了チケット */
+.ticket-card {
+    border: 3px dashed var(--black);
+    background: #fff;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: left;
+}
+.ticket-label {
+    font-size: 0.8rem;
+    color: #888;
+    margin-bottom: 2px;
+    font-family: 'Anton', sans-serif;
+}
+.ticket-val {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+.ticket-price {
+    color: var(--primary-red);
+    font-size: 1.8rem;
+    border-bottom: none;
+}
+.res-note-small {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+/* === 予約フォーム内の画像 === */
+.res-image-box {
+    text-align: center;
+    margin: 10px 0 20px 0;
+}
+
+.res-hero-img {
+    width: 80%;            /* 横幅は画面の80%くらい */
+    max-width: 300px;      /* PCで見ても大きくなりすぎないように制限 */
+    height: auto;
+    border-radius: 10px;   /* 角を丸く */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* ふんわり影をつける */
+}
+
+.res-img-note {
+    font-size: 0.75rem;    /* 文字を小さく */
+    color: #888;           /* 薄いグレーに */
+    margin-top: 5px;
+}
