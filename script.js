@@ -564,13 +564,13 @@ window.addEventListener('load', () => {
 // =========================================
 
 const newsData = [
-            {
-        date: "2026.02.08",
-        label: "INFO",
-        labelColor: "label-red",
-        title: "多数のご要望によりグッズ化実現！ラバーバンド受注生産開始！詳しくはグッズへ",
-        link: "#goods"
-    },
+    //         {
+    //     date: "2026.02.08",
+    //     label: "INFO",
+    //     labelColor: "label-red",
+    //     title: "多数のご要望によりグッズ化実現！ラバーバンド受注生産開始！詳しくはグッズへ",
+    //     link: "#goods"
+    // },
         {
         date: "2026.02.04",
         label: "INFO",
