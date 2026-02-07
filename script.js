@@ -317,7 +317,7 @@ if (openAppModalBtn) {
 // =========================================
 
 // ★解禁日時
-const GAME_RELEASE_DATE = new Date("2026-01-21T18:00:00"); 
+const GAME_RELEASE_DATE = new Date("2026-02-15T18:00:00"); 
 
 // ★クイズデータ（17人分）
 const allMemberQuizData = {
