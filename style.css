@@ -1938,3 +1938,58 @@ footer {
     color: #888;           /* 薄いグレーに */
     margin-top: 5px;
 }
+
+/* === バナー内のキャッチコピー === */
+.res-catch {
+    color: var(--primary-red); /* ブランドカラーの赤 */
+    font-weight: bold;         /* 太文字 */
+    font-size: 1.0rem;         /* 少し大きく */
+    margin-bottom: 8px;        /* 下との隙間 */
+    letter-spacing: 1px;       /* 文字間隔を少し空けて読みやすく */
+    
+    /* ほんのり点滅させて目立たせる（お好みで） */
+    animation: flashText 2s infinite ease-in-out;
+}
+
+/* 点滅アニメーション */
+@keyframes flashText {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* =========================================
+   COMING SOON 表示用スタイル
+========================================= */
+
+/* 画像ボックスを基準にする */
+.goods-img-box {
+    position: relative; /* これがないと文字が変な位置に行きます */
+    overflow: hidden;
+}
+
+/* COMING SOONの黒い膜と文字 */
+.coming-soon-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* 半透明の黒 */
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Anton', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    z-index: 2; /* タグより上に表示 */
+    
+    /* 斜めに傾けるとかっこいい */
+    transform: rotate(-5deg) scale(1.2); 
+}
+
+/* COMING SOONの商品はクリックしても反応しないようにする */
+.coming-soon-item {
+    opacity: 0.7;       /* 全体を少し薄くする */
+    pointer-events: none; /* クリック無効化 */
+}

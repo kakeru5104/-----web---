@@ -568,7 +568,7 @@ const newsData = [
         date: "2026.02.08",
         label: "INFO",
         labelColor: "label-red",
-        title: "ラバーバンド受注生産開始！詳しくはグッズへ",
+        title: "多数のご要望によりグッズ化実現！ラバーバンド受注生産開始！詳しくはグッズへ",
         link: "#goods"
     },
         {
@@ -848,3 +848,26 @@ function showSuccessTicket(name, itemDetails, total) {
     
     alert("予約が完了しました！");
 }
+
+// =========================================
+// 10. 詳細画面から予約画面への移動（確実版）
+// =========================================
+
+// HTMLから直接呼び出せるように関数を作る
+window.moveToReserve = function() {
+    console.log("予約画面へ移動します"); // 確認用ログ
+
+    // 1. 商品詳細画面を閉じる
+    const goodsModal = document.getElementById('goodsModal');
+    goodsModal.classList.remove('active');
+
+    // 2. 0.3秒後に「予約ボタン」をクリックしたことにする
+    setTimeout(() => {
+        const reserveBtn = document.getElementById('openReserveModal');
+        if (reserveBtn) {
+            reserveBtn.click();
+        } else {
+            console.error("予約ボタンが見つかりません");
+        }
+    }, 300);
+};
