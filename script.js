@@ -93,7 +93,7 @@ goodsItems.forEach(item => {
         const name = item.querySelector('.goods-name').innerHTML;
         const variant = item.querySelector('.goods-var').textContent;
         const price = item.querySelector('.goods-price').textContent;
-        // ★追加：隠し説明文を取得
+
         const desc = item.querySelector('.goods-desc-source').innerHTML;
 
         // モーダルにセット
@@ -125,10 +125,10 @@ goodsModal.addEventListener('click', (e) => {
 /* script.js の一番下に追加 */
 
 // =========================================
-// 4. 掲示板機能 (Supabase)
+// 4. 掲示板機能
 // =========================================
 
-// ★ここにSupabaseの情報を貼り付けてください
+
 const SUPABASE_URL = 'https://ydfkopqlsrcqnwmnnbuu.supabase.co'; 
 const SUPABASE_KEY = 'sb_publishable_l8x_Jv7FqUo0K-EJadAjwQ_e5_vL-9w'; // anon key
 
@@ -235,7 +235,7 @@ function escapeHtml(str) {
     });
 }
 
-// ★NGワードが含まれているかチェックする関数
+// ★NGワードが含まれているかチェック
 function containsNgWord(text) {
     // 空っぽならセーフ
     if (!text) return false;
@@ -259,7 +259,7 @@ bbsSendBtn.addEventListener('click', async () => {
         return;
     }
 
-    // ★ここでNGワードチェックを実行！
+
     if (containsNgWord(name) || containsNgWord(content)) {
         alert("不適切な言葉が含まれているため、送信できません。");
         return; // ここで処理を中断して、データベースには送らせない
@@ -316,7 +316,7 @@ if (openAppModalBtn) {
 // 5. GAME機能 (リスト選択・決定ボタン式)
 // =========================================
 
-// ★解禁日時
+// 解禁日時
 const GAME_RELEASE_DATE = new Date("2026-02-15T18:00:00"); 
 
 // ★クイズデータ（17人分）
@@ -560,17 +560,24 @@ window.addEventListener('load', () => {
 });
 
 // =========================================
-// 7. NEWS機能 (トップ3件 + モーダル全件)
+// 7. NEWS機能 
 // =========================================
 
 const newsData = [
-    //         {
-    //     date: "2026.02.08",
-    //     label: "INFO",
-    //     labelColor: "label-red",
-    //     title: "多数のご要望によりグッズ化実現！ラバーバンド受注生産開始！詳しくはグッズへ",
-    //     link: "#goods"
-    // },
+            {
+        date: "2026.02.08",
+        label: "INFO",
+        labelColor: "label-red",
+        title: "多数のご要望によりグッズ化実現！ラバーバンド受注生産開始！詳しくはグッズへ",
+        link: "#goods"
+    },
+            {
+        date: "2026.02.08",
+        label: "INFO",
+        labelColor: "label-red",
+        title: "第3弾出演バンド発表！全出演バンド発表！",
+        link: "#timetable"
+    },
         {
         date: "2026.02.04",
         label: "INFO",
@@ -703,7 +710,7 @@ if (appModalEl && closeAppModalBtnEl) {
 }
 
 // =========================================
-// 9. ラバーバンド予約機能 (DB構造最適化版)
+// 9. ラバーバンド予約機能
 // =========================================
 
 const RESERVE_DEADLINE = new Date("2026-02-13T16:00:00");
@@ -721,7 +728,7 @@ const resQtyWhite = document.getElementById('resQtyWhite');
 const resQtyMarble = document.getElementById('resQtyMarble');
 const displayPrice = document.getElementById('displayPrice');
 
-// 1. 状態チェック
+
 function checkReservationStatus() {
     const now = new Date();
     if (now > RESERVE_DEADLINE) {
@@ -743,7 +750,7 @@ function disableReserveButton(msg) {
 }
 window.addEventListener('load', checkReservationStatus);
 
-// 2. モーダル開閉
+
 if (openResBtn) {
     openResBtn.addEventListener('click', () => {
         if (new Date() > RESERVE_DEADLINE) return;
@@ -756,7 +763,7 @@ if (openResBtn) {
     });
 }
 
-// 3. 金額と個数の計算
+
 function updatePrice() {
     const qtyW = parseInt(resQtyWhite.value);
     const qtyM = parseInt(resQtyMarble.value);
@@ -770,7 +777,7 @@ if (resQtyWhite && resQtyMarble) {
     resQtyMarble.addEventListener('change', updatePrice);
 }
 
-// 4. 予約送信処理
+
 if (resForm) {
     resForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -782,14 +789,13 @@ if (resForm) {
 
         const name = document.getElementById('resName').value;
         const contact = document.getElementById('resContact').value;
-        
-        // 個数を取得
+
         const qtyW = parseInt(resQtyWhite.value);
         const qtyM = parseInt(resQtyMarble.value);
         const totalQty = qtyW + qtyM;
         const totalPrice = totalQty * 500;
 
-        // チェック
+
         if (totalQty === 0) {
             alert("個数を選択してください。");
             return;
@@ -803,7 +809,6 @@ if (resForm) {
         submitBtn.disabled = true;
         submitBtn.textContent = "送信中...";
 
-        // ★★★ ここを変更！それぞれの色を別のカラムに保存 ★★★
         const { error } = await sb
             .from('goods_orders')
             .insert([
@@ -825,7 +830,7 @@ if (resForm) {
         } else {
             localStorage.setItem('goods_reserved', 'true');
             
-            // 完了画面用の文字作成（例：WHITE x1, MARBLE x2）
+
             let itemDetails = "";
             if (qtyW > 0) itemDetails += `WHITE x${qtyW}`;
             if (qtyW > 0 && qtyM > 0) itemDetails += ", ";
@@ -850,18 +855,18 @@ function showSuccessTicket(name, itemDetails, total) {
 }
 
 // =========================================
-// 10. 詳細画面から予約画面への移動（確実版）
+// 10. 詳細画面から予約画面への移動
 // =========================================
 
-// HTMLから直接呼び出せるように関数を作る
-window.moveToReserve = function() {
-    console.log("予約画面へ移動します"); // 確認用ログ
 
-    // 1. 商品詳細画面を閉じる
+window.moveToReserve = function() {
+    console.log("予約画面へ移動します"); 
+
+
     const goodsModal = document.getElementById('goodsModal');
     goodsModal.classList.remove('active');
 
-    // 2. 0.3秒後に「予約ボタン」をクリックしたことにする
+
     setTimeout(() => {
         const reserveBtn = document.getElementById('openReserveModal');
         if (reserveBtn) {
