@@ -713,7 +713,7 @@ if (appModalEl && closeAppModalBtnEl) {
 // 9. ラバーバンド予約機能
 // =========================================
 
-const RESERVE_DEADLINE = new Date("2026-02-13T16:00:00");
+const RESERVE_DEADLINE = new Date("2026-02-13T17:00:00");
 
 // 要素の取得
 const openResBtn = document.getElementById('openReserveModal');
