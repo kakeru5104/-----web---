@@ -563,7 +563,17 @@ window.addEventListener('load', () => {
 // 7. NEWS機能 
 // =========================================
 
+
+
 const newsData = [
+            {
+        date: "2026.02.18",
+        label: "INFO",
+        labelColor: "label-red",
+        title: "タイムテーブル発表！全出演バンド・タイムテーブル公開！",
+        link: "#timetable"
+    },
+
             {
         date: "2026.02.08",
         label: "INFO",
