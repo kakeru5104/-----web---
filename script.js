@@ -876,3 +876,104 @@ window.moveToReserve = function() {
         }
     }, 300);
 };
+
+// =========================================
+// 11. タイムテーブルのタブ切り替え
+// =========================================
+
+const ttTabs = document.querySelectorAll('.tt-tab');
+const ttContents = document.querySelectorAll('.tt-content');
+
+ttTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        // 1. すべてのタブから active を外す
+        ttTabs.forEach(t => t.classList.remove('active'));
+        // 2. クリックされたタブに active をつける
+        tab.classList.add('active');
+
+        // 3. 表示するIDを取得 (例: "day1")
+        const targetId = tab.getAttribute('data-target');
+
+        // 4. すべてのコンテンツを隠す
+        ttContents.forEach(content => {
+            content.classList.remove('active');
+        });
+
+        // 5. 対象のコンテンツだけ表示する
+        const targetContent = document.getElementById(targetId);
+        if (targetContent) {
+            targetContent.classList.add('active');
+        }
+    });
+});
+
+// =========================================
+// 12. リアルタイム現在地バー
+// =========================================
+
+function updateCurrentTimeLine() {
+    const line = document.getElementById('currentTimeLine');
+    if (!line) return;
+
+    const now = new Date();
+    
+
+    const IS_TEST_MODE = false; 
+
+
+    const schedules = {
+        "day1": { month: 2, date: 14 }, // 3/14
+        "day2": { month: 2, date: 15 }, // 3/15
+        "day3": { month: 2, date: 20 }, // 3/20
+        "day4": { month: 2, date: 21 }  // 3/21
+    };
+
+
+    const activeTab = document.querySelector('.tt-tab.active');
+    if (!activeTab) return;
+    const targetId = activeTab.getAttribute('data-target');
+    const targetDate = schedules[targetId];
+
+
+    const isToday = IS_TEST_MODE || (
+        now.getMonth() === targetDate.month && 
+        now.getDate() === targetDate.date
+    );
+
+    if (!isToday) {
+        line.style.display = 'none';
+        return;
+    }
+
+
+    const hours = now.getHours();
+    const minutes = now.getMinutes();
+
+
+    const START_HOUR = 13;
+    const PX_PER_HOUR = 60;
+
+    if (hours < START_HOUR || hours >= 22) {
+
+        line.style.display = 'none';
+    } else {
+
+        const topPosition = (hours - START_HOUR) * PX_PER_HOUR + minutes;
+        
+        line.style.display = 'block';
+        line.style.top = `${topPosition}px`;
+    }
+}
+
+// 1分ごとに更新
+setInterval(updateCurrentTimeLine, 60000);
+
+// 画面を開いた時や、タブを切り替えた時にも即実行
+updateCurrentTimeLine();
+const tabsForLine = document.querySelectorAll('.tt-tab');
+tabsForLine.forEach(tab => {
+    tab.addEventListener('click', () => {
+        // タブ切り替えのアニメーションが終わった頃に再計算
+        setTimeout(updateCurrentTimeLine, 100);
+    });
+});

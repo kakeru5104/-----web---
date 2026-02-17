@@ -1997,3 +1997,199 @@ footer {
     font-size: 0.7rem; 
     color: #666;
 }
+
+/* =========================================
+   TIMETABLE (タブ切り替え＆縦型)
+========================================= */
+
+/* タブ部分 */
+.tt-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.tt-tab {
+    background: var(--white);
+    border: 2px solid var(--black);
+    padding: 10px 15px;
+    cursor: pointer;
+    text-align: center;
+    flex: 1;
+    min-width: 80px;
+    max-width: 120px;
+    transition: 0.3s;
+}
+
+.tt-tab.active {
+    background: var(--primary-red);
+    color: var(--white);
+    border-color: var(--primary-red);
+    transform: translateY(-5px);
+    box-shadow: 3px 3px 0px rgba(0,0,0,0.3);
+}
+
+.tt-date {
+    display: block;
+    font-family: 'Anton', sans-serif;
+    font-size: 1.2rem;
+    line-height: 1;
+}
+.tt-day {
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+.tt-place {
+    display: block;
+    font-size: 0.6rem;
+    margin-top: 3px;
+    opacity: 0.8;
+}
+
+/* タイムテーブル本体の枠 */
+.tt-container {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+    border: 3px solid var(--black);
+    background: #fff;
+    height: 540px; /* 13:00〜22:00 (9時間×60px) */
+    overflow-y: hidden; /* はみ出し防止 */
+}
+
+/* 時間軸の背景（グリッド） */
+.tt-timeline-bg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+
+    z-index: 1;
+    
+
+    pointer-events: none;
+}
+
+.tt-hour {
+    height: 60px; /* 1時間 = 60px */
+    
+
+    border-bottom: 1px solid var(--black);
+    
+    font-size: 0.8rem;
+    color: #888;
+    padding-left: 5px;
+    font-family: 'Anton', sans-serif;
+    
+    box-sizing: border-box; 
+}
+
+/* 各日のコンテンツエリア */
+.tt-content {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    
+
+    z-index: 10;
+    
+    padding-left: 50px;
+}
+.tt-content.active {
+    display: block; /* 選ばれた日だけ表示 */
+    animation: fadeIn 0.5s;
+}
+
+/* バンドのブロック */
+/* バンドのブロック */
+.tt-block {
+    position: absolute;
+    
+
+    left: 60px; 
+    
+
+    width: calc(100% - 70px);
+
+
+    background: var(--black);
+    
+    color: var(--white);
+    
+
+    border: 1px solid #333;
+    border-left: 5px solid var(--primary-red);
+
+    border-radius: 4px;
+    padding: 2px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 3px 3px 0px rgba(0,0,0,0.2);
+    font-size: 0.9rem;
+    overflow: hidden;
+    z-index: 20;
+}
+
+/* レクやお楽しみなどの特別枠 */
+.tt-block.special {
+    background: var(--accent-blue);
+    border-color: var(--black);
+}
+
+.tt-time {
+    font-size: 0.7rem;
+    opacity: 0.9;
+    font-family: 'Anton', sans-serif;
+}
+.tt-band {
+    font-weight: bold;
+    line-height: 1.1;
+}
+.tt-band small {
+    font-size: 0.75rem;
+    font-weight: normal;
+}
+
+.tt-now-line {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--primary-red);
+    z-index: 30; 
+    pointer-events: none; 
+    box-shadow: 0 0 5px rgba(230, 0, 18, 0.8); 
+}
+
+
+.tt-now-line::before {
+    content: "NOW";
+    position: absolute;
+    left: 0;
+    top: -10px;
+    background: var(--primary-red);
+    color: var(--white);
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding: 2px 5px;
+    border-radius: 0 4px 4px 0;
+    font-family: 'Anton', sans-serif;
+}
+
+/* 右端に丸をつける */
+.tt-now-line::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: -4px;
+    width: 10px;
+    height: 10px;
+    background: var(--primary-red);
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(230, 0, 18, 0.8);
+}
