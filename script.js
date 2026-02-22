@@ -147,19 +147,6 @@ const bbsListEl = document.getElementById('bbsList'); // トップページ用
 const bbsAllListEl = document.getElementById('bbsAllList'); // モーダル用
 
 
-const ngWords = [
-    "死ね", "殺す", "馬鹿", "アホ", "クズ", 
-    "暴力", "犯罪", "差別", "エッチ","陰毛","いんもう","まんこ","ま○こ","ま〇こ","まんk","マソコ","まん個",
-    "オメコ","ヴァギナ","クリトリス","ちんこ","ちんk","ちんちん","チンポ","ペニス","penis","きんたま","肉棒","勃起","ボッキ","精子","射精","ザーメン","●～","○～","〇～","セックス","SEX","S○X","S〇X","体位","淫乱","アナル","anus","おっぱい","oppai","おっぱお","巨乳","きょにゅう","きょにゅー","貧乳","ひんにゅう","ひんにゅー","谷間","たにま","何カップ","なにカップ","手ブラ","てブラ","パンツ","パンティ","パンt","ノーパン","乳首","ちくび","ビーチク","自慰","オナニ","オナ二","オナヌ","マスターベーション","しこって","しこしこ","脱げ","ぬげ","脱いで","ぬいで","脱ごう","ぬごう","喘いで","あえいで","クンニ","フェラ","まんぐり","パイズリ","風俗","ふうぞく","ふーぞく","ソープ","デリヘル","ヘルス","姦","包茎","ほうけい","童貞","どうてい","どうてー","どーてー","どーてい","性器","処女","やりまん","乱交","バイブ","ローター","パイパン","中出し","中田氏","スカトロ","糞","うんこ","パコパコ","ホモ","homo","ぱいぱい","ノーブラ","手コキ","手マン","潮吹","下乳","横乳","指マン","犯し",
-    "きもい","きめえ","変態","馬鹿","ばーか","baka","fuck","f*ck","ファック","不細工","ぶさいく","ブス","気違い","かす",
-    "基地外","ブタ","くたばれ","潰せ","bitch","ビッチ","死す","死な","死ぬ","しぬ","死ね","しね","氏ね","shine","下手","へた","下手くそ","へたくそ","下手糞","へたくそ","無能","むのう","無様","ぶざま","無様な","ぶざまな","無様に","ぶざまに","無様だ","ぶざまだ",
-    "死の","死ん","ﾀﾋ","殺さ","殺し","殺す","ころす","殺せ","ころせ","殺そ","乞食","ばばあ","ばばぁ","BBA","くず","ザコ","ころし","コロシ","糞野郎","くそやろう","クソ野郎","カス野郎","かすやろう","カス野郎","カスヤロウ","痴漢","ちかん","痴女","ちじょ","援交","えんこう","援助交際","レイプ",
-    "大麻","麻薬","覚せい剤","覚醒剤","コカイン","ヘロイン","レイプ","rapist","カス","死体","屍","シタイ","シカイ","屍体","遺体","い体","いたい","強姦","強制わいせつ","強制猥褻","強制性交","輪姦","リンカン","リン姦","売春","ばいしゅん","売春婦","売春婦","売女","性奴隷","せいどれい","セイドレイ",
-    "(0|０)[0-9-０-９ー－]{9,}","創価","■■■■■","☆☆☆☆","★★★★","整形","からきますた","ௌ","e三","引退おめ"
-
-
-];
-
 // モーダル制御
 const openBbsModalBtn = document.getElementById('openBbsModal');
 const bbsModal = document.getElementById('bbsModal');
@@ -235,21 +222,10 @@ function escapeHtml(str) {
     });
 }
 
-// ★NGワードが含まれているかチェック
-function containsNgWord(text) {
-    // 空っぽならセーフ
-    if (!text) return false;
-    
-    // NGワードリストをひとつずつチェック
-    for (const word of ngWords) {
-        if (text.includes(word)) {
-            return true; // 含まれていた！
-        }
-    }
-    return false; // セーフ
-}
+// 送信GASバックエンド経由
 
-// 送信ボタンクリック
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyBVJDpelnk378eVJdVtdrTNBA5VAWlEtlwqxSV5_GRwRSAKOj__uGAMDuMWYwCoAXCGQ/exec';
+
 bbsSendBtn.addEventListener('click', async () => {
     const name = bbsNameInput.value.trim();
     const content = bbsContentInput.value.trim();
@@ -259,32 +235,45 @@ bbsSendBtn.addEventListener('click', async () => {
         return;
     }
 
+    // 送信中はボタンを押せないようにする
+    bbsSendBtn.disabled = true;
+    bbsSendBtn.textContent = 'SENDING...';
 
-    if (containsNgWord(name) || containsNgWord(content)) {
-        alert("不適切な言葉が含まれているため、送信できません。");
-        return; // ここで処理を中断して、データベースには送らせない
-    }
+    try {
+        // GAS（Googleサーバー）へデータを送信
+        const response = await fetch(GAS_URL, {
+            method: 'POST',
+            // POSTする時は text/plain にしてCORSエラーを回避します
+            headers: { 'Content-Type': 'text/plain' }, 
+            body: JSON.stringify({ name: name, content: content })
+        });
 
-    // 問題なければ送信処理へ
-    const { error } = await sb
-        .from('comments')
-        .insert([{ name: name || '名無し', content: content }]);
+        // GASからの返事を受け取る
+        const result = await response.json();
 
-    if (error) {
-        console.error('Add Error:', error);
-        alert('送信に失敗しました');
-    } else {
-        bbsNameInput.value = '';
-        bbsContentInput.value = '';
-        fetchBbs(); 
-        alert('メッセージを送信しました！');
+        if (result.error) {
+            // サーバー側でNGワードに引っかかった場合など
+            alert(result.error);
+        } else {
+            // 成功した場合
+            bbsNameInput.value = '';
+            bbsContentInput.value = '';
+            fetchBbs(); // 掲示板を再読み込み
+            alert('メッセージを送信しました！');
+        }
+    } catch (error) {
+        console.error('通信エラー:', error);
+        alert('通信に失敗しました。');
+    } finally {
+        // ボタンを元の状態に戻す
+        bbsSendBtn.disabled = false;
+        bbsSendBtn.textContent = 'SEND MESSAGE';
     }
 });
 
 // 初回読み込み
 fetchBbs();
 
-/* script.js の一番下に追加 */
 
 // === アプリ導入ガイドモーダル ===
 const openAppModalBtn = document.getElementById('openAppModal');
@@ -313,46 +302,40 @@ if (openAppModalBtn) {
 
 
 // =========================================
-// 5. GAME機能 (リスト選択・決定ボタン式)
+// 5. GAME機能 (セキュア・サーバー採点完全版)
 // =========================================
 
-// 解禁日時
+const GAME_GAS_URL = 'https://script.google.com/macros/s/AKfycby-46vg8QCOZ7cvpRpZDZVXZPKZAWZISOXEesPkH7F60ALxYASb3ErOlkUF3PSVHux_Qg/exec';
+
 const GAME_RELEASE_DATE = new Date("2026-03-15T18:00:00"); 
 
-// ★クイズデータ（17人分）
-const allMemberQuizData = {
-    // --- 1人目 ---
-    "田中 太郎": [
-        { q: "田中の出身地は？", options: ["大阪", "兵庫", "京都", "奈良"], answer: "兵庫" },
-        { q: "好きな食べ物は？", options: ["カレー", "寿司", "ラーメン", "焼肉"], answer: "ラーメン" },
-        { q: "担当楽器は？", options: ["Gt", "Ba", "Dr", "Vo"], answer: "Vo" },
-        { q: "愛用している機材メーカーは？", options: ["Fender", "Gibson", "Yamaha", "Ibanez"], answer: "Fender" },
-        { q: "誕生日は？", options: ["1月1日", "4月1日", "7月7日", "12月25日"], answer: "1月1日" },
-        { q: "座右の銘は？", options: ["一石二鳥", "七転八起", "焼肉定食", "一期一会"], answer: "七転八起" },
-        { q: "飼っているペットは？", options: ["犬", "猫", "ハムスター", "いない"], answer: "猫" },
-        { q: "初恋の相手の名前は？", options: ["花子", "愛子", "良子", "秘密"], answer: "秘密" },
-    ],
-
-        "長谷川　近似": [
-        { q: "田中の出身地は？", options: ["大阪", "兵庫", "京都", "奈良"], answer: "兵庫" },
-        { q: "好きな食べ物は？", options: ["カレー", "寿司", "ラーメン", "焼肉"], answer: "ラーメン" },
-        { q: "担当楽器は？", options: ["Gt", "Ba", "Dr", "Vo"], answer: "Vo" },
-        { q: "愛用している機材メーカーは？", options: ["Fender", "Gibson", "Yamaha", "Ibanez"], answer: "Fender" },
-        { q: "誕生日は？", options: ["1月1日", "4月1日", "7月7日", "12月25日"], answer: "1月1日" },
-        { q: "座右の銘は？", options: ["一石二鳥", "七転八起", "焼肉定食", "一期一会"], answer: "七転八起" },
-        { q: "飼っているペットは？", options: ["犬", "猫", "ハムスター", "いない"], answer: "猫" },
-        { q: "初恋の相手の名前は？", options: ["花子", "愛子", "良子", "秘密"], answer: "秘密" },
-    ],
-    // ※ここに残り16人分を追加してください
-};
+const memberNames = [
+    "松岡みさと",
+    "阪本 陸",
+    "五味駿介",
+    "植田匠",
+    "白井皐矢",
+    "竹内駿瑠",
+    "森夏海",
+    "吉野覚旨",
+    "吉村由宇",
+    "菅原奈央",
+    "新井大貴",
+    "梶山 侑里",
+    "吉川魁星",
+    "寺戸一真",
+    "橋本彩乃",
+    "的場正",
+    "永岡俊祐"
+];
 
 // 変数
 let currentMemberName = "";
 let currentQuizList = [];
 let currentQuizIndex = 0;
-let userAnswers = []; // ユーザーの回答を記録する配列
+let userAnswers = []; 
 let playerName = "";
-let selectedOption = null; // 現在選んでいる選択肢
+let selectedOption = null; 
 
 // 画面要素
 const screenStart = document.getElementById('gameStart');
@@ -385,7 +368,7 @@ function showScreen(screen) {
     screen.classList.add('active');
 }
 
-// 1. スタート → メンバー選択へ
+// 1. スタート
 document.getElementById('btnToSelect').addEventListener('click', () => {
     const name = document.getElementById('gamePlayerName').value.trim();
     if (!name) { alert("名前を入力してください！"); return; }
@@ -397,37 +380,54 @@ document.getElementById('btnToSelect').addEventListener('click', () => {
 // リスト生成
 function createMemberList() {
     memberListEl.innerHTML = "";
-    Object.keys(allMemberQuizData).forEach(memberName => {
-        // リストアイテムを作成
+    memberNames.forEach(memberName => { 
         const item = document.createElement('div');
         item.classList.add('member-list-item');
         item.textContent = memberName;
-        
-        // クリックでクイズ開始
         item.addEventListener('click', () => startQuiz(memberName));
-        
         memberListEl.appendChild(item);
     });
 }
 
-// 2. クイズ開始初期化
-function startQuiz(memberName) {
+// 2. 初期化
+async function startQuiz(memberName) {
     currentMemberName = memberName;
-    currentQuizList = allMemberQuizData[memberName];
-    
-    if(!currentQuizList || currentQuizList.length === 0) {
-        alert("準備中です"); return;
-    }
-
-    currentQuizIndex = 0;
     userAnswers = []; // 回答リセット
     document.getElementById('targetMemberName').textContent = memberName;
     
-    loadQuestion();
+    // ロード中の表示
+    document.getElementById('quizText').textContent = "問題を読み込み中...";
+    document.getElementById('quizOptions').innerHTML = "";
+    btnQuizNext.disabled = true;
     showScreen(screenQuiz);
+
+    try {
+        const response = await fetch(GAME_GAS_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({ action: "get_questions", member: memberName })
+        });
+        
+        const result = await response.json();
+
+        if (result.error) {
+            alert(result.error);
+            showScreen(screenStart);
+            return;
+        }
+
+        // 答えが入っていない安全な問題リストを受け取る
+        currentQuizList = result.quizData;
+        currentQuizIndex = 0;
+        loadQuestion();
+
+    } catch (error) {
+        console.error("通信エラー", error);
+        alert("問題の取得に失敗しました。");
+        showScreen(screenStart);
+    }
 }
 
-// 問題表示
 function loadQuestion() {
     const data = currentQuizList[currentQuizIndex];
     document.getElementById('quizNumber').textContent = currentQuizIndex + 1;
@@ -435,106 +435,115 @@ function loadQuestion() {
     
     const optionsEl = document.getElementById('quizOptions');
     optionsEl.innerHTML = "";
-    selectedOption = null; // 選択リセット
-    btnQuizNext.disabled = true; // ボタン無効化
+    selectedOption = null; 
+    btnQuizNext.disabled = true; 
 
-    // 最終問題ならボタンの文字を変える
     if (currentQuizIndex === currentQuizList.length - 1) {
         btnQuizNext.textContent = "結果を見る (FINISH)";
     } else {
         btnQuizNext.textContent = "決定 (NEXT)";
     }
 
-    // 選択肢ボタン生成
     data.options.forEach(opt => {
         const btn = document.createElement('div');
         btn.classList.add('option-btn');
         btn.textContent = opt;
         
-        // クリック時の処理（選択状態にするだけ）
         btn.addEventListener('click', () => selectOption(opt, btn));
-        
         optionsEl.appendChild(btn);
     });
 }
 
-// 選択肢を選んだ時の処理
 function selectOption(optionText, btnElement) {
     selectedOption = optionText;
     
-    // 見た目の更新（全てのボタンからselectedを消して、押したものだけに付ける）
     const allBtns = document.querySelectorAll('.option-btn');
     allBtns.forEach(b => b.classList.remove('selected'));
     btnElement.classList.add('selected');
     
-    // 決定ボタンを有効化
     btnQuizNext.disabled = false;
 }
 
-// 決定ボタンを押した時の処理
 btnQuizNext.addEventListener('click', () => {
     if (!selectedOption) return;
 
-    // 回答を記録
     userAnswers.push(selectedOption);
 
-    // 次へ進む or 終了
     currentQuizIndex++;
     if (currentQuizIndex < currentQuizList.length) {
         loadQuestion();
     } else {
-        finishGame(); // 採点へ
+        finishGame(); 
     }
 });
 
+// -----------------------------------------
 // 3. 採点・結果発表
+// -----------------------------------------
 async function finishGame() {
-    let score = 0;
-    
-    // 答え合わせ
-    currentQuizList.forEach((quiz, index) => {
-        if (quiz.answer === userAnswers[index]) {
-            score++;
+    document.getElementById('quizText').textContent = "採点中...";
+    document.getElementById('quizOptions').innerHTML = "";
+    btnQuizNext.style.display = 'none';
+
+    try {
+        const response = await fetch(GAME_GAS_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({ 
+                action: "submit_answers", 
+                member: currentMemberName,
+                answers: userAnswers // ユーザーが選んだ回答リストを送る
+            })
+        });
+
+        const result = await response.json();
+
+        if (result.error) {
+            alert(result.error);
+            showScreen(screenStart);
+            return;
         }
-    });
 
-    const maxScore = currentQuizList.length;
+        const score = result.score;
+        const maxScore = result.maxScore;
 
-    // データベースに保存する
-    const { error } = await sb
-        .from('game_results')
-        .insert([
-            { 
-                player_name: playerName,          // プレイヤー名
-                target_member: currentMemberName, // 誰のクイズか
-                score: score                      // 得点 (0〜8)
-            }
-        ]);
-        
-    if(error) console.error('保存エラー:', error);
+        const { error } = await sb
+            .from('game_results')
+            .insert([
+                { 
+                    player_name: playerName,
+                    target_member: currentMemberName,
+                    score: score
+                }
+            ]);
+            
+        if(error) console.error('保存エラー:', error);
 
+        btnQuizNext.style.display = 'block';
 
-    //満点か、それ以外か
-    if (score === maxScore) {
-        // --- 全問正解（スペシャル画面） ---
-
-        document.getElementById('resultMemberName').textContent = currentMemberName;
-        document.getElementById('winnerNameDisplay').textContent = playerName;
-        showScreen(screenResultSpecial);
-
-    } else {
-        // --- 通常結果（ノーマル画面） ---
-        document.getElementById('resultScore').textContent = `${score} / ${maxScore}`;
-        
-        const msgEl = document.getElementById('resultMsg');
-        if (score >= maxScore - 1) {
-            msgEl.textContent = "惜しい！あと一歩！";
-        } else if (score >= maxScore / 2) {
-            msgEl.textContent = "その調子！";
+        if (score === maxScore) {
+            document.getElementById('resultMemberName').textContent = currentMemberName;
+            document.getElementById('winnerNameDisplay').textContent = playerName;
+            showScreen(screenResultSpecial);
         } else {
-            msgEl.textContent = "出直してこい！";
+            document.getElementById('resultScore').textContent = `${score} / ${maxScore}`;
+            
+            const msgEl = document.getElementById('resultMsg');
+            if (score >= maxScore - 1) {
+                msgEl.textContent = "惜しい！あと一歩！";
+            } else if (score >= maxScore / 2) {
+                msgEl.textContent = "その調子！";
+            } else {
+                msgEl.textContent = "出直してこい！";
+            }
+            showScreen(screenResultNormal);
         }
-        showScreen(screenResultNormal);
+
+    } catch (error) {
+        console.error("採点エラー", error);
+        alert("採点に失敗しました。");
+        showScreen(screenStart);
+        btnQuizNext.style.display = 'block';
     }
 }
 
@@ -542,8 +551,6 @@ async function finishGame() {
 document.getElementById('btnBackToStart').addEventListener('click', () => showScreen(screenStart));
 document.getElementById('btnGameRetry').addEventListener('click', () => showScreen(screenStart));
 document.getElementById('btnGameRetrySpecial').addEventListener('click', () => showScreen(screenStart));
-
-/* script.js の一番下に追加 */
 
 // =========================================
 // 6. スプラッシュ画面制御
@@ -601,7 +608,7 @@ const newsData = [
         labelColor: "label-red",
         title: "このサイトをアプリとして保存する方法",
         link: "#",
-        specialId: "openAppModal" // ★アプリ保存のモーダルを開くための目印
+        specialId: "openAppModal" 
     },
     {
         date: "2026.02.01",
