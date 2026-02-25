@@ -588,7 +588,6 @@ async function finishGame() {
 
 }
 
-// リトライ
 document.getElementById('btnBackToStart').addEventListener('click', () => showScreen(screenStart));
 document.getElementById('btnGameRetry').addEventListener('click', () => showScreen(screenStart));
 document.getElementById('btnGameRetrySpecial').addEventListener('click', () => showScreen(screenStart));
@@ -675,17 +674,15 @@ const newsData = [
 
 ];
 
-// 要素取得
 const newsListEl = document.getElementById('newsList');
 const newsAllListEl = document.getElementById('newsAllList');
 const openNewsModalBtn = document.getElementById('openNewsModal');
 const newsModal = document.getElementById('newsModal');
 const closeNewsModalBtn = document.getElementById('closeNewsModal');
 
-// モーダル開閉
 if (openNewsModalBtn) {
     openNewsModalBtn.addEventListener('click', (e) => {
-        e.preventDefault(); // リンクの動きを止める
+        e.preventDefault(); 
         newsModal.classList.add('active');
     });
     closeNewsModalBtn.addEventListener('click', () => newsModal.classList.remove('active'));
@@ -694,9 +691,7 @@ if (openNewsModalBtn) {
     });
 }
 
-// ニュース表示関数
 function renderNews() {
-    // 1. トップページ用 (最新3件)
     const top3 = newsData.slice(0, 3);
     newsListEl.innerHTML = "";
     top3.forEach(news => {
@@ -704,7 +699,6 @@ function renderNews() {
         newsListEl.appendChild(item);
     });
 
-    // 2. モーダル用 (全件)
     newsAllListEl.innerHTML = "";
     newsData.forEach(news => {
         const item = createNewsItem(news);
@@ -712,22 +706,18 @@ function renderNews() {
     });
 }
 
-// ニュースのHTMLを作る関数
 function createNewsItem(news) {
     const a = document.createElement('a');
     a.href = news.link;
     a.classList.add('news-item');
     
-    // アプリ保存の説明モーダルを開く特別な処理
     if (news.specialId === "openAppModal") {
         a.addEventListener('click', (e) => {
             e.preventDefault();
-            // ニュースモーダルが開いていたら閉じて、アプリモーダルを開く
             newsModal.classList.remove('active'); 
             document.getElementById('appModal').classList.add('active');
         });
     } else if (news.link.startsWith('#')) {
-        // ページ内リンクの場合、モーダルを閉じてから移動
         a.addEventListener('click', () => {
             newsModal.classList.remove('active');
         });
@@ -744,7 +734,6 @@ function createNewsItem(news) {
     return a;
 }
 
-// 実行
 renderNews();
 
 // =========================================
@@ -754,12 +743,10 @@ const appModalEl = document.getElementById('appModal');
 const closeAppModalBtnEl = document.getElementById('closeAppModal');
 
 if (appModalEl && closeAppModalBtnEl) {
-    // CLOSEボタンで閉じる
     closeAppModalBtnEl.addEventListener('click', () => {
         appModalEl.classList.remove('active');
     });
     
-    // 背景クリックでも閉じる
     appModalEl.addEventListener('click', (e) => {
         if (e.target === appModalEl) {
             appModalEl.classList.remove('active');
@@ -773,7 +760,6 @@ if (appModalEl && closeAppModalBtnEl) {
 
 const RESERVE_DEADLINE = new Date("2026-03-13T17:00:00");
 
-// 要素の取得
 const openResBtn = document.getElementById('openReserveModal');
 const resModal = document.getElementById('reserveModal');
 const closeResBtn = document.getElementById('closeReserveModal');
@@ -781,7 +767,6 @@ const resForm = document.getElementById('reserveForm');
 const viewForm = document.getElementById('reserveFormView');
 const viewSuccess = document.getElementById('reserveSuccessView');
 
-// 色別のセレクトボックス
 const resQtyWhite = document.getElementById('resQtyWhite');
 const resQtyMarble = document.getElementById('resQtyMarble');
 const displayPrice = document.getElementById('displayPrice');
@@ -809,7 +794,6 @@ function disableReserveButton(msg) {
 window.addEventListener('load', checkReservationStatus);
 
 
-// モーダルを開く処理
 if (openResBtn) {
     openResBtn.addEventListener('click', () => {
         if (new Date() > RESERVE_DEADLINE) return;
@@ -818,14 +802,12 @@ if (openResBtn) {
     });
 }
 
-// モーダルを閉じる処理（CLOSEボタン）
 if (closeResBtn) {
     closeResBtn.addEventListener('click', () => {
         resModal.classList.remove('active');
     });
 }
 
-// 背景クリックで閉じる処理
 if (resModal) {
     resModal.addEventListener('click', (e) => {
         if (e.target === resModal) {
@@ -913,7 +895,6 @@ if (resForm) {
     });
 }
 
-// 完了画面
 function showSuccessTicket(name, itemDetails, total) {
     viewForm.style.display = 'none';
     viewSuccess.style.display = 'block';
@@ -932,16 +913,13 @@ function showSuccessTicket(name, itemDetails, total) {
 window.moveToReserve = function() {
     console.log("予約画面へ移動します"); 
 
-    // グッズ詳細モーダルを閉じる
     const goodsModal = document.getElementById('goodsModal');
     goodsModal.classList.remove('active');
 
-    // 今開いている商品の名前を取得する
     const goodsName = document.getElementById('modalGoodsName').textContent;
 
     setTimeout(() => {
         if (goodsName.includes('Tシャツ')) {
-            // Tシャツの予約ボタンを押す
             const reserveTshirtBtn = document.getElementById('openReserveTshirtModal');
             if (reserveTshirtBtn) {
                 reserveTshirtBtn.click();
@@ -950,15 +928,12 @@ window.moveToReserve = function() {
             }
             
         } else if (goodsName.includes('ラバーバンド')) {
-            // ラバーバンドの予約ボタンを押す
             const reserveRubberBtn = document.getElementById('openReserveModal');
             if (reserveRubberBtn) {
                 reserveRubberBtn.click();
             } else {
-                // HTML上でラバーバンドのバナーを隠している場合は、直接モーダルを開く
                 const resModal = document.getElementById('reserveModal');
                 if (resModal) {
-                    // 期限・予約済みチェック
                     if (new Date() > new Date("2026-03-13T17:00:00")) {
                         alert("ラバーバンドの予約受付は終了しました");
                         return;
@@ -984,20 +959,15 @@ const ttContents = document.querySelectorAll('.tt-content');
 
 ttTabs.forEach(tab => {
     tab.addEventListener('click', () => {
-        // 1. すべてのタブから active を外す
         ttTabs.forEach(t => t.classList.remove('active'));
-        // 2. クリックされたタブに active をつける
         tab.classList.add('active');
 
-        // 3. 表示するIDを取得 (例: "day1")
         const targetId = tab.getAttribute('data-target');
 
-        // 4. すべてのコンテンツを隠す
         ttContents.forEach(content => {
             content.classList.remove('active');
         });
 
-        // 5. 対象のコンテンツだけ表示する
         const targetContent = document.getElementById(targetId);
         if (targetContent) {
             targetContent.classList.add('active');
@@ -1006,7 +976,7 @@ ttTabs.forEach(tab => {
 });
 
 // =========================================
-// 12. リアルタイム現在地バー
+// 12. リアルタイムバー
 // =========================================
 
 function updateCurrentTimeLine() {
@@ -1063,15 +1033,15 @@ function updateCurrentTimeLine() {
     }
 }
 
-// 1分ごとに更新
+
 setInterval(updateCurrentTimeLine, 60000);
 
-// 画面を開いた時や、タブを切り替えた時にも即実行
+
 updateCurrentTimeLine();
 const tabsForLine = document.querySelectorAll('.tt-tab');
 tabsForLine.forEach(tab => {
     tab.addEventListener('click', () => {
-        // タブ切り替えのアニメーションが終わった頃に再計算
+
         setTimeout(updateCurrentTimeLine, 100);
     });
 });
@@ -1107,10 +1077,10 @@ if (gameTitle) {
 // 9.5 Tシャツ予約機能
 // =========================================
 
-// Tシャツの予約締め切り（2/27 10:00）
+// Tシャツの予約締め切り
 const TSHIRT_RESERVE_DEADLINE = new Date("2026-02-27T10:00:00");
 
-// 要素の取得
+
 const openResTshirtBtn = document.getElementById('openReserveTshirtModal');
 const resTshirtModal = document.getElementById('reserveTshirtModal');
 const closeResTshirtBtn = document.getElementById('closeReserveTshirtModal');
@@ -1118,20 +1088,20 @@ const resTshirtForm = document.getElementById('reserveTshirtForm');
 const viewTshirtForm = document.getElementById('reserveTshirtFormView');
 const viewTshirtSuccess = document.getElementById('reserveTshirtSuccessView');
 
-// 色別のセレクトボックス・価格表示
+
 const resQtyBlack = document.getElementById('resQtyBlack');
 const resQtyWhiteTshirt = document.getElementById('resQtyWhiteTshirt');
 const displayPriceTshirt = document.getElementById('displayPriceTshirt');
 
 
-// 期限と予約済み状態のチェック
+
 function checkTshirtReservationStatus() {
     const now = new Date();
     if (now > TSHIRT_RESERVE_DEADLINE) {
         disableTshirtReserveButton("受付は終了しました");
         return;
     }
-    // ローカルストレージはTシャツ専用キー「tshirt_reserved」を使う
+
     if (localStorage.getItem('tshirt_reserved') === 'true') {
         disableTshirtReserveButton("予約済みです");
         return;
@@ -1148,7 +1118,7 @@ function disableTshirtReserveButton(msg) {
 window.addEventListener('load', checkTshirtReservationStatus);
 
 
-// モーダル開閉
+
 if (openResTshirtBtn) {
     openResTshirtBtn.addEventListener('click', () => {
         if (new Date() > TSHIRT_RESERVE_DEADLINE) return;
@@ -1161,7 +1131,7 @@ if (openResTshirtBtn) {
     });
 }
 
-// 金額計算（1枚4000円）
+
 function updateTshirtPrice() {
     const qtyB = parseInt(resQtyBlack.value);
     const qtyW = parseInt(resQtyWhiteTshirt.value);
@@ -1175,7 +1145,7 @@ if (resQtyBlack && resQtyWhiteTshirt) {
     resQtyWhiteTshirt.addEventListener('change', updateTshirtPrice);
 }
 
-// フォーム送信処理
+
 if (resTshirtForm) {
     resTshirtForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -1211,9 +1181,8 @@ if (resTshirtForm) {
         submitBtn.disabled = true;
         submitBtn.textContent = "送信中...";
 
-        // Supabaseへ送信
         const { error } = await sb
-            .from('tshirt_orders') // ★Tシャツ用の新しいテーブル
+            .from('tshirt_orders') 
             .insert([
                 { 
                     name: name,
@@ -1232,10 +1201,9 @@ if (resTshirtForm) {
             submitBtn.disabled = false;
             submitBtn.textContent = "予約を確定する";
         } else {
-            // Tシャツ用のフラグを保存
+
             localStorage.setItem('tshirt_reserved', 'true');
             
-            // 完了画面用の文字列作成
             let itemDetails = "";
             if (qtyB > 0) itemDetails += `BLACK x${qtyB}`;
             if (qtyB > 0 && qtyW > 0) itemDetails += ", ";
@@ -1248,7 +1216,6 @@ if (resTshirtForm) {
     });
 }
 
-// 完了画面の表示
 function showTshirtSuccessTicket(name, itemDetails, total) {
     viewTshirtForm.style.display = 'none';
     viewTshirtSuccess.style.display = 'block';
@@ -1301,11 +1268,8 @@ const resTshirtSizeInput = document.getElementById('resTshirtSize');
 if (sizeTabs.length > 0) {
     sizeTabs.forEach(tab => {
         tab.addEventListener('click', () => {
-            // 1. 全てのタブから黒背景(active)を外す
             sizeTabs.forEach(t => t.classList.remove('active'));
-            // 2. クリックされたタブを黒背景にする
             tab.classList.add('active');
-            // 3. 選んだサイズ(LかXL)を見えないデータとして保存する
             resTshirtSizeInput.value = tab.getAttribute('data-size');
         });
     });

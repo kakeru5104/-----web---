@@ -2104,8 +2104,6 @@ footer {
     animation: fadeIn 0.5s;
 }
 
-/* バンドのブロック */
-/* バンドのブロック */
 .tt-block {
     position: absolute;
     
@@ -2135,7 +2133,6 @@ footer {
     z-index: 20;
 }
 
-/* レクやお楽しみなどの特別枠 */
 .tt-block.special {
     background: var(--accent-blue);
     border-color: var(--black);
@@ -2181,7 +2178,6 @@ footer {
     font-family: 'Anton', sans-serif;
 }
 
-/* 右端に丸をつける */
 .tt-now-line::after {
     content: "";
     position: absolute;
@@ -2216,7 +2212,6 @@ footer {
     transition: 0.2s;
 }
 
-/* 選ばれているタブのデザイン */
 .size-tab.active {
     background: var(--black);
     color: var(--white);
@@ -2232,7 +2227,7 @@ footer {
     gap: 10px;
     margin-top: 10px;
     justify-content: center;
-    overflow-x: auto; /* スマホで数が多い場合は横スクロール可能に */
+    overflow-x: auto;
     padding-bottom: 5px;
 }
 
@@ -2246,7 +2241,6 @@ footer {
     background: #fff;
 }
 
-/* 選択されているサムネイルは赤枠で少し浮き上がる */
 .modal-thumb.active {
     border-color: var(--primary-red);
     transform: translateY(-2px);
