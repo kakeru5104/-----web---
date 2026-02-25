@@ -621,6 +621,22 @@ const newsData = [
     //     link: "#timetable"
     // },
 
+                {
+        date: "2026.02.25",
+        label: "INFO",
+        labelColor: "label-red",
+        title: "オリジナルTシャツグッズ化実現！受注生産開始！詳しくはグッズへ",
+        link: "#goods"
+    },
+
+                {
+        date: "2026.02.25",
+        label: "INFO",
+        labelColor: "label-red",
+        title: "【重要】ラバーバンドの受け渡しは3.20以降となります",
+        link: "#goods"
+    },
+
             {
         date: "2026.02.08",
         label: "INFO",
