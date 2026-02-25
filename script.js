@@ -71,8 +71,6 @@ modal.addEventListener('click', (e) => {
     }
 });
 
-/* script.js の一番下（グッズ機能）をこれに書き換え */
-
 // === グッズ詳細ポップアップ機能 ===
 const goodsItems = document.querySelectorAll('.goods-item');
 const goodsModal = document.getElementById('goodsModal');
@@ -80,28 +78,60 @@ const closeGoodsModal = document.getElementById('closeGoodsModal');
 
 // モーダル内の要素
 const modalImg = document.getElementById('modalGoodsImg');
+const modalThumbnails = document.getElementById('modalGoodsThumbnails'); // ★追加：サムネイル枠
 const modalName = document.getElementById('modalGoodsName');
 const modalVar = document.getElementById('modalGoodsVar');
 const modalPrice = document.getElementById('modalGoodsPrice');
-const modalDesc = document.getElementById('modalGoodsDesc'); // ★追加
+const modalDesc = document.getElementById('modalGoodsDesc');
 
 // 各グッズをクリックした時の動作
 goodsItems.forEach(item => {
     item.addEventListener('click', () => {
         // クリックされたアイテムの中身を取得
-        const img = item.querySelector('.goods-img').src;
+        const mainImgSrc = item.querySelector('.goods-img').src;
         const name = item.querySelector('.goods-name').innerHTML;
         const variant = item.querySelector('.goods-var').textContent;
         const price = item.querySelector('.goods-price').textContent;
-
         const desc = item.querySelector('.goods-desc-source').innerHTML;
 
-        // モーダルにセット
-        modalImg.src = img;
+        //複数画像の取得処理
+        const imagesSource = item.querySelector('.goods-images-source');
+        let imgUrls = [mainImgSrc]; // デフォルトは表紙の1枚だけ
+
+        if (imagesSource && imagesSource.textContent.trim() !== '') {
+            // カンマ区切りの文字列を配列に変換する
+            imgUrls = imagesSource.textContent.split(',').map(url => url.trim());
+        }
+
+        // モーダルにテキストをセット
         modalName.innerHTML = name;
         modalVar.textContent = variant;
         modalPrice.textContent = price;
-        modalDesc.innerHTML = desc; // ★追加：説明文をセット
+        modalDesc.innerHTML = desc;
+
+        // 画像とサムネイルのセット
+        modalImg.src = imgUrls[0]; // メイン画像は配列の1番目
+        modalThumbnails.innerHTML = ''; // 以前のサムネイルを消去
+
+        // 画像が2枚以上ある場合のみサムネイルを生成する
+        if (imgUrls.length > 1) {
+            imgUrls.forEach((imgUrl, index) => {
+                const thumb = document.createElement('img');
+                thumb.src = imgUrl;
+                thumb.classList.add('modal-thumb');
+                if (index === 0) thumb.classList.add('active'); // 1枚目を選択状態にする
+
+                // サムネイルをクリックした時の処理（メイン画像の切り替え）
+                thumb.addEventListener('click', () => {
+                    modalImg.src = imgUrl; // メイン画像を切り替え
+                    // 全サムネイルから active を外して、クリックしたものだけに付ける
+                    document.querySelectorAll('.modal-thumb').forEach(t => t.classList.remove('active'));
+                    thumb.classList.add('active');
+                });
+
+                modalThumbnails.appendChild(thumb);
+            });
+        }
 
         // モーダルを表示
         goodsModal.classList.add('active');
@@ -121,8 +151,6 @@ goodsModal.addEventListener('click', (e) => {
         goodsModal.classList.remove('active');
     }
 });
-
-/* script.js の一番下に追加 */
 
 // =========================================
 // 4. 掲示板機能
@@ -302,7 +330,7 @@ if (openAppModalBtn) {
 
 
 // =========================================
-// 5. GAME機能 (セキュア・サーバー採点完全版)
+// 5. GAME機能
 // =========================================
 
 const GAME_GAS_URL = 'https://script.google.com/macros/s/AKfycby-46vg8QCOZ7cvpRpZDZVXZPKZAWZISOXEesPkH7F60ALxYASb3ErOlkUF3PSVHux_Qg/exec';
@@ -391,6 +419,12 @@ function createMemberList() {
 
 // 2. 初期化
 async function startQuiz(memberName) {
+
+    if (localStorage.getItem(`quiz_played_${memberName}`)) {
+        alert(`${memberName} のクイズはすでに挑戦済みです`);
+        return;
+    }
+
     currentMemberName = memberName;
     userAnswers = []; // 回答リセット
     document.getElementById('targetMemberName').textContent = memberName;
@@ -507,6 +541,7 @@ async function finishGame() {
         const score = result.score;
         const maxScore = result.maxScore;
 
+    // データベース(Supabase)に得点を保存する
         const { error } = await sb
             .from('game_results')
             .insert([
@@ -516,6 +551,10 @@ async function finishGame() {
                     score: score
                 }
             ]);
+            
+        if(error) console.error('保存エラー:', error);
+
+        localStorage.setItem(`quiz_played_${currentMemberName}`, 'true');
             
         if(error) console.error('保存エラー:', error);
 
@@ -545,6 +584,8 @@ async function finishGame() {
         showScreen(screenStart);
         btnQuizNext.style.display = 'block';
     }
+
+
 }
 
 // リトライ
@@ -768,15 +809,28 @@ function disableReserveButton(msg) {
 window.addEventListener('load', checkReservationStatus);
 
 
+// モーダルを開く処理
 if (openResBtn) {
     openResBtn.addEventListener('click', () => {
         if (new Date() > RESERVE_DEADLINE) return;
         if (localStorage.getItem('goods_reserved')) return;
         resModal.classList.add('active');
     });
-    closeResBtn.addEventListener('click', () => resModal.classList.remove('active'));
+}
+
+// モーダルを閉じる処理（CLOSEボタン）
+if (closeResBtn) {
+    closeResBtn.addEventListener('click', () => {
+        resModal.classList.remove('active');
+    });
+}
+
+// 背景クリックで閉じる処理
+if (resModal) {
     resModal.addEventListener('click', (e) => {
-        if(e.target === resModal) resModal.classList.remove('active');
+        if (e.target === resModal) {
+            resModal.classList.remove('active');
+        }
     });
 }
 
@@ -875,25 +929,52 @@ function showSuccessTicket(name, itemDetails, total) {
 // 10. 詳細画面から予約画面への移動
 // =========================================
 
-
 window.moveToReserve = function() {
     console.log("予約画面へ移動します"); 
 
-
+    // グッズ詳細モーダルを閉じる
     const goodsModal = document.getElementById('goodsModal');
     goodsModal.classList.remove('active');
 
+    // 今開いている商品の名前を取得する
+    const goodsName = document.getElementById('modalGoodsName').textContent;
 
     setTimeout(() => {
-        const reserveBtn = document.getElementById('openReserveModal');
-        if (reserveBtn) {
-            reserveBtn.click();
+        if (goodsName.includes('Tシャツ')) {
+            // Tシャツの予約ボタンを押す
+            const reserveTshirtBtn = document.getElementById('openReserveTshirtModal');
+            if (reserveTshirtBtn) {
+                reserveTshirtBtn.click();
+            } else {
+                alert("Tシャツの予約受付は見つかりませんでした");
+            }
+            
+        } else if (goodsName.includes('ラバーバンド')) {
+            // ラバーバンドの予約ボタンを押す
+            const reserveRubberBtn = document.getElementById('openReserveModal');
+            if (reserveRubberBtn) {
+                reserveRubberBtn.click();
+            } else {
+                // HTML上でラバーバンドのバナーを隠している場合は、直接モーダルを開く
+                const resModal = document.getElementById('reserveModal');
+                if (resModal) {
+                    // 期限・予約済みチェック
+                    if (new Date() > new Date("2026-03-13T17:00:00")) {
+                        alert("ラバーバンドの予約受付は終了しました");
+                        return;
+                    }
+                    if (localStorage.getItem('goods_reserved') === 'true') {
+                        alert("ラバーバンドはすでに予約済みです");
+                        return;
+                    }
+                    resModal.classList.add('active');
+                }
+            }
         } else {
-            console.error("予約ボタンが見つかりません");
+            alert("この商品は現在予約を受け付けていません。");
         }
     }, 300);
 };
-
 // =========================================
 // 11. タイムテーブルのタブ切り替え
 // =========================================
@@ -994,3 +1075,238 @@ tabsForLine.forEach(tab => {
         setTimeout(updateCurrentTimeLine, 100);
     });
 });
+
+let clickCount = 0;
+let clickTimer = null;
+
+const gameTitle = document.querySelector('#game .section-title');
+
+if (gameTitle) {
+    gameTitle.addEventListener('click', () => {
+        clickCount++;
+        
+        if (clickCount >= 5) {
+
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith('quiz_played_')) {
+                    localStorage.removeItem(key);
+                }
+            });
+            alert('リセット');
+            clickCount = 0; 
+        }
+
+        clearTimeout(clickTimer);
+        clickTimer = setTimeout(() => {
+            clickCount = 0;
+        }, 1500);
+    });
+}
+
+// =========================================
+// 9.5 Tシャツ予約機能
+// =========================================
+
+// Tシャツの予約締め切り（2/27 10:00）
+const TSHIRT_RESERVE_DEADLINE = new Date("2026-02-27T10:00:00");
+
+// 要素の取得
+const openResTshirtBtn = document.getElementById('openReserveTshirtModal');
+const resTshirtModal = document.getElementById('reserveTshirtModal');
+const closeResTshirtBtn = document.getElementById('closeReserveTshirtModal');
+const resTshirtForm = document.getElementById('reserveTshirtForm');
+const viewTshirtForm = document.getElementById('reserveTshirtFormView');
+const viewTshirtSuccess = document.getElementById('reserveTshirtSuccessView');
+
+// 色別のセレクトボックス・価格表示
+const resQtyBlack = document.getElementById('resQtyBlack');
+const resQtyWhiteTshirt = document.getElementById('resQtyWhiteTshirt');
+const displayPriceTshirt = document.getElementById('displayPriceTshirt');
+
+
+// 期限と予約済み状態のチェック
+function checkTshirtReservationStatus() {
+    const now = new Date();
+    if (now > TSHIRT_RESERVE_DEADLINE) {
+        disableTshirtReserveButton("受付は終了しました");
+        return;
+    }
+    // ローカルストレージはTシャツ専用キー「tshirt_reserved」を使う
+    if (localStorage.getItem('tshirt_reserved') === 'true') {
+        disableTshirtReserveButton("予約済みです");
+        return;
+    }
+}
+
+function disableTshirtReserveButton(msg) {
+    if (openResTshirtBtn) {
+        openResTshirtBtn.textContent = msg;
+        openResTshirtBtn.classList.add('disabled');
+        openResTshirtBtn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); alert(msg); };
+    }
+}
+window.addEventListener('load', checkTshirtReservationStatus);
+
+
+// モーダル開閉
+if (openResTshirtBtn) {
+    openResTshirtBtn.addEventListener('click', () => {
+        if (new Date() > TSHIRT_RESERVE_DEADLINE) return;
+        if (localStorage.getItem('tshirt_reserved')) return;
+        resTshirtModal.classList.add('active');
+    });
+    closeResTshirtBtn.addEventListener('click', () => resTshirtModal.classList.remove('active'));
+    resTshirtModal.addEventListener('click', (e) => {
+        if(e.target === resTshirtModal) resTshirtModal.classList.remove('active');
+    });
+}
+
+// 金額計算（1枚4000円）
+function updateTshirtPrice() {
+    const qtyB = parseInt(resQtyBlack.value);
+    const qtyW = parseInt(resQtyWhiteTshirt.value);
+    const totalQty = qtyB + qtyW;
+    const price = totalQty * 4000;
+    displayPriceTshirt.textContent = `¥${price.toLocaleString()}`;
+}
+
+if (resQtyBlack && resQtyWhiteTshirt) {
+    resQtyBlack.addEventListener('change', updateTshirtPrice);
+    resQtyWhiteTshirt.addEventListener('change', updateTshirtPrice);
+}
+
+// フォーム送信処理
+if (resTshirtForm) {
+    resTshirtForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (localStorage.getItem('tshirt_reserved')) {
+            alert("すでに予約済みです。");
+            return;
+        }
+
+        const name = document.getElementById('resTshirtName').value;
+        const contact = document.getElementById('resTshirtContact').value;
+        const sizeInfo = document.getElementById('resTshirtSize').value;
+
+        const qtyB = parseInt(resQtyBlack.value);
+        const qtyW = parseInt(resQtyWhiteTshirt.value);
+        const totalQty = qtyB + qtyW;
+        const totalPrice = totalQty * 4000;
+
+        if (totalQty === 0) {
+            alert("枚数を選択してください。");
+            return;
+        }
+        if (totalQty > 3) {
+            alert("予約できるのは お一人様 合計3枚 までです。\n現在の合計: " + totalQty + "枚");
+            return;
+        }
+        if (!sizeInfo) {
+            alert("希望サイズを入力してください。");
+            return;
+        }
+
+        const submitBtn = resTshirtForm.querySelector('button');
+        submitBtn.disabled = true;
+        submitBtn.textContent = "送信中...";
+
+        // Supabaseへ送信
+        const { error } = await sb
+            .from('tshirt_orders') // ★Tシャツ用の新しいテーブル
+            .insert([
+                { 
+                    name: name,
+                    contact_info: contact,
+                    color_black: qtyB,
+                    color_white: qtyW,
+                    size_info: sizeInfo,
+                    quantity: totalQty,
+                    total_price: totalPrice
+                }
+            ]);
+
+        if (error) {
+            console.error('予約エラー:', error);
+            alert("エラーが発生しました。");
+            submitBtn.disabled = false;
+            submitBtn.textContent = "予約を確定する";
+        } else {
+            // Tシャツ用のフラグを保存
+            localStorage.setItem('tshirt_reserved', 'true');
+            
+            // 完了画面用の文字列作成
+            let itemDetails = "";
+            if (qtyB > 0) itemDetails += `BLACK x${qtyB}`;
+            if (qtyB > 0 && qtyW > 0) itemDetails += ", ";
+            if (qtyW > 0) itemDetails += `WHITE x${qtyW}`;
+            itemDetails += `\n(サイズ: ${sizeInfo})`;
+
+            showTshirtSuccessTicket(name, itemDetails, totalPrice);
+            disableTshirtReserveButton("予約済みです");
+        }
+    });
+}
+
+// 完了画面の表示
+function showTshirtSuccessTicket(name, itemDetails, total) {
+    viewTshirtForm.style.display = 'none';
+    viewTshirtSuccess.style.display = 'block';
+
+    document.getElementById('ticketTshirtName').textContent = name;
+    document.getElementById('ticketTshirtItem').innerText = itemDetails;
+    document.getElementById('ticketTshirtPrice').textContent = `¥${total.toLocaleString()}`;
+    
+    alert("Tシャツの予約が完了しました！");
+}
+
+// =========================================
+// グッズ予約
+// =========================================
+let goodsClickCount = 0;
+let goodsClickTimer = null;
+
+
+const goodsTitle = document.querySelector('#goods .section-title');
+
+if (goodsTitle) {
+    goodsTitle.addEventListener('click', () => {
+        goodsClickCount++;
+        
+        if (goodsClickCount >= 5) {
+
+            localStorage.removeItem('tshirt_reserved');
+            localStorage.removeItem('goods_reserved');
+            
+            alert("画面を再読み込みします。");
+            goodsClickCount = 0; 
+            
+
+            location.reload(); 
+        }
+
+        clearTimeout(goodsClickTimer);
+        goodsClickTimer = setTimeout(() => {
+            goodsClickCount = 0;
+        }, 1500);
+    });
+}
+
+// =========================================
+// サイズタブの切り替え処理
+// =========================================
+const sizeTabs = document.querySelectorAll('.size-tab');
+const resTshirtSizeInput = document.getElementById('resTshirtSize');
+
+if (sizeTabs.length > 0) {
+    sizeTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // 1. 全てのタブから黒背景(active)を外す
+            sizeTabs.forEach(t => t.classList.remove('active'));
+            // 2. クリックされたタブを黒背景にする
+            tab.classList.add('active');
+            // 3. 選んだサイズ(LかXL)を見えないデータとして保存する
+            resTshirtSizeInput.value = tab.getAttribute('data-size');
+        });
+    });
+}

@@ -427,7 +427,7 @@ h1, h2, .logo, .time, .menu-btn {
 .goods-tag {
     position: absolute;
     top: 0; left: 0;
-    background: var(--black);
+    background: var(--primary-red);
     color: var(--white);
     font-family: 'Anton', sans-serif;
     font-size: 0.8rem;
@@ -2192,4 +2192,62 @@ footer {
     background: var(--primary-red);
     border-radius: 50%;
     box-shadow: 0 0 5px rgba(230, 0, 18, 0.8);
+}
+
+/* =========================================
+   サイズ選択タブ用デザイン
+========================================= */
+.size-tabs {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.size-tab {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    border: 2px solid var(--black);
+    background: var(--white);
+    color: var(--black);
+    font-family: 'Anton', sans-serif;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+/* 選ばれているタブのデザイン */
+.size-tab.active {
+    background: var(--black);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.3);
+}
+
+/* =========================================
+   グッズ詳細：サムネイル画像
+========================================= */
+.modal-thumbnails {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    justify-content: center;
+    overflow-x: auto; /* スマホで数が多い場合は横スクロール可能に */
+    padding-bottom: 5px;
+}
+
+.modal-thumb {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: 0.2s;
+    background: #fff;
+}
+
+/* 選択されているサムネイルは赤枠で少し浮き上がる */
+.modal-thumb.active {
+    border-color: var(--primary-red);
+    transform: translateY(-2px);
 }
