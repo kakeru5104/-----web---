@@ -42,34 +42,40 @@ const ticketBtn = document.getElementById('lotteryBtn');
 const modal = document.getElementById('winModal');
 const modalClose = document.getElementById('closeModal');
 
-ticketBtn.addEventListener('click', () => {
-    // ボタンの見た目変更
-    const defaultText = ticketBtn.innerHTML;
-    ticketBtn.innerHTML = 'JUDGING...<span class="small">抽選中...</span>';
-    ticketBtn.style.opacity = '0.8';
-    ticketBtn.style.pointerEvents = 'none';
+if (ticketBtn) {
+    ticketBtn.addEventListener('click', () => {
+        // ボタンの見た目変更
+        const defaultText = ticketBtn.innerHTML;
+        ticketBtn.innerHTML = 'JUDGING...<span class="small">抽選中...</span>';
+        ticketBtn.style.opacity = '0.8';
+        ticketBtn.style.pointerEvents = 'none';
 
-    // 3秒後に結果表示
-    setTimeout(() => {
-        modal.classList.add('active');
-        
-        // ボタンを元に戻す
-        ticketBtn.innerHTML = defaultText;
-        ticketBtn.style.opacity = '1';
-        ticketBtn.style.pointerEvents = 'auto';
-    }, 3000);
-});
+        // 3秒後に結果表示
+        setTimeout(() => {
+            if (modal) modal.classList.add('active');
+            
+            // ボタンを元に戻す
+            ticketBtn.innerHTML = defaultText;
+            ticketBtn.style.opacity = '1';
+            ticketBtn.style.pointerEvents = 'auto';
+        }, 3000);
+    });
+}
 
-// モーダル閉じる
-modalClose.addEventListener('click', () => {
-    modal.classList.remove('active');
-});
-
-modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
+// モーダル閉じる（存在するときだけ）
+if (modalClose) {
+    modalClose.addEventListener('click', () => {
         modal.classList.remove('active');
-    }
-});
+    });
+}
+
+if (modal) {
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('active');
+        }
+    });
+}
 
 // === グッズ詳細ポップアップ機能 ===
 const goodsItems = document.querySelectorAll('.goods-item');
