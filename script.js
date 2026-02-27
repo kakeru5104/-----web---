@@ -934,20 +934,14 @@ function showSuccessTicket(name, itemDetails, total) {
 
 window.moveToReserve = function() {
     console.log("予約画面へ移動します"); 
-
     const goodsModal = document.getElementById('goodsModal');
     goodsModal.classList.remove('active');
-
     const goodsName = document.getElementById('modalGoodsName').textContent;
 
     setTimeout(() => {
         if (goodsName.includes('Tシャツ')) {
             const reserveTshirtBtn = document.getElementById('openReserveTshirtModal');
-            if (reserveTshirtBtn) {
-                reserveTshirtBtn.click();
-            } else {
-                alert("Tシャツの予約受付は見つかりませんでした");
-            }
+            if (reserveTshirtBtn) reserveTshirtBtn.click();
             
         } else if (goodsName.includes('ラバーバンド')) {
             const reserveRubberBtn = document.getElementById('openReserveModal');
@@ -966,6 +960,20 @@ window.moveToReserve = function() {
                     }
                     resModal.classList.add('active');
                 }
+            }
+        // ▼ 追加：パネルの分岐 ▼
+        } else if (goodsName.includes('パネル') || goodsName.includes('テラドカズマ')) {
+            const resPanelModal = document.getElementById('reservePanelModal');
+            if (resPanelModal) {
+                if (new Date() > new Date("2026-03-01T23:59:59")) { 
+                    alert("等身大パネルの予約受付は終了しました");
+                    return;
+                }
+                if (localStorage.getItem('panel_reserved') === 'true') {
+                    alert("等身大パネルはすでに予約済みです");
+                    return;
+                }
+                resPanelModal.classList.add('active');
             }
         } else {
             alert("この商品は現在予約を受け付けていません。");
@@ -1250,38 +1258,6 @@ function showTshirtSuccessTicket(name, itemDetails, total) {
 }
 
 // =========================================
-// グッズ予約
-// =========================================
-let goodsClickCount = 0;
-let goodsClickTimer = null;
-
-
-const goodsTitle = document.querySelector('#goods .section-title');
-
-if (goodsTitle) {
-    goodsTitle.addEventListener('click', () => {
-        goodsClickCount++;
-        
-        if (goodsClickCount >= 5) {
-
-            localStorage.removeItem('tshirt_reserved');
-            localStorage.removeItem('goods_reserved');
-            
-            alert("画面を再読み込みします。");
-            goodsClickCount = 0; 
-            
-
-            location.reload(); 
-        }
-
-        clearTimeout(goodsClickTimer);
-        goodsClickTimer = setTimeout(() => {
-            goodsClickCount = 0;
-        }, 1500);
-    });
-}
-
-// =========================================
 // サイズタブの切り替え処理
 // =========================================
 const sizeTabs = document.querySelectorAll('.size-tab');
@@ -1294,5 +1270,231 @@ if (sizeTabs.length > 0) {
             tab.classList.add('active');
             resTshirtSizeInput.value = tab.getAttribute('data-size');
         });
+    });
+}
+
+// =========================================
+// 詳細画面から予約画面への移動
+// =========================================
+window.moveToReserve = function() {
+    console.log("予約画面へ移動します"); 
+    const goodsModal = document.getElementById('goodsModal');
+    goodsModal.classList.remove('active');
+    const goodsName = document.getElementById('modalGoodsName').textContent;
+
+    setTimeout(() => {
+        if (goodsName.includes('Tシャツ')) {
+            const reserveTshirtBtn = document.getElementById('openReserveTshirtModal');
+            if (reserveTshirtBtn) reserveTshirtBtn.click();
+            
+        } else if (goodsName.includes('ラバーバンド')) {
+            const reserveRubberBtn = document.getElementById('openReserveModal');
+            if (reserveRubberBtn) {
+                reserveRubberBtn.click();
+            } else {
+                const resModal = document.getElementById('reserveModal');
+                if (resModal) {
+                    if (new Date() > new Date("2026-03-13T17:00:00")) {
+                        alert("ラバーバンドの予約受付は終了しました");
+                        return;
+                    }
+                    if (localStorage.getItem('goods_reserved') === 'true') {
+                        alert("ラバーバンドはすでに予約済みです");
+                        return;
+                    }
+                    resModal.classList.add('active');
+                }
+            }
+        } else if (goodsName.includes('パネル') || goodsName.includes('テラドカズマ')) {
+            const resPanelModal = document.getElementById('reservePanelModal');
+            if (resPanelModal) {
+                if (new Date() > new Date("2026-03-01T23:59:59")) { 
+                    alert("等身大パネルの予約受付は終了しました");
+                    return;
+                }
+                if (localStorage.getItem('panel_reserved') === 'true') {
+                    alert("等身大パネルはすでに予約済みです");
+                    return;
+                }
+                resPanelModal.classList.add('active');
+            }
+        } else {
+            alert("この商品は現在予約を受け付けていません。");
+        }
+    }, 300);
+};
+
+// =========================================
+// 等身大パネル専用スロットカウンター
+// =========================================
+async function fetchPanelReservations() {
+    const display = document.getElementById('panelReserveCount');
+    if (!display) return;
+    
+    let totalCount = 0;
+    
+    try {
+        // パネルの予約数「だけ」を集計する
+        const { data: panelData } = await sb.from('panel_orders').select('quantity');
+        if (panelData) panelData.forEach(row => totalCount += (row.quantity || 0));
+        
+        animateSlotMachine(totalCount);
+    } catch (e) {
+        console.error('集計エラー', e);
+        display.innerHTML = '<p style="color:white; font-size:1.5rem; padding: 20px;">ERROR</p>';
+    }
+}
+
+function animateSlotMachine(targetNumber) {
+    const container = document.getElementById('panelReserveCount');
+    if (!container) return;
+    
+    // パネルの数を必ず3桁の文字列にする（例: 5 -> "005", 12 -> "012"）
+    const targetStr = String(targetNumber).padStart(3, '0');
+    const targetDigits = targetStr.split('');
+    
+    container.innerHTML = ''; // 一旦空にする
+    
+    // 3つの桁それぞれにスロットの窓を作る
+    targetDigits.forEach((digit, index) => {
+        const windowDiv = document.createElement('div');
+        windowDiv.className = 'slot-window';
+        
+        const stripDiv = document.createElement('div');
+        stripDiv.className = 'slot-digit-container';
+        
+        let html = '';
+        // 左の桁から順に、回転数を増やす（1桁目は2周、2桁目は3周…）
+        const spins = 2 + index; 
+        for(let i=0; i<spins; i++) {
+            for(let j=0; j<=9; j++) {
+                html += `<div class="slot-num">${j}</div>`; // ダミーの数字
+            }
+        }
+        // テープの一番最後に、本当の数字を置く
+        html += `<div class="slot-num">${digit}</div>`;
+        stripDiv.innerHTML = html;
+        
+        windowDiv.appendChild(stripDiv);
+        container.appendChild(windowDiv);
+        
+        // ほんの少し遅らせてからアニメーション（CSSのtransform）を発動
+        setTimeout(() => {
+            const totalItems = (spins * 10) + 1;
+            const itemHeight = 90; // CSSの.slot-windowの高さと合わせる
+            const finalY = -((totalItems - 1) * itemHeight);
+            
+            // テープを上に向かって引き上げる（スロットの回転）
+            stripDiv.style.transform = `translateY(${finalY}px)`;
+        }, 50); 
+    });
+}
+
+// ロード時に実行
+window.addEventListener('load', fetchPanelReservations);
+
+// =========================================
+// 等身大パネル予約機能
+// =========================================
+const resPanelModal = document.getElementById('reservePanelModal');
+const closeResPanelBtn = document.getElementById('closeReservePanelModal');
+const resPanelForm = document.getElementById('reservePanelForm');
+const viewPanelForm = document.getElementById('reservePanelFormView');
+const viewPanelSuccess = document.getElementById('reservePanelSuccessView');
+const resQtyPanel = document.getElementById('resQtyPanel');
+const displayPricePanel = document.getElementById('displayPricePanel');
+
+// モーダル閉じる
+if (closeResPanelBtn) {
+    closeResPanelBtn.addEventListener('click', () => resPanelModal.classList.remove('active'));
+}
+if (resPanelModal) {
+    resPanelModal.addEventListener('click', (e) => {
+        if(e.target === resPanelModal) resPanelModal.classList.remove('active');
+    });
+}
+
+// 金額更新
+function updatePanelPrice() {
+    const qty = parseInt(resQtyPanel.value);
+    const price = qty * 15000;
+    displayPricePanel.textContent = `¥${price.toLocaleString()}`;
+}
+if (resQtyPanel) resQtyPanel.addEventListener('change', updatePanelPrice);
+
+// フォーム送信
+if (resPanelForm) {
+    resPanelForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        if (localStorage.getItem('panel_reserved')) {
+            alert("すでに予約済みです。");
+            return;
+        }
+
+        const name = document.getElementById('resPanelName').value;
+        const contact = document.getElementById('resPanelContact').value;
+        const qty = parseInt(resQtyPanel.value);
+        const totalPrice = qty * 15000;
+
+        if (qty === 0) {
+            alert("個数を選択してください。");
+            return;
+        }
+
+        const submitBtn = resPanelForm.querySelector('button');
+        submitBtn.disabled = true;
+        submitBtn.textContent = "送信中...";
+
+        // Supabaseへ送信
+        const { error } = await sb.from('panel_orders').insert([
+            { name: name, contact_info: contact, quantity: qty, total_price: totalPrice }
+        ]);
+
+        if (error) {
+            console.error('予約エラー:', error);
+            alert("エラーが発生しました。");
+            submitBtn.disabled = false;
+            submitBtn.textContent = "予約を確定する";
+        } else {
+            localStorage.setItem('panel_reserved', 'true');
+            
+            viewPanelForm.style.display = 'none';
+            viewPanelSuccess.style.display = 'block';
+
+            document.getElementById('ticketPanelName').textContent = name;
+            document.getElementById('ticketPanelItem').innerText = `等身大パネル x${qty}`;
+            document.getElementById('ticketPanelPrice').textContent = `¥${totalPrice.toLocaleString()}`;
+            
+            alert("等身大パネルの予約が完了しました！");
+            
+            // 予約が完了したらカウンターを再取得して回す
+            fetchPanelReservations();
+        }
+    });
+}
+
+// =========================================
+// ★開発者用：グッズ予約のリセットコマンド
+// =========================================
+let goodsClickCount = 0;
+let goodsClickTimer = null;
+
+const goodsTitleBtn = document.querySelector('#goods .section-title');
+if (goodsTitleBtn) {
+    goodsTitleBtn.addEventListener('click', () => {
+        goodsClickCount++;
+        
+        if (goodsClickCount >= 5) {
+            localStorage.removeItem('tshirt_reserved');
+            localStorage.removeItem('goods_reserved');
+            localStorage.removeItem('panel_reserved'); // パネルもリセット
+            alert("【開発者モード】\n画面を再読み込みします。");
+            goodsClickCount = 0; 
+            location.reload(); 
+        }
+
+        clearTimeout(goodsClickTimer);
+        goodsClickTimer = setTimeout(() => { goodsClickCount = 0; }, 1500);
     });
 }

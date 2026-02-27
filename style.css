@@ -2245,3 +2245,142 @@ footer {
     border-color: var(--primary-red);
     transform: translateY(-2px);
 }
+
+/* =========================================
+   グッズ予約カウンター（豪華版）
+========================================= */
+.goods-counter-wrapper {
+    background: linear-gradient(135deg, #111, #333);
+    border: 4px solid #ffd700; /* ゴールド枠 */
+    border-radius: 15px;
+    padding: 30px 20px;
+    text-align: center;
+    margin: 0 auto 40px auto;
+    max-width: 600px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 0 15px rgba(255, 215, 0, 0.3);
+}
+
+.counter-label {
+    color: #ffd700;
+    font-family: 'Anton', sans-serif;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+}
+
+.counter-display {
+    font-family: 'Anton', sans-serif;
+    font-size: 5rem;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(255,215,0,0.8), 0 0 10px rgba(255,255,255,0.5);
+    line-height: 1;
+    margin-bottom: 10px;
+}
+
+.counter-sub {
+    color: #ddd;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+/* =========================================
+   グッズ予約カウンター（スロット版）
+========================================= */
+.goods-counter-wrapper {
+    background: linear-gradient(135deg, #2b0000, #8b0000, #e60012); /* カジノレッドのグラデーション */
+    border: 6px solid #ffd700; /* ゴールドの太枠 */
+    border-radius: 20px;
+    padding: 30px 10px;
+    text-align: center;
+    margin: 0 auto 40px auto;
+    max-width: 600px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.8), inset 0 0 20px rgba(255, 215, 0, 0.5);
+    position: relative;
+}
+
+/* キラキラ光る星の装飾 */
+.goods-counter-wrapper::before,
+.goods-counter-wrapper::after {
+    content: '★';
+    position: absolute;
+    top: 55px;
+    font-size: 2.5rem;
+    color: #ffd700;
+    text-shadow: 0 0 15px #ff0000;
+    animation: blink 1s infinite alternate;
+}
+.goods-counter-wrapper::before { left: 20px; }
+.goods-counter-wrapper::after { right: 20px; }
+
+@keyframes blink {
+    0% { opacity: 0.5; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1.2); }
+}
+
+.counter-label {
+    color: #fff;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin-bottom: 0;
+    text-shadow: 2px 2px 4px #000;
+}
+
+.counter-sub-label {
+    color: #ffd700;
+    font-family: 'Anton', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 0px #000;
+}
+
+/* スロット本体のレイアウト */
+.slot-machine {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+/* 数字が見える窓（立体的な影をつけて凹ませる） */
+.slot-window {
+    background: #f4f4f4;
+    border: 4px solid #111;
+    border-radius: 8px;
+    width: 70px;
+    height: 90px;
+    overflow: hidden; /* 窓の外にある数字を隠す */
+    position: relative;
+    box-shadow: inset 0 15px 15px rgba(0,0,0,0.6), inset 0 -15px 15px rgba(0,0,0,0.6), 0 5px 0px #b8860b;
+}
+
+/* 回る数字のテープ部分 */
+.slot-digit-container {
+    display: flex;
+    flex-direction: column;
+    /* だんだんゆっくり止まるリアルなスロットの動き */
+    transition: transform 3s cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+
+.slot-num {
+    height: 90px; /* slot-windowと必ず同じ高さにする */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Anton', sans-serif;
+    font-size: 4.5rem;
+    color: #111;
+    text-shadow: 1px 1px 0px #ccc;
+}
+
+.counter-sub {
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px #000;
+    background: rgba(0,0,0,0.5);
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 20px;
+}

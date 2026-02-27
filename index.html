@@ -106,6 +106,19 @@
             <p class="res-note">※完全受注生産 / 当日会場支払い</p>
         </div> -->
 
+<div class="goods-counter-wrapper fade-up">
+            <p class="counter-label">テラドカズマ等身大パネル</p>
+            <p class="counter-sub-label">現在の注文数</p>
+            
+            <div class="slot-machine" id="panelReserveCount">
+                <div class="slot-window"><div class="slot-num">0</div></div>
+                <div class="slot-window"><div class="slot-num">0</div></div>
+                <div class="slot-window"><div class="slot-num">0</div></div>
+            </div>
+            
+            <p class="counter-sub">果たして何体売れるのか…！？</p>
+        </div>
+
         <div class="reservation-banner fade-up" style="margin-top: 20px;">
             <p class="res-catch">＼ オリジナルTシャツ予約開始！ ／</p>
             <p class="res-limit">3/1(日) 23:59 締切！</p>
@@ -188,19 +201,26 @@
                 <p class="goods-name">ランダム缶バッジ</p>
                 <p class="goods-var">全18種 / ランダム</p>
                 <p class="goods-price">¥300</p>
-            </div>
+            </div> -->
 
-            <div class="goods-item coming-soon-item">
+<div class="goods-item">
                 <div class="goods-img-box">
-                    <img src="image/Panel.png" alt="PANEL" class="goods-img">
-                    <div class="coming-soon-overlay">COMING SOON</div>
+                    <img src="image/sitPanel.png" alt="PANEL" class="goods-img">
+                     <span class="goods-tag">イチオシ</span>
                 </div>
                 <p class="goods-name">テラドカズマ<br>等身大パネル</p>
                 <p class="goods-var">高さ：181cm / フルカラー</p>
                 <p class="goods-price">¥15,000</p>
+                <p class="goods-desc-source" style="display:none;">
+                    世界に一つだけ！<br>
+                    こじんまりかわいいフォルムです。<br>
+                    お部屋のインテリアや魔除けに最適。<br>
+                    ※画像はイメージです。<br>
+                    ※受注になってから制作します
+                </p>
             </div>
 
-            <p class="note-text"><small>※ラバーバンド以外は準備中</small></p> -->
+            <!-- <p class="note-text"><small>※ラバーバンド以外は準備中</small></p> -->
 
         </div>
     </section>
@@ -583,6 +603,74 @@
             </div>
 
             <div class="close-modal" id="closeReserveTshirtModal">CLOSE</div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="reservePanelModal">
+        <div class="modal-content reserve-modal-content">
+            <p class="modal-head">PRE-ORDER (PANEL)</p>
+            
+            <div id="reservePanelFormView" class="modal-body">
+                <h2 class="res-title">等身大パネル予約</h2>
+                <p class="res-desc">
+                    完全受注生産のため、期間内にご予約ください。<br>
+                    お一人様 3個まで。<br>
+                    <span style="color:red; font-weight:bold;">※予約後のキャンセル不可</span>
+                </p>
+
+                <form id="reservePanelForm" class="res-form">
+                <p style="color:red; font-size:0.8rem; margin-bottom:15px; border:1px solid red; padding:5px;">
+                    1端末につき1回のみ予約可能です。<br>
+                    当日、受付にて現金でお支払いください。
+                </p>
+
+                <div class="res-image-box">
+                    <img src="image/sitPanel.png" alt="パネル" class="res-hero-img">
+                 </div>
+
+                <label>お名前 (必須)</label>
+                <input type="text" id="resPanelName" placeholder="例：山田 太郎" required>
+
+                <label>学籍番号 または 電話番号 (必須)</label>
+                <input type="text" id="resPanelContact" placeholder="本人確認に使用します" required>
+
+                <p style="margin-top:20px; font-weight:bold; border-bottom:1px solid #ddd;">ご注文内容</p>
+
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
+                    <label style="margin:0;">等身大パネル</label>
+                    <select id="resQtyPanel" style="width:100px;">
+                        <option value="0">0個</option>
+                        <option value="1">1個</option>
+                        <option value="2">2個</option>
+                        <option value="3">3個</option>
+                    </select>
+                </div>
+
+                <p class="res-total">合計金額: <span id="displayPricePanel">¥0</span></p>
+
+                <button type="submit" class="res-submit-btn">予約を確定する</button>
+            </form>
+            </div>
+
+            <div id="reservePanelSuccessView" class="modal-body" style="display:none;">
+                <h2 class="res-title" style="color:var(--primary-red);">RESERVED!</h2>
+                <p class="res-desc">パネルの予約が完了しました。<br>当日、この画面を受付でご提示ください。</p>
+                
+                <div class="ticket-card">
+                    <p class="ticket-label">NAME</p>
+                    <p class="ticket-val" id="ticketPanelName">---</p>
+                    
+                    <p class="ticket-label">ITEM</p>
+                    <p class="ticket-val" id="ticketPanelItem">---</p>
+                    
+                    <p class="ticket-label">TOTAL</p>
+                    <p class="ticket-val ticket-price" id="ticketPanelPrice">---</p>
+                </div>
+                
+                <p class="res-note-small">※この画面のスクリーンショットを保存してください</p>
+            </div>
+
+            <div class="close-modal" id="closeReservePanelModal">CLOSE</div>
         </div>
     </div>
 
