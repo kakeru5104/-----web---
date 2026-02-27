@@ -1100,7 +1100,7 @@ if (gameTitle) {
 // =========================================
 
 // Tシャツの予約締め切り
-const TSHIRT_RESERVE_DEADLINE = new Date("2026-02-27T10:00:00");
+const TSHIRT_RESERVE_DEADLINE = new Date("2026-03-01T23:59:59");
 
 
 const openResTshirtBtn = document.getElementById('openReserveTshirtModal');
