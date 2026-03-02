@@ -299,6 +299,7 @@ h1, h2, .logo, .time, .menu-btn {
     flex: 1;
     overflow-y: auto;
     padding: 20px;
+    text-align: left;
 }
 
 /* モーダルの中のニュースアイテム（白背景用） */
@@ -2247,7 +2248,7 @@ footer {
 }
 
 /* =========================================
-   グッズ予約カウンター（豪華版）
+   グッズ予約カウンター
 ========================================= */
 .goods-counter-wrapper {
     background: linear-gradient(135deg, #111, #333);
@@ -2284,7 +2285,7 @@ footer {
 }
 
 /* =========================================
-   グッズ予約カウンター（スロット版）
+   グッズ予約カウンター
 ========================================= */
 .goods-counter-wrapper {
     background: linear-gradient(135deg, #2b0000, #8b0000, #e60012); /* カジノレッドのグラデーション */
@@ -2298,7 +2299,7 @@ footer {
     position: relative;
 }
 
-/* キラキラ光る星の装飾 */
+
 .goods-counter-wrapper::before,
 .goods-counter-wrapper::after {
     content: '★';
@@ -2335,7 +2336,7 @@ footer {
     text-shadow: 2px 2px 0px #000;
 }
 
-/* スロット本体のレイアウト */
+
 .slot-machine {
     display: flex;
     justify-content: center;
@@ -2343,28 +2344,27 @@ footer {
     margin-bottom: 25px;
 }
 
-/* 数字が見える窓（立体的な影をつけて凹ませる） */
+
 .slot-window {
     background: #f4f4f4;
     border: 4px solid #111;
     border-radius: 8px;
     width: 70px;
     height: 90px;
-    overflow: hidden; /* 窓の外にある数字を隠す */
+    overflow: hidden; 
     position: relative;
     box-shadow: inset 0 15px 15px rgba(0,0,0,0.6), inset 0 -15px 15px rgba(0,0,0,0.6), 0 5px 0px #b8860b;
 }
 
-/* 回る数字のテープ部分 */
+
 .slot-digit-container {
     display: flex;
     flex-direction: column;
-    /* だんだんゆっくり止まるリアルなスロットの動き */
     transition: transform 3s cubic-bezier(0.1, 0.9, 0.2, 1);
 }
 
 .slot-num {
-    height: 90px; /* slot-windowと必ず同じ高さにする */
+    height: 90px;
     display: flex;
     justify-content: center;
     align-items: center;

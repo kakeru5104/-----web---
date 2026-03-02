@@ -619,18 +619,18 @@ window.addEventListener('load', () => {
 
 
 const newsData = [
-    //         {
-    //     date: "2026.02.18",
-    //     label: "INFO",
-    //     labelColor: "label-red",
-    //     title: "タイムテーブル発表！全出演バンド・タイムテーブル公開！",
-    //     link: "#timetable"
-    // },
+            {
+        date: "2026.03.01",
+        label: "INFO",
+        labelColor: "label-red",
+        title: "タイムテーブル発表！全出演バンド・タイムテーブル公開！",
+        link: "#timetable"
+    },
 
                 {
         date: "2026.02.25",
-        label: "INFO",
-        labelColor: "label-red",
+        label: "GOODS",
+        labelColor: "label-blue",
         title: "オリジナルTシャツグッズ化実現！受注生産開始！詳しくはグッズへ",
         link: "#goods"
     },
@@ -645,8 +645,8 @@ const newsData = [
 
             {
         date: "2026.02.08",
-        label: "INFO",
-        labelColor: "label-red",
+        label: "GOODS",
+        labelColor: "label-label-blue",
         title: "多数のご要望によりグッズ化実現！ラバーバンド受注生産開始！詳しくはグッズへ",
         link: "#goods"
     },
@@ -678,13 +678,6 @@ const newsData = [
         labelColor: "label-red",
         title: "第1弾出演バンド発表！ZERO GRADUATION LIVE 2026 始動",
         link: "#timetable"
-    },
-    {
-        date: "2026.01.31",
-        label: "INFO",
-        labelColor: "label-red",
-        title: "ZERO卒業ライブ　オリジナルグッズ発売！",
-        link: "#goods"
     },
     {
         date: "2026.01.20",
@@ -1108,7 +1101,7 @@ if (gameTitle) {
 // =========================================
 
 // Tシャツの予約締め切り
-const TSHIRT_RESERVE_DEADLINE = new Date("2026-03-01T23:59:59");
+const TSHIRT_RESERVE_DEADLINE = new Date("2026-03-19T23:59:59");
 
 
 const openResTshirtBtn = document.getElementById('openReserveTshirtModal');
@@ -1334,7 +1327,7 @@ async function fetchPanelReservations() {
     let totalCount = 0;
     
     try {
-        // パネルの予約数「だけ」を集計する
+
         const { data: panelData } = await sb.from('panel_orders').select('quantity');
         if (panelData) panelData.forEach(row => totalCount += (row.quantity || 0));
         
@@ -1349,13 +1342,13 @@ function animateSlotMachine(targetNumber) {
     const container = document.getElementById('panelReserveCount');
     if (!container) return;
     
-    // パネルの数を必ず3桁の文字列にする（例: 5 -> "005", 12 -> "012"）
+
     const targetStr = String(targetNumber).padStart(3, '0');
     const targetDigits = targetStr.split('');
     
-    container.innerHTML = ''; // 一旦空にする
+    container.innerHTML = ''; 
     
-    // 3つの桁それぞれにスロットの窓を作る
+
     targetDigits.forEach((digit, index) => {
         const windowDiv = document.createElement('div');
         windowDiv.className = 'slot-window';
@@ -1364,11 +1357,10 @@ function animateSlotMachine(targetNumber) {
         stripDiv.className = 'slot-digit-container';
         
         let html = '';
-        // 左の桁から順に、回転数を増やす（1桁目は2周、2桁目は3周…）
         const spins = 2 + index; 
         for(let i=0; i<spins; i++) {
             for(let j=0; j<=9; j++) {
-                html += `<div class="slot-num">${j}</div>`; // ダミーの数字
+                html += `<div class="slot-num">${j}</div>`; 
             }
         }
         // テープの一番最後に、本当の数字を置く
@@ -1446,7 +1438,6 @@ if (resPanelForm) {
         submitBtn.disabled = true;
         submitBtn.textContent = "送信中...";
 
-        // Supabaseへ送信
         const { error } = await sb.from('panel_orders').insert([
             { name: name, contact_info: contact, quantity: qty, total_price: totalPrice }
         ]);
@@ -1468,15 +1459,11 @@ if (resPanelForm) {
             
             alert("等身大パネルの予約が完了しました！");
             
-            // 予約が完了したらカウンターを再取得して回す
             fetchPanelReservations();
         }
     });
 }
 
-// =========================================
-// ★開発者用：グッズ予約のリセットコマンド
-// =========================================
 let goodsClickCount = 0;
 let goodsClickTimer = null;
 
@@ -1489,7 +1476,7 @@ if (goodsTitleBtn) {
             localStorage.removeItem('tshirt_reserved');
             localStorage.removeItem('goods_reserved');
             localStorage.removeItem('panel_reserved'); // パネルもリセット
-            alert("【開発者モード】\n画面を再読み込みします。");
+            alert("画面を再読み込みします。");
             goodsClickCount = 0; 
             location.reload(); 
         }

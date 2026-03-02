@@ -87,10 +87,139 @@
         </div>
     </section>
 
-    <section id="timetable" class="section">
+    <section id="lineup" class="section">
         <h2 class="section-title fade-up">LINEUP</h2>
         <div class="lineup-container">
             <img src="image/dai3.jpg" alt="第3弾出演バンド" class="lineup-img fade-up delay-1">
+        </div>
+    </section>
+
+    <section id="timetable" class="section">
+        <h2 class="section-title fade-up">TIMETABLE</h2>
+        
+        <div class="tt-tabs fade-up delay-1">
+            <div class="tt-tab active" data-target="day1">
+                <span class="tt-date">3.14</span><span class="tt-day">SAT</span>
+                <span class="tt-place">Vi-Code</span>
+            </div>
+            <div class="tt-tab" data-target="day2">
+                <span class="tt-date">3.15</span><span class="tt-day">SUN</span>
+                <span class="tt-place">Vi-Code</span>
+            </div>
+            <div class="tt-tab" data-target="day3">
+                <span class="tt-date">3.20</span><span class="tt-day">FRI</span>
+                <span class="tt-place">TH-R HALL</span>
+            </div>
+            <div class="tt-tab" data-target="day4">
+                <span class="tt-date">3.21</span><span class="tt-day">SAT</span>
+                <span class="tt-place">TH-R HALL</span>
+            </div>
+        </div>
+
+        <div class="tt-container fade-up delay-2">
+            
+            <div class="tt-timeline-bg">
+                <div class="tt-hour">13:00</div>
+                <div class="tt-hour">14:00</div>
+                <div class="tt-hour">15:00</div>
+                <div class="tt-hour">16:00</div>
+                <div class="tt-hour">17:00</div>
+                <div class="tt-hour">18:00</div>
+                <div class="tt-hour">19:00</div>
+                <div class="tt-hour">20:00</div>
+                <div class="tt-hour">21:00</div>
+            </div>
+
+            <div id="currentTimeLine" class="tt-now-line" style="display:none;"></div>
+
+            <div id="day1" class="tt-content active">
+                <div class="tt-block" style="top: 120px; height: 45px;">
+                    <span class="tt-time">15:00 - 15:45</span>
+                    <span class="tt-band">サンボマスター</span>
+                </div>
+                <div class="tt-block" style="top: 175px; height: 45px;">
+                    <span class="tt-time">15:55 - 16:40</span>
+                    <span class="tt-band">布袋寅泰</span>
+                </div>
+                <div class="tt-block" style="top: 230px; height: 45px;">
+                    <span class="tt-time">16:50 - 17:35</span>
+                    <span class="tt-band">ヒトリエ</span>
+                </div>
+                <div class="tt-block" style="top: 285px; height: 45px;">
+                    <span class="tt-time">17:45 - 18:30</span>
+                    <span class="tt-band">マカロニえんぴつ</span>
+                </div>
+                <div class="tt-block" style="top: 340px; height: 50px;">
+                    <span class="tt-time">18:40 - 19:30</span>
+                    <span class="tt-band">ギソロオムニバス</span>
+                </div>
+            </div>
+
+            <div id="day2" class="tt-content">
+                <div class="tt-block" style="top: 60px; height: 45px;">
+                    <span class="tt-time">14:00 - 14:45</span>
+                    <span class="tt-band">BLUE ENCOUNT</span>
+                </div>
+                <div class="tt-block" style="top: 115px; height: 50px;">
+                    <span class="tt-time">14:55 - 15:45</span>
+                    <span class="tt-band">コンテンポラリーな生活<br>ネクライトーキー</span>
+                </div>
+                <div class="tt-block" style="top: 175px; height: 50px;">
+                    <span class="tt-time">15:55 - 16:45</span>
+                    <span class="tt-band">ELLEGARDEN</span>
+                </div>
+                <div class="tt-block special" style="top: 240px; height: 100px;">
+                    <span class="tt-time">17:00 - 19:00</span>
+                    <span class="tt-band">レクリエーション</span>
+                </div>
+            </div>
+
+            <div id="day3" class="tt-content">
+                <div class="tt-block" style="top: 120px; height: 50px;">
+                    <span class="tt-time">15:00 - 15:50</span>
+                    <span class="tt-band">さかりくオムニバス</span>
+                </div>
+                <div class="tt-block" style="top: 180px; height: 50px;">
+                    <span class="tt-time">16:00 - 16:50</span>
+                    <span class="tt-band">ヨルシカ</span>
+                </div>
+                <div class="tt-block" style="top: 240px; height: 50px;">
+                    <span class="tt-time">17:00 - 17:50</span>
+                    <span class="tt-band">BUMP OF CHICKEN</span>
+                </div>
+                <div class="tt-block" style="top: 300px; height: 50px;">
+                    <span class="tt-time">18:00 - 18:50</span>
+                    <span class="tt-band">みさとオムニバス</span>
+                </div>
+                <div class="tt-block" style="top: 360px; height: 50px;">
+                    <span class="tt-time">19:00 - 19:50</span>
+                    <span class="tt-band">米津玄師</span>
+                </div>
+            </div>
+
+            <div id="day4" class="tt-content">
+                <div class="tt-block" style="top: 125px; height: 45px;">
+                    <span class="tt-time">15:05 - 15:50</span>
+                    <span class="tt-band">ずっと真夜中でいいのに</span>
+                </div>
+                <div class="tt-block" style="top: 180px; height: 50px;">
+                    <span class="tt-time">16:00 - 16:50</span>
+                    <span class="tt-band">かいせいオムニバス</span>
+                </div>
+                <div class="tt-block" style="top: 240px; height: 50px;">
+                    <span class="tt-time">17:00 - 17:50</span>
+                    <span class="tt-band">Orangestar</span>
+                </div>
+                <div class="tt-block" style="top: 300px; height: 50px;">
+                    <span class="tt-time">18:00 - 18:50</span>
+                    <span class="tt-band">僕の人生オムニバス</span>
+                </div>
+                <div class="tt-block special" style="top: 360px; height: 100px;">
+                    <span class="tt-time">19:00 - 21:00</span>
+                    <span class="tt-band">???</span>
+                </div>
+            </div>
+
         </div>
     </section>
 
@@ -121,7 +250,7 @@
 
         <div class="reservation-banner fade-up" style="margin-top: 20px;">
             <p class="res-catch">＼ オリジナルTシャツ予約開始！ ／</p>
-            <p class="res-limit">3/1(日) 23:59 締切！</p>
+            <p class="res-limit">ご好評につき予約延長！数量限定販売！</p>
             <div id="openReserveTshirtModal" class="reserve-btn">Tシャツを<br>予約する</div>
             <p class="res-note">※完全受注生産 / 当日会場支払い</p>
         </div>
@@ -217,7 +346,7 @@
                     お部屋のインテリアや魔除けに最適。<br>
                     <strong style="color: var(--primary-red);">【超豪華！3大予約特典】</strong><br>
                     ① 特別映像<br>
-                    ② 温泉旅行（旅費負担）<br>
+                    ② 温泉旅行<br>
                     ③ サイン色紙<br>
                     <br>
                     ※画像はイメージです。<br>
@@ -286,7 +415,7 @@
                 
                 <div id="gameLocked" class="game-locked">
                     <p class="game-intro">SECRET GAME</p> <p class="coming-soon-text">COMING SOON...</p>
-                    <p class="unlock-time-text">2026.03.15 19:00 UNLOCK</p>
+                    <p class="unlock-time-text">2026.03.15 17:00 UNLOCK</p>
                 </div>
 
                 <div id="gameUnlocked" style="display:none;">
@@ -627,7 +756,7 @@
                     <p style="color: #d2691e; font-weight: bold; text-align: center; margin-bottom: 10px; font-size: 1.1rem;">★ 予約購入者限定 豪華特典 ★</p>
                     <ul style="font-size: 0.95rem; text-align: left; padding-left: 20px; line-height: 1.6; color: #333;">
                         <li><strong>特別映像</strong></li>
-                        <li><strong>温泉旅行</strong> (旅費負担)</li>
+                        <li><strong>温泉旅行</strong></li>
                         <li><strong>サイン色紙</strong></li>
                     </ul>
                 </div>
