@@ -1301,7 +1301,7 @@ window.moveToReserve = function() {
         } else if (goodsName.includes('パネル') || goodsName.includes('テラドカズマ')) {
             const resPanelModal = document.getElementById('reservePanelModal');
             if (resPanelModal) {
-                if (new Date() > new Date("2026-03-01T23:59:59")) { 
+                if (new Date() > new Date("2026-03-31T23:59:59")) { 
                     alert("等身大パネルの予約受付は終了しました");
                     return;
                 }
