@@ -396,6 +396,27 @@ function checkGameRelease() {
 }
 checkGameRelease();
 
+const gameLockedDiv = document.getElementById('gameLocked');
+const gameUnlockedDiv = document.getElementById('gameUnlocked');
+
+if (gameLockedDiv) {
+    gameLockedDiv.addEventListener('click', () => {
+        // まだ公開時間前の場合だけパスワードを聞く
+        if (new Date() < GAME_RELEASE_DATE) {
+            const pass = prompt("【関係者テスト用】\nパスワードを入力してください：");
+            
+            // パスワードが「zero2026」だったらロックを強制解除（好きなパスワードに変更してください）
+            if (pass === "zero2026") { 
+                gameLockedDiv.style.display = 'none';
+                gameUnlockedDiv.style.display = 'block';
+                alert("ロックを解除しました！テストプレイを開始できます。");
+            } else if (pass !== null && pass !== "") {
+                alert("パスワードが違います。");
+            }
+        }
+    });
+}
+
 // 画面切り替え
 function showScreen(screen) {
     document.querySelectorAll('.game-screen').forEach(s => s.classList.remove('active'));
