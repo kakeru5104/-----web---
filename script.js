@@ -341,12 +341,12 @@ if (openAppModalBtn) {
 
 const GAME_GAS_URL = 'https://script.google.com/macros/s/AKfycby-46vg8QCOZ7cvpRpZDZVXZPKZAWZISOXEesPkH7F60ALxYASb3ErOlkUF3PSVHux_Qg/exec';
 
-const GAME_RELEASE_DATE = new Date("2026-03-15T18:00:00"); 
+const GAME_RELEASE_DATE = new Date("2026-03-15T16:00:00"); 
 
 const memberNames = [
     "松岡みさと",
     "阪本 陸",
-    "五味駿介",
+    "ごみしゅん",
     "植田匠",
     "白井皐矢",
     "竹内駿瑠",
@@ -357,10 +357,10 @@ const memberNames = [
     "新井大貴",
     "梶山 侑里",
     "吉川魁星",
-    "寺戸一真",
+    "永岡俊祐",
     "橋本彩乃",
     "的場正",
-    "永岡俊祐"
+    "寺戸一真"
 ];
 
 // 変数
@@ -399,23 +399,23 @@ checkGameRelease();
 const gameLockedDiv = document.getElementById('gameLocked');
 const gameUnlockedDiv = document.getElementById('gameUnlocked');
 
-if (gameLockedDiv) {
-    gameLockedDiv.addEventListener('click', () => {
-        // まだ公開時間前の場合だけパスワードを聞く
-        if (new Date() < GAME_RELEASE_DATE) {
-            const pass = prompt("【関係者テスト用】\nパスワードを入力してください：");
+// if (gameLockedDiv) {
+//     gameLockedDiv.addEventListener('click', () => {
+//         // まだ公開時間前の場合だけパスワードを聞く
+//         if (new Date() < GAME_RELEASE_DATE) {
+//             const pass = prompt("【関係者テスト用】\nパスワードを入力してください：");
             
-            // パスワードが「zero2026」だったらロックを強制解除（好きなパスワードに変更してください）
-            if (pass === "zero2026") { 
-                gameLockedDiv.style.display = 'none';
-                gameUnlockedDiv.style.display = 'block';
-                alert("ロックを解除しました！テストプレイを開始できます。");
-            } else if (pass !== null && pass !== "") {
-                alert("パスワードが違います。");
-            }
-        }
-    });
-}
+//             // パスワードが「zero2026」だったらロックを強制解除（好きなパスワードに変更してください）
+//             if (pass === "zero2026") { 
+//                 gameLockedDiv.style.display = 'none';
+//                 gameUnlockedDiv.style.display = 'block';
+//                 alert("ロックを解除しました！テストプレイを開始できます。");
+//             } else if (pass !== null && pass !== "") {
+//                 alert("パスワードが違います。");
+//             }
+//         }
+//     });
+// }
 
 // 画面切り替え
 function showScreen(screen) {
@@ -539,6 +539,24 @@ btnQuizNext.addEventListener('click', () => {
 });
 
 // -----------------------------------------
+// 自分の回答リスト生成機能
+// -----------------------------------------
+function generateUserAnswerList(details) {
+    if (!details) return ""; // エラー回避
+    
+    let html = "<p style='font-weight:bold; margin-bottom:10px; border-bottom:2px solid #ccc; padding-bottom:5px;'>【答え合わせ】</p>";
+    
+    details.forEach((item, index) => {
+        html += `<div class="answer-item">
+            <p class="answer-q">Q${index + 1}. ${item.q}</p>
+            <p>あなたの回答: <span class="${item.isCorrect ? 'answer-correct' : 'answer-wrong'}">${item.userAnswer}</span></p>
+            ${!item.isCorrect ? `<p class="answer-true-ans">正解: ${item.correctAnswer}</p>` : ''}
+        </div>`;
+    });
+    return html;
+}
+
+// -----------------------------------------
 // 3. 採点・結果発表
 // -----------------------------------------
 async function finishGame() {
@@ -567,8 +585,9 @@ async function finishGame() {
 
         const score = result.score;
         const maxScore = result.maxScore;
+        const details = result.details; // ★追加：GASから受け取った正解データ
 
-    // データベース(Supabase)に得点を保存する
+        // データベース(Supabase)に得点を保存する
         const { error } = await sb
             .from('game_results')
             .insert([
@@ -582,14 +601,17 @@ async function finishGame() {
         if(error) console.error('保存エラー:', error);
 
         localStorage.setItem(`quiz_played_${currentMemberName}`, 'true');
-            
-        if(error) console.error('保存エラー:', error);
 
         btnQuizNext.style.display = 'block';
 
         if (score === maxScore) {
             document.getElementById('resultMemberName').textContent = currentMemberName;
             document.getElementById('winnerNameDisplay').textContent = playerName;
+            
+            // 答え合わせリストを表示
+            const answersElSpecial = document.getElementById('resultAnswersSpecial');
+            if (answersElSpecial) answersElSpecial.innerHTML = generateUserAnswerList(details);
+
             showScreen(screenResultSpecial);
         } else {
             document.getElementById('resultScore').textContent = `${score} / ${maxScore}`;
@@ -602,6 +624,11 @@ async function finishGame() {
             } else {
                 msgEl.textContent = "出直してこい！";
             }
+
+            // 答え合わせリストを表示
+            const answersElNormal = document.getElementById('resultAnswersNormal');
+            if (answersElNormal) answersElNormal.innerHTML = generateUserAnswerList(details);
+
             showScreen(screenResultNormal);
         }
 
@@ -611,13 +638,18 @@ async function finishGame() {
         showScreen(screenStart);
         btnQuizNext.style.display = 'block';
     }
-
-
 }
 
 document.getElementById('btnBackToStart').addEventListener('click', () => showScreen(screenStart));
-document.getElementById('btnGameRetry').addEventListener('click', () => showScreen(screenStart));
-document.getElementById('btnGameRetrySpecial').addEventListener('click', () => showScreen(screenStart));
+document.getElementById('btnGameRetry').addEventListener('click', () => {
+    createMemberList(); // リストを最新状態にしてから画面移動
+    showScreen(screenSelect);
+});
+document.getElementById('btnGameRetrySpecial').addEventListener('click', () => {
+    createMemberList(); // リストを最新状態にしてから画面移動
+    showScreen(screenSelect);
+});
+
 
 // =========================================
 // 6. スプラッシュ画面制御

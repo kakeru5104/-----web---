@@ -419,7 +419,7 @@
                 </div>
 
                 <div id="gameUnlocked" style="display:none;">
-                    <p class="game-intro">※解禁前です</p>
+                    <p class="game-intro">推しメンクイズ大会</p>
                     
                     <input type="text" id="gamePlayerName" class="game-name-input" placeholder="ニックネームを入力" maxlength="15">
                     <div class="game-btn-start" id="btnToSelect">START</div>
@@ -447,19 +447,23 @@
                 <button id="btnQuizNext" class="quiz-next-btn" disabled>決定 (NEXT)</button>
             </div>
 
-            <div id="gameResultNormal" class="game-screen">
+<div id="gameResultNormal" class="game-screen">
                 <p class="result-label">RESULT</p>
                 <div id="resultScore" class="result-score">0 / 8</div>
                 <p id="resultMsg" class="result-msg">ドンマイ！</p>
+                
+                <div id="resultAnswersNormal" class="result-answers-list"></div>
+
                 <div class="game-btn-retry" id="btnGameRetry">RETRY</div>
             </div>
 
-<div id="gameResultSpecial" class="game-screen special-screen">
+            <div id="gameResultSpecial" class="game-screen special-screen">
                 <h3 class="special-title">PERFECT!!</h3>
-                
                 <p class="special-msg">全問正解達成！<br>あなたは本物の <span id="resultMemberName" style="color:red; font-weight:bold;"></span> のファンです。</p>
-                
                 <div class="winner-name-display" id="winnerNameDisplay"></div>
+
+                <div id="resultAnswersSpecial" class="result-answers-list"></div>
+
                 <div class="game-btn-retry" id="btnGameRetrySpecial">RETRY</div>
             </div>
 
