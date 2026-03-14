@@ -341,7 +341,7 @@ if (openAppModalBtn) {
 
 const GAME_GAS_URL = 'https://script.google.com/macros/s/AKfycby-46vg8QCOZ7cvpRpZDZVXZPKZAWZISOXEesPkH7F60ALxYASb3ErOlkUF3PSVHux_Qg/exec';
 
-const GAME_RELEASE_DATE = new Date("2026-03-15T16:00:00"); 
+const GAME_RELEASE_DATE = new Date("2026-03-15T16:45:00"); 
 
 const memberNames = [
     "松岡みさと",
@@ -362,6 +362,163 @@ const memberNames = [
     "的場正",
     "寺戸一真"
 ];
+
+// ★ 問題集（オフライン動作用にJS内に直接保持）
+const allMemberQuizData = {
+    "新井大貴": [
+        { q: "最後の晩餐には何を選ぶ？", options: ["焼肉", "餃子", "ご飯と味噌汁", "カレー"], answer: "餃子" },
+        { q: "1番好きな寿司ネタは？", options: ["えんがわ", "ハンバーグ", "うに", "赤貝"], answer: "赤貝" },
+        { q: "自分企画で1番印象に残っているバンドは？", options: ["Enfants", "キュウソネコカミ", "女王蜂", "チェンソーマンオムニバス"], answer: "女王蜂" },
+        { q: "よく使う広島弁｢たいぎい｣ 正しい意味はどれ？", options: ["眠たい", "気まずい、居心地が悪い", "忙しい、時間がない", "めんどくさい、だるい"], answer: "めんどくさい、だるい" },
+        { q: "1番好きなポケモンは？", options: ["シャンデラ", "ゲンガー", "ユキメノコ", "ムウマージ"], answer: "シャンデラ" },
+        { q: "やったことあるバイトで正しいのはどれ？", options: ["レンタル彼氏", "治験", "CMのエキストラ", "キャバクラの黒服"], answer: "キャバクラの黒服" },
+        { q: "1番吸っている煙草の銘柄は？", options: ["セブンスター", "ハイライト", "金ピース", "赤マル"], answer: "ハイライト" }
+    ],
+    "松岡みさと": [
+        { q: "私がやったことない髪色はどれでしょう？", options: ["ピンク", "紫", "ホワイトブロンド", "グレー"], answer: "ホワイトブロンド" },
+        { q: "私の家にない楽器は誰でしょう", options: ["クラリネット", "横笛", "サックス", "オーボエ"], answer: "クラリネット" },
+        { q: "2025年の１年間で何杯ラーメンを食べたでしょう？", options: ["約150杯", "約100杯", "約50杯", "約200杯"], answer: "約150杯" },
+        { q: "私が習ったことない習い事はどれでしょう", options: ["バレエ", "茶道", "そろばん", "体操"], answer: "そろばん" },
+        { q: "大学生になってから行ったスタバの店舗数は何店舗でしょう", options: ["125店舗", "165店舗", "55店舗", "95店舗"], answer: "95店舗" },
+        { q: "ライブ衣装で着たことがないコスプレはどれ？", options: ["浴衣", "制服", "着ぐるみ", "メイド服"], answer: "浴衣" },
+        { q: "私が今までアルバイトしたことがないのはどれ？", options: ["郵便局", "居酒屋", "カフェ", "焼肉屋"], answer: "カフェ" }
+    ],
+    "阪本 陸": [
+        { q: "わたしの出身はどこでしょう", options: ["東京", "兵庫", "京都", "大阪"], answer: "大阪" },
+        { q: "好きな食べ物は何でしょう", options: ["鶏肉", "鮭", "納豆", "卵"], answer: "卵" },
+        { q: "今年の1月に1番聞いたバンドは何でしょう(Apple music準拠)", options: ["civilian", "backnumber", "米津玄師", "THE ORAL CIGARETTES"], answer: "civilian" },
+        { q: "苦手なのはどれでしょう", options: ["虫触ること", "人前で話すこと", "朝起きること", "人を待つこと"], answer: "人前で話すこと" },
+        { q: "好きな動物は何でしょう", options: ["ハムスター", "猫", "犬", "うさぎ"], answer: "猫" },
+        { q: "いつからベースを始めたでしょう", options: ["大学2回生", "高校1年生", "大学１回生", "中学3年生"], answer: "大学１回生" },
+        { q: "今までに経験したアルバイトの数はいくつでしょう？", options: ["1個", "2個", "3個", "5個"], answer: "2個" }
+    ],
+    "白井皐矢": [
+        { q: "私の出身地はどこでしょう？", options: ["京都府京都市伏見区葭島渡場島町32", "兵庫県宝塚市駒の町1-1", "奈良県奈良市北1丁目37-1", "奈良県奈良市あやめ池南6丁目6-43"], answer: "奈良県奈良市あやめ池南6丁目6-43" },
+        { q: "私の「皐矢」という名前の由来はなんでしょう？", options: ["水際の病院で生まれたから(皐には水際という意味がある)", "5月生まれだから(旧暦5月の和風月名は皐月)", "競馬の「皐月賞」から", "皐魚の泣という故事成語から(親の死を嘆き悲しんで泣くたとえ)"], answer: "競馬の「皐月賞」から" },
+        { q: "私がしたことのない習い事はなーんだっ！？", options: ["習字", "サッカー", "体操", "テニス"], answer: "サッカー" },
+        { q: "私の1番好きなガンダム作品はなーんだって言ってんだ！？", options: ["機動戦士ガンダムSEED", "新機動戦記ガンダムW", "機動戦士ガンダム", "機動武闘伝Gガンダム"], answer: "機動武闘伝Gガンダム" },
+        { q: "最近Twitchで配信している白井ですがゲーム発展国での自分の会社名はなーんだ", options: ["雷光堂", "SIRA", "LEVEL508", "KOYAMI"], answer: "雷光堂" },
+        { q: "私の口癖ではないものはなんでしょう", options: ["ぷり〜", "うっひょ〜⤴︎", "それはちょっと…", "〜だって言ってんだって言ってんだ"], answer: "ぷり〜" },
+        { q: "私の推しではないのは誰でしょーかっ！？", options: ["惣流・アスカ・ラングレー(エヴァンゲリオン)", "中野三玖(五等分の花嫁)", "ダイワスカーレット(ウマ娘)", "澤村・スペンサー・英梨々(冴えない彼女の育て方)"], answer: "中野三玖(五等分の花嫁)" }
+    ],
+    "梶山 侑里": [
+        { q: "掛け持ち先のサークルはなんでしょう？", options: ["アカペラ", "違う軽音", "弓道", "吹奏楽"], answer: "アカペラ" },
+        { q: "好きなお肉はなんでしょう？", options: ["豚肉", "鹿肉", "牛肉", "鶏肉"], answer: "牛肉" },
+        { q: "私の学部はどこでしょう？", options: ["法学部", "社会学部", "社会安全学部", "文学部"], answer: "文学部" },
+        { q: "好きな飲み物はなんでしょう？", options: ["センブリ茶", "スイカジュース", "紅茶", "コーヒー"], answer: "紅茶" },
+        { q: "好きな色はなんでしょう", options: ["黄色", "ねずみ色", "黒色", "虹色"], answer: "黄色" },
+        { q: "私の出身地はどこでしょう？", options: ["京都府", "滋賀県", "奈良県", "兵庫県"], answer: "兵庫県" },
+        { q: "好きなお菓子はなんでしょう", options: ["ぱりんこ", "ぷっちょ", "いちごみるく飴", "カントリーマウム"], answer: "ぱりんこ" }
+    ],
+    "吉野覚旨": [
+        { q: "僕のスタジオYOUの中で1番好きなスタジオはどこでしょう？", options: ["Fスタジオ", "Dスタジオ", "Cスタジオ", "Hスタジオ"], answer: "Dスタジオ" },
+        { q: "スプレッドシートに書いてある好きな夜系バンドはどれでしょう？", options: ["YOASOBI", "月詠み", "ずっと真夜中でいいのに。", "三月のパンタシア"], answer: "月詠み" },
+        { q: "今私が海外に行きたい国はどこでしょう？", options: ["ボスニア・ヘルツェゴビナ", "ドイツ", "スペイン", "クロアチア"], answer: "クロアチア" },
+        { q: "Mrs. GREEN APPLEで初めて「ピアノカバー」をした曲は何か？", options: ["アウフヘーベン", "点描の唄", "愛情と矛先", "我逢人"], answer: "我逢人" },
+        { q: "実は一度もコピーをした事がないバンドはどれか？", options: ["Mr.children", "RADWIMPS", "King Gnu", "back number"], answer: "RADWIMPS" },
+        { q: "子供の頃にピアノの発表会で弾いたクラシックはどれか？", options: ["エリーゼのために", "子犬のワルツ", "アイネ・クライネ・ナハトムジーク", "トルコ行進曲"], answer: "アイネ・クライネ・ナハトムジーク" },
+        { q: "ちなみに私の出身地はどこでしょう？(3歳まで居ました)", options: ["ネパール", "韓国", "中国", "台湾"], answer: "韓国" }
+    ],
+    "吉川魁星": [
+        { q: "実は僕の右目の視力は1.0ある", options: ["盲目", "ない", "ある", "最近測ってないから分からない"], answer: "最近測ってないから分からない" },
+        { q: "僕の身長は175センチあるでしょうか？", options: ["ある", "最近測ってないから分からない", "ない", "チビスケが"], answer: "最近測ってないから分からない" },
+        { q: "小学生の時に卒業式で発表した将来の夢", options: ["滑り台", "サッカー選手", "政治家", "特に無し"], answer: "特に無し" },
+        { q: "好きなジャンプの漫画は？", options: ["デスノート", "ボボボーボ・ボーボボ", "ワンピース", "ジョジョ"], answer: "デスノート" },
+        { q: "太鼓の？", options: ["どちらでもない", "マイバチ所持者", "達人", "素人"], answer: "どちらでもない" },
+        { q: "今の眼鏡は何代目でしょう？", options: ["分からない", "2代目", "5代目", "裸眼"], answer: "分からない" },
+        { q: "僕のMBTIは？", options: ["PUBG", "ZARA", "ACDC", "SDGs"], answer: "SDGs" }
+    ],
+    "菅原奈央": [
+        { q: "菅原が高校軽音楽部入部時、最初に志望していたパートはどれ？", options: ["キーボード", "ベース", "ドラム", "ギター"], answer: "ドラム" },
+        { q: "菅原が生まれた場所はどこ？", options: ["兵庫県", "山梨県", "宮城県", "石川県"], answer: "山梨県" },
+        { q: "菅原が中学の時入っていた部活は何？", options: ["吹奏楽部", "テニス部", "バレー部", "写真部"], answer: "テニス部" },
+        { q: "この中で菅原が取得したことのない検定はどれ？", options: ["漢字検定2級", "色彩検定4級", "そろばん検定準1級", "けん玉検定5級"], answer: "色彩検定4級" },
+        { q: "菅原の裸眼視力に最も近いのはどれ？ (学校の視力検査：Aは1.0以上、Bは0.9〜0.7、Cは0.6〜0.3、Dは0.3未満)", options: ["1.0", "0.01", "0.5", "0.1"], answer: "0.01" },
+        { q: "菅原の苦手なものは？", options: ["コーヒー", "グレープフルーツ", "漬物", "かに味噌"], answer: "コーヒー" },
+        { q: "菅原が現在使用しているキーボードの愛称は何？", options: ["クララ", "おんじ", "ハイジ", "ペーター"], answer: "おんじ" }
+    ],
+    "竹内駿瑠": [
+        { q: "私の所属学科はどれでしょう？", options: ["電気電子情報工学科", "建築学科", "機械工学科", "環境都市工学科"], answer: "電気電子情報工学科" },
+        { q: "私の使用ギターのメーカーはどこでしょう", options: ["Ibanez", "fender", "Bacchus", "PRS"], answer: "Ibanez" },
+        { q: "私が最近欲しいものはどれでしょう？", options: ["単一指向性マイク", "ワイヤレス充電器", "一眼レフ", "Mac Book Pro"], answer: "一眼レフ" },
+        { q: "私が人生で最初に購入したボードゲームはどれでしょう", options: ["人狼", "テストプレイなんてしてないよ", "人生ゲーム", "ナンジャモンジャ"], answer: "人狼" },
+        { q: "私の子供の頃の将来の夢は？", options: ["フットボール選手", "サラリーマン", "絵本作家", "歌のおにいさん"], answer: "サラリーマン" },
+        { q: "私が昔飼っていたペットはどれでしょう？", options: ["ハリネズミ", "ヤドカリ", "カマキリ", "チンチラ"], answer: "ヤドカリ" },
+        { q: "私のスマブラの持ちキャラはどれでしょう", options: ["ピクミン&オリマー", "ロゼッタ&チコ", "ネス", "リドリー"], answer: "ネス" }
+    ],
+    "植田匠": [
+        { q: "中学時代の部活はなんでしょう？", options: ["バレーボール", "卓球", "バドミントン", "ソフトテニス"], answer: "ソフトテニス" },
+        { q: "初めてやったゲームはなんでしょう", options: ["妖怪ウォッチ", "スーパーマリオ3Dランド", "ドラゴンクエスト9", "ポケットモンスターブラック"], answer: "ポケットモンスターブラック" },
+        { q: "1番好きなポケモンはなんでしょう？", options: ["ボーマンダ", "メタグロス", "バンギラス", "ボスゴドラ"], answer: "ボスゴドラ" },
+        { q: "関大前で1番好きなお店はどこでしょう", options: ["きりん寺", "憲兵屋", "ディアブロ", "キラメキ"], answer: "きりん寺" },
+        { q: "小学生の時の将来の夢はなんでしょう", options: ["パン屋さん", "警察官", "宇宙飛行士", "水族館のスタッフ"], answer: "宇宙飛行士" },
+        { q: "1番最後にバイトしてたのはどこでしょう？", options: ["TOHOシネマズ", "Zoff", "ホテルのレストラン(クベール)", "ダイコクドラッグ"], answer: "TOHOシネマズ" },
+        { q: "初めてライブハウスでライブを見たのはどのアーティストでしょう", options: ["MONGOL800", "THE ORAL CIGARETTES", "ヤバイTシャツ屋さん", "SUPER BEAVER"], answer: "MONGOL800" }
+    ],
+    "橋本彩乃": [
+        { q: "飲みで1杯目に飲むお酒はどれでしょう", options: ["サワー", "ビール", "ハイボール", "梅酒"], answer: "ハイボール" },
+        { q: "高校の時何のマネージャーをしていたでしょう", options: ["陸上", "野球", "バスケ", "バレー"], answer: "バスケ" },
+        { q: "好きなチェーン店はどれでしょう", options: ["マクド", "サイゼ", "すき家", "くら寿司"], answer: "すき家" },
+        { q: "小さい時の将来の夢はなんでしょう", options: ["ケロロ軍曹", "忍者", "人魚", "ケーキ屋さん"], answer: "忍者" },
+        { q: "好きなアルファベットはなんでしょう", options: ["V", "O", "X", "Q"], answer: "Q" },
+        { q: "男の子として生まれていた場合どの名前がつけられていたでしょう", options: ["たかひろ", "せいじ", "まなぶ", "よしひで"], answer: "よしひで" },
+        { q: "好きな体の部位はどこでしょう", options: ["ひじ", "ひざ", "ふくらはぎ", "かかと"], answer: "かかと" }
+    ],
+    "永岡俊祐": [
+        { q: "出身地はどこでしょう", options: ["岸和田市", "岸和田市", "泉佐野市", "和歌山市"], answer: "和歌山市" },
+        { q: "誕生月は？", options: ["11月", "7月", "6月", "4月"], answer: "7月" },
+        { q: "ギターを始めて最初にコピーした曲は？", options: ["20th century boy (T.Rex)", "ジョニーＢグッド(チャック・ベリー)", "Mステのテーマ(松本孝弘)", "marionette(BOØWY)"], answer: "marionette(BOØWY)" },
+        { q: "中学２年でギターを始めたが、その理由は？", options: ["女の子にモテたかったから", "『けいおん！』にハマったから", "父に半強制で始めさせられたから", "中学の同級生がバンドを組んでいて影響されたから"], answer: "父に半強制で始めさせられたから" },
+        { q: "1番面白いイケメンだと思うZEROの同期男子は？", options: ["こうや君", "ごみしゅん君", "あらい君", "かいせい君"], answer: "あらい君" },
+        { q: "音楽が題材のアニメで1番好きなのは？", options: ["けいおん！", "ガールズバンドクライ", "BanG_Dream!(バンドリ)シリーズ", "響けユーフォニアム"], answer: "ガールズバンドクライ" },
+        { q: "(激ムズ！)僕と出身高校が同じプロ野球選手(引退済みも含む)は誰？", options: ["中村紀洋(元近鉄など)", "筒香嘉智(DeNA)", "小久保裕紀(元ダイエー、巨人など)", "西川遥輝(日本ハム)"], answer: "小久保裕紀(元ダイエー、巨人など)" }
+    ],
+    "五味駿介": [
+        { q: "僕の下の名前は何でしょう", options: ["駿介", "駿之介", "駿太", "駿"], answer: "駿介" },
+        { q: "さっき僕の企画で演奏した最後の曲は何でしょう", options: ["bloom", "明日にだって", "ゆうな", "夕暮れ先生"], answer: "bloom" },
+        { q: "ギターとベース、ライブでの出演回数はどちらが多いでしょう", options: ["ベース", "ギター", "どちらも弾いたことがない", "同じ"], answer: "同じ" },
+        { q: "僕が持っている阪神のユニフォームは何という選手のユニフォームでしょう", options: ["佐藤（背番号8）", "森下（背番号1）", "近本（背番号5）", "大山（背番号3）"], answer: "佐藤（背番号8）" },
+        { q: "居酒屋で最近こればっかり飲んでいるというお酒は何でしょう", options: ["ジンジャーハイ", "カルピスサワー", "ゆずサワー", "カシスオレンジ"], answer: "カルピスサワー" },
+        { q: "気に入って使っているメインのエフェクターに描かれているイラスト", options: ["熊", "猫", "魚", "鳥"], answer: "魚" },
+        { q: "ギター/ベースケースに【付けていない】キーホルダー", options: ["ウタマロせっけん", "七味", "キャラメルコーン", "チキンラーメン"], answer: "ウタマロせっけん" }
+    ],
+    "森夏海": [
+        { q: "出身地(都道府県)は？", options: ["大阪", "兵庫", "滋賀", "京都"], answer: "大阪" },
+        { q: "出身地(市)は？", options: ["大阪市", "寝屋川市", "交野市", "岸和田市"], answer: "寝屋川市" },
+        { q: "ドラムを始めたのは？", options: ["小学校から", "高校から", "中学校から", "大学から"], answer: "中学校から" },
+        { q: "好きな食べ物は？", options: ["辛いもの", "牡蠣", "お寿司", "お餅"], answer: "辛いもの" },
+        { q: "高校の時に5段階評価で2を取っていた科目は？", options: ["美術", "物理", "数学", "倫理"], answer: "倫理" },
+        { q: "好きなサンリオキャラは？", options: ["ポムポムプリン", "ハンギョドン", "ニャイニュエニョン", "こぎみゅん"], answer: "ポムポムプリン" },
+        { q: "ドラムを始めたきっかけのバンドは？", options: ["ゲスの極み乙女。", "[Alexandros]", "フレデリック", "UNISON SQUARE GARDEN"], answer: "[Alexandros]" }
+    ],
+    "的場正": [
+        { q: "僕の下の名前はなんでしょう", options: ["ただし", "ひろし", "たかとし", "たかし"], answer: "ただし" },
+        { q: "僕の通学時間は？", options: ["45分", "30分", "15分", "1時間"], answer: "15分" },
+        { q: "僕が1番最初に始めた楽器はなんでしょう", options: ["ベース", "ピアノ", "ガットギター", "アコースティックギター"], answer: "アコースティックギター" },
+        { q: "僕が高校の頃に入っていた部活は？", options: ["ワンダーフォーゲル部", "軽音部", "生物部", "水泳部"], answer: "生物部" },
+        { q: "僕の1番昔から推しているベーシストは誰でしょう？", options: ["やまもとひかる(Aooo)", "福田裕務(Suspended 4th)", "二家本亮介(ずっと真夜中でいいのに。)", "亀田誠治(東京事変)"], answer: "やまもとひかる(Aooo)" },
+        { q: "僕の趣味ではないものはなんでしょう", options: ["スキー", "園芸", "釣り", "サイクリング"], answer: "スキー" },
+        { q: "僕が1番好きな食べ物は？", options: ["牛タン", "家系ラーメン", "サバの味噌煮", "オムライス"], answer: "サバの味噌煮" }
+    ],
+    "寺戸一真": [
+        { q: "私の出身地はどこでしょう？", options: ["奈良県生駒市小明町1314", "奈良県天理市嘉幡町600-1", "奈良県大和郡山市下三橋町741", "奈良県生駒郡安堵町8-14"], answer: "奈良県生駒郡安堵町8-14" },
+        { q: "私が幼い頃やっていなかったことはなんでしょう？", options: ["捕まえた虫の中で1番泳げるのはどれだ選手権", "他人の家の桃を盗る", "隣家のたっくんと一緒に亀をいじめていた", "夏祭りに行けなかったので町中の蜘蛛の巣を集めてをわたあめを作る"], answer: "他人の家の桃を盗る" },
+        { q: "私の大学の授業に遅刻した時の行動はどれ？", options: ["ムカつくので一旦USJで流れてるBGMを聞いて心を穏やかにする", "ムカつくので帰路にあるスーパーで堅あげポテトとコーラを買って帰る", "ムカつくのでマクドに行って約1時間遅刻していく", "ムカつくのでスケジュールから「授業」を消す"], answer: "ムカつくので帰路にあるスーパーで堅あげポテトとコーラを買って帰る" },
+        { q: "私のアレルギーはどれでしょう？", options: ["かに🦀", "青色🟦", "えび🦐", "キーキーうるさいおじさん🦸‍♀️"], answer: "えび🦐" },
+        { q: "私の1番好きな漫画のセリフはどれでしょう？", options: ["...君のような勘のいいガキは嫌いだよ", "ふふふ...まったく人をイライラさせるのがうまいやつらだ......", "俺は「納得」したいだけだ　「納得」は全てに優先するぜっ‼︎", "もうこれで終わってもいい　だからありったけを"], answer: "俺は「納得」したいだけだ　「納得」は全てに優先するぜっ‼︎" },
+        { q: "私が1番好きなかけるんのモノマネはなんでしょう？", options: ["遊☆戯☆王デュエルモンスターズの海馬瀬人", "鬼滅の刃に出てくる鬼殺隊員に伝令を伝える鎹鴉", "呪術廻戦「陀艮戦」にて敵の領域展開から逃げるために共に戦う仲間へ向けた「集合」の号令", "新・豪血寺一族 -煩悩解放- レッツゴー！陰陽寺"], answer: "新・豪血寺一族 -煩悩解放- レッツゴー！陰陽寺" },
+        { q: "もし生まれ変わるなら何？", options: ["ビスケット・オリバ", "五条悟", "トラファルガー・D・ワーテル・ロー", "轟焦凍"], answer: "五条悟" }
+    ],
+    "吉村由宇": [
+        { q: "小中高10年間やってたスポーツは？", options: ["バスケ🏀", "野球⚾️", "サッカー⚽️", "バレー🏐"], answer: "野球⚾️" },
+        { q: "１回生の時半年だけ掛け持ちしてたサークルは？", options: ["イベントサークル🎳", "テニスサークル🎾", "バドミントンサークル🏸", "別の軽音サークル🎸"], answer: "バドミントンサークル🏸" },
+        { q: "1番好きな漫画はONEPIECEですが、その中で最も好きなのは何編でしょうか", options: ["エルバフ編🌴", "ドレスローザ編🦩", "ウルージの過去編🕰", "北の海編🌊"], answer: "ドレスローザ編🦩" },
+        { q: "初めてライブに行ったアーティストは？", options: ["ONE OK ROCK🔥", "米津玄師🍋", "ヨルシカ🌙", "BUMP OF CHICKEN🔭"], answer: "ONE OK ROCK🔥" },
+        { q: "大体なんでもOKと言いがちですが、この中で拒否する選択肢は？", options: ["ピノを6個中5個あげる", "一蘭を7杯たべる", "朝8時からバイトの前日飲み&カラオケオール", "ヨーロッパ7泊8日の次の日から別の旅行2泊3日"], answer: "一蘭を7杯たべる" },
+        { q: "この中で経験したことがないことは？", options: ["富士山登頂", "四国１周", "九州１周", "バンジージャンプ"], answer: "バンジージャンプ" },
+        { q: "あまり共感されないマック食べるときのこだわりは？", options: ["ナゲット15ピースは必ずマスタード3つにする", "サイドメニューをえだまめコーンにする", "ポテトを爆速で食いきってからバーガーを食べる", "アンケートで無料クーポンを必ずもらってから注文する"], answer: "ポテトを爆速で食いきってからバーガーを食べる" }
+    ]
+};
 
 // 変数
 let currentMemberName = "";
@@ -445,8 +602,8 @@ function createMemberList() {
 }
 
 // 2. 初期化
+// 2. 初期化 (通信なしの完全オフライン対応)
 async function startQuiz(memberName) {
-
     if (localStorage.getItem(`quiz_played_${memberName}`)) {
         alert(`${memberName} のクイズはすでに挑戦済みです`);
         return;
@@ -456,37 +613,22 @@ async function startQuiz(memberName) {
     userAnswers = []; // 回答リセット
     document.getElementById('targetMemberName').textContent = memberName;
     
-    // ロード中の表示
-    document.getElementById('quizText').textContent = "問題を読み込み中...";
-    document.getElementById('quizOptions').innerHTML = "";
+    // JSのデータから直接クイズリストを取得
+    const quizData = allMemberQuizData[memberName];
+    
+    if (!quizData) {
+        alert("問題データが見つかりません。");
+        showScreen(screenStart);
+        return;
+    }
+
+    // 取得したデータをそのままセット
+    currentQuizList = quizData;
+    currentQuizIndex = 0;
+    
     btnQuizNext.disabled = true;
     showScreen(screenQuiz);
-
-    try {
-        const response = await fetch(GAME_GAS_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain' },
-            body: JSON.stringify({ action: "get_questions", member: memberName })
-        });
-        
-        const result = await response.json();
-
-        if (result.error) {
-            alert(result.error);
-            showScreen(screenStart);
-            return;
-        }
-
-        // 答えが入っていない安全な問題リストを受け取る
-        currentQuizList = result.quizData;
-        currentQuizIndex = 0;
-        loadQuestion();
-
-    } catch (error) {
-        console.error("通信エラー", error);
-        alert("問題の取得に失敗しました。");
-        showScreen(screenStart);
-    }
+    loadQuestion(); // 問題を表示
 }
 
 function loadQuestion() {
@@ -541,102 +683,81 @@ btnQuizNext.addEventListener('click', () => {
 // -----------------------------------------
 // 自分の回答リスト生成機能
 // -----------------------------------------
-function generateUserAnswerList(details) {
-    if (!details) return ""; // エラー回避
-    
+
+function generateUserAnswerList() {
     let html = "<p style='font-weight:bold; margin-bottom:10px; border-bottom:2px solid #ccc; padding-bottom:5px;'>【答え合わせ】</p>";
     
-    details.forEach((item, index) => {
+    currentQuizList.forEach((q, index) => {
+        const uAns = userAnswers[index] || "未回答";
+        const isCorrect = (q.answer === uAns);
+        
         html += `<div class="answer-item">
-            <p class="answer-q">Q${index + 1}. ${item.q}</p>
-            <p>あなたの回答: <span class="${item.isCorrect ? 'answer-correct' : 'answer-wrong'}">${item.userAnswer}</span></p>
-            ${!item.isCorrect ? `<p class="answer-true-ans">正解: ${item.correctAnswer}</p>` : ''}
+            <p class="answer-q">Q${index + 1}. ${q.q}</p>
+            <p>あなたの回答: <span class="${isCorrect ? 'answer-correct' : 'answer-wrong'}">${uAns}</span></p>
+            ${!isCorrect ? `<p class="answer-true-ans">正解: ${q.answer}</p>` : ''}
         </div>`;
     });
     return html;
 }
 
 // -----------------------------------------
-// 3. 採点・結果発表
+// 3. 採点・結果発表 (通信なしの完全オフライン対応)
 // -----------------------------------------
 async function finishGame() {
     document.getElementById('quizText').textContent = "採点中...";
     document.getElementById('quizOptions').innerHTML = "";
     btnQuizNext.style.display = 'none';
 
+    let score = 0;
+    const maxScore = currentQuizList.length;
+
+    // 端末の中で丸付けを行う
+    currentQuizList.forEach((q, index) => {
+        if (q.answer === userAnswers[index]) {
+            score++;
+        }
+    });
+
+    // データベース(Supabase)への保存は「電波がある時だけ」試みる
     try {
-        const response = await fetch(GAME_GAS_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain' },
-            body: JSON.stringify({ 
-                action: "submit_answers", 
-                member: currentMemberName,
-                answers: userAnswers // ユーザーが選んだ回答リストを送る
-            })
-        });
+        await sb.from('game_results').insert([{ 
+            player_name: playerName,
+            target_member: currentMemberName,
+            score: score
+        }]);
+    } catch (e) {
+        console.warn('オフラインのため成績送信をスキップしました');
+    }
 
-        const result = await response.json();
+    // プレイ済みの記録
+    localStorage.setItem(`quiz_played_${currentMemberName}`, 'true');
+    btnQuizNext.style.display = 'block';
 
-        if (result.error) {
-            alert(result.error);
-            showScreen(screenStart);
-            return;
-        }
+    // 結果画面の表示
+    if (score === maxScore) {
+        document.getElementById('resultMemberName').textContent = currentMemberName;
+        document.getElementById('winnerNameDisplay').textContent = playerName;
+        
+        const answersElSpecial = document.getElementById('resultAnswersSpecial');
+        if (answersElSpecial) answersElSpecial.innerHTML = generateUserAnswerList();
 
-        const score = result.score;
-        const maxScore = result.maxScore;
-        const details = result.details; // ★追加：GASから受け取った正解データ
-
-        // データベース(Supabase)に得点を保存する
-        const { error } = await sb
-            .from('game_results')
-            .insert([
-                { 
-                    player_name: playerName,
-                    target_member: currentMemberName,
-                    score: score
-                }
-            ]);
-            
-        if(error) console.error('保存エラー:', error);
-
-        localStorage.setItem(`quiz_played_${currentMemberName}`, 'true');
-
-        btnQuizNext.style.display = 'block';
-
-        if (score === maxScore) {
-            document.getElementById('resultMemberName').textContent = currentMemberName;
-            document.getElementById('winnerNameDisplay').textContent = playerName;
-            
-            // 答え合わせリストを表示
-            const answersElSpecial = document.getElementById('resultAnswersSpecial');
-            if (answersElSpecial) answersElSpecial.innerHTML = generateUserAnswerList(details);
-
-            showScreen(screenResultSpecial);
+        showScreen(screenResultSpecial);
+    } else {
+        document.getElementById('resultScore').textContent = `${score} / ${maxScore}`;
+        
+        const msgEl = document.getElementById('resultMsg');
+        if (score >= maxScore - 1) {
+            msgEl.textContent = "惜しい！あと一歩！";
+        } else if (score >= maxScore / 2) {
+            msgEl.textContent = "その調子！";
         } else {
-            document.getElementById('resultScore').textContent = `${score} / ${maxScore}`;
-            
-            const msgEl = document.getElementById('resultMsg');
-            if (score >= maxScore - 1) {
-                msgEl.textContent = "惜しい！あと一歩！";
-            } else if (score >= maxScore / 2) {
-                msgEl.textContent = "その調子！";
-            } else {
-                msgEl.textContent = "出直してこい！";
-            }
-
-            // 答え合わせリストを表示
-            const answersElNormal = document.getElementById('resultAnswersNormal');
-            if (answersElNormal) answersElNormal.innerHTML = generateUserAnswerList(details);
-
-            showScreen(screenResultNormal);
+            msgEl.textContent = "出直してこい！";
         }
 
-    } catch (error) {
-        console.error("採点エラー", error);
-        alert("採点に失敗しました。");
-        showScreen(screenStart);
-        btnQuizNext.style.display = 'block';
+        const answersElNormal = document.getElementById('resultAnswersNormal');
+        if (answersElNormal) answersElNormal.innerHTML = generateUserAnswerList();
+
+        showScreen(screenResultNormal);
     }
 }
 

@@ -2439,3 +2439,28 @@ footer {
     margin-top: 3px;
     font-weight: bold;
 }
+
+/* =========================================
+   YouTube埋め込み用（16:9 レスポンシブ対応）
+========================================= */
+.youtube-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px; /* PCなどで大きくなりすぎないように制限 */
+    margin: 0 auto;   /* 中央寄せ */
+    padding-bottom: 56.25%; /* 16:9の比率を維持する魔法の数字 */
+    height: 0;
+    overflow: hidden;
+    border-radius: 12px; /* 角を少し丸くしておしゃれに */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* 少し影をつける */
+    background-color: #000; /* 読み込み前の背景色 */
+}
+
+.youtube-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
