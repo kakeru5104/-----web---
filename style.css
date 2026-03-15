@@ -2486,3 +2486,36 @@ footer {
     transform: translateY(-2px); /* 押そうとすると少しフワッと浮く */
     box-shadow: 0 6px 10px rgba(0,0,0,0.3);
 }
+
+/* =========================================
+   配信切り替えタブ
+========================================= */
+.stream-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.stream-tab {
+    flex: 1;
+    text-align: center;
+    padding: 8px 0;
+    border: 2px solid var(--black);
+    background: var(--white);
+    color: var(--black);
+    font-family: 'Anton', sans-serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+    border-radius: 8px;
+    line-height: 1.2;
+}
+
+.stream-tab.active {
+    background: var(--black);
+    color: var(--white);
+    transform: translateY(-3px);
+    box-shadow: 2px 3px 0 var(--primary-red);
+}

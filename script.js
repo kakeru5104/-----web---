@@ -1659,3 +1659,28 @@ if (goodsTitleBtn) {
         goodsClickTimer = setTimeout(() => { goodsClickCount = 0; }, 1500);
     });
 }
+
+// =========================================
+// 配信(YouTube)タブの切り替え処理
+// =========================================
+const streamTabs = document.querySelectorAll('.stream-tab');
+const youtubeIframe = document.getElementById('youtubeIframe');
+const youtubeLink = document.getElementById('youtubeLink');
+
+if (streamTabs.length > 0) {
+    streamTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            streamTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            const videoId = tab.getAttribute('data-id');
+            
+            if (youtubeIframe) {
+                youtubeIframe.src = `https://www.youtube.com/embed/${videoId}`;
+            }
+            if (youtubeLink) {
+                youtubeLink.href = `https://www.youtube.com/watch?v=${videoId}`;
+            }
+        });
+    });
+}

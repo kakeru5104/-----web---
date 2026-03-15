@@ -77,15 +77,22 @@
         </div>
     </section>
 
-   <section id="stream" class="section">
+<section id="stream" class="section">
         <h2 class="section-title fade-up">LIVE STREAM</h2>
         <p style="text-align: center; margin-bottom: 15px; font-weight: bold; color: var(--primary-red);" class="fade-up">
             当日配信・アーカイブはこちら！
         </p>
+
+        <div class="stream-tabs fade-up">
+            <div class="stream-tab active" data-id="dilc1cd41g0">DAY 1<br><span style="font-size:0.7rem;">3/14</span></div>
+            <div class="stream-tab" data-id="I0N2linruVY">DAY 2<br><span style="font-size:0.7rem;">3/15</span></div>
+            <div class="stream-tab" data-id="0EfQFRjfwk0">DAY 3<br><span style="font-size:0.7rem;">3/20</span></div>
+            <div class="stream-tab" data-id="WodqEPVRJTo">DAY 4<br><span style="font-size:0.7rem;">3/21</span></div>
+        </div>
         
         <div class="youtube-container fade-up">
-            <iframe 
-                src="https://www.youtube.com/embed/ここに動画のIDを入れる" 
+            <iframe id="youtubeIframe"
+                src="https://www.youtube.com/embed/dilc1cd41g0" 
                 title="YouTube video player" 
                 frameborder="0" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
@@ -94,10 +101,11 @@
         </div>
         
         <div style="text-align: center; margin-top: 20px;" class="fade-up">
-            <a href="https://www.youtube.com/watch?v=I0N2linruVY" target="_blank" rel="noopener noreferrer" class="youtube-link-btn">
-                ▶ YouTubeアプリ・サイトで見る（配信はこちら）
+            <a id="youtubeLink" href="https://www.youtube.com/watch?v=dilc1cd41g0" target="_blank" rel="noopener noreferrer" class="youtube-link-btn">
+                ▶ YouTubeアプリ・サイトで見る
             </a>
         </div>
+        
         <p style="text-align: center; font-size: 0.85rem; margin-top: 15px; color: #666;" class="fade-up">
             ※通信環境により映像が乱れる場合がございます。<br>
             ※配信終了後も同じプレイヤーからアーカイブをご視聴いただけます。
