@@ -2464,3 +2464,25 @@ footer {
     height: 100%;
     border: none;
 }
+
+/* =========================================
+   YouTubeへの直接リンクボタン
+========================================= */
+.youtube-link-btn {
+    display: inline-block;
+    background-color: #ff0000; /* YouTubeの赤色 */
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 0.95rem;
+    text-decoration: none;
+    padding: 12px 25px;
+    border-radius: 30px; /* 丸っこいボタンにする */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.youtube-link-btn:hover {
+    background-color: #cc0000;
+    transform: translateY(-2px); /* 押そうとすると少しフワッと浮く */
+    box-shadow: 0 6px 10px rgba(0,0,0,0.3);
+}
