@@ -1727,7 +1727,7 @@ const setlistData = {
         {
             artist: "布袋寅泰",
             songs: [
-                { title: "Battle Without Honor or Humanity", search: "布袋寅泰 Battle Without Honor or Humanity" },
+                { title: "BATTLE WITHOUT HONOR OR HUMANITY", search: "布袋寅泰 BATTLE WITHOUT HONOR OR HUMANITY" },
                 { title: "スリル", search: "布袋寅泰 スリル" },
                 { title: "さらば青春の光", search: "布袋寅泰 さらば青春の光" },
                 { title: "NOBADY IS PARFECT", search: "布袋寅泰 NOBADY IS PARFECT" },
@@ -1787,21 +1787,23 @@ const setlistData = {
 
 // アプリアイコン（SVG）
 
-// YouTube (通常)
+// YouTube
 const iconYT = `<svg class="app-icon" style="min-width:14px; flex-shrink:0;" viewBox="0 0 24 24"><path fill="currentColor" d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2C1 8.16 1 12 1 12s0 3.84.54 5.58a2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2C23 15.84 23 12 23 12s0-3.84-.54-5.58z"></path><polygon fill="#FF0000" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"></polygon></svg>`;
 
-// YouTube Music (赤丸の中に白枠の丸＋再生マーク)
+// YouTube Music
 const iconYTM = `<svg class="app-icon" style="min-width:16px; height:16px; flex-shrink:0;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#FF0000"/><circle cx="12" cy="12" r="7.5" fill="none" stroke="#FFFFFF" stroke-width="1.5"/><polygon points="10,8 15.5,12 10,16" fill="#FFFFFF"/></svg>`;
 // Spotify
 const iconSP = `<svg class="app-icon" style="min-width:14px; flex-shrink:0;" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.6 14.4c-.18.3-.54.4-.84.22-2.3-1.4-5.2-1.72-8.62-.94-.34.08-.68-.14-.76-.48-.08-.34.14-.68.48-.76 3.76-.84 6.96-.48 9.52 1.1.3.18.4.54.22.84zm1.2-3.36c-.22.36-.7.48-1.06.26-2.64-1.62-6.68-2-10.22-1.1-.4.1-.8-.14-.9-.54-.1-.4.14-.8.54-.9 4-.98 8.44-.56 11.4 1.24.36.2.48.68.26 1.04zm.1-3.48c-3.16-1.88-8.4-2.06-11.44-1.14-.48.14-1-.12-1.14-.6-.14-.48.12-1 .6-1.14 3.52-1.06 9.32-.84 12.98 1.34.42.26.56.8.3 1.22-.24.42-.78.56-1.2.32z"/></svg>`;
 
 // Apple Music
 const iconAP = `<svg class="app-icon" style="min-width:14px; flex-shrink:0;" viewBox="0 0 24 24"><path fill="currentColor" d="M21.6 3.1c-.2-.1-.4-.2-.6-.1L8.5 5.5C7.1 5.8 6 6.9 6 8.4v8.3c-.6-.4-1.4-.7-2.2-.7C1.7 16 0 17.5 0 19.5S1.7 23 3.8 23s3.8-1.5 3.8-3.5V8.4c0-.3.2-.6.5-.7l12.5-2.5c.3-.1.5.1.5.4v7.7c-.6-.4-1.4-.7-2.2-.7-2.1 0-3.8 1.5-3.8 3.5s1.7 3.5 3.8 3.5 3.8-1.5 3.8-3.5V4c0-.4-.2-.7-.6-.9z"/></svg>`;
-
-// LINE MUSIC
-const iconLI = `<svg class="app-icon" style="min-width:14px; flex-shrink:0;" viewBox="0 0 24 24"><path fill="currentColor" d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.036 9.608.391.084.922.258 1.057.592.122.303.079.759.037 1.08l-.515 3.109c-.067.432-.32 1.391 1.222.741 1.542-.65 8.312-4.904 10.669-7.859C23.513 15.632 24 13.064 24 10.304z"/></svg>`;
-
-
+// LINE MUSIC (元の音符アイコンの上に同じ角度・幅の斜め線を追加)
+const iconLI = `<svg class="app-icon" style="min-width:14px; flex-shrink:0;" viewBox="0 0 24 24">
+    <g transform="translate(1.2, 3) scale(0.9)">
+        <polygon fill="currentColor" points="6,1.1 21.6,-1.7 21.6,1.2 6,4.0" />
+        <path fill="currentColor" d="M21.6 3.1c-.2-.1-.4-.2-.6-.1L8.5 5.5C7.1 5.8 6 6.9 6 8.4v8.3c-.6-.4-1.4-.7-2.2-.7C1.7 16 0 17.5 0 19.5S1.7 23 3.8 23s3.8-1.5 3.8-3.5V8.4c0-.3.2-.6.5-.7l12.5-2.5c.3-.1.5.1.5.4v7.7c-.6-.4-1.4-.7-2.2-.7-2.1 0-3.8 1.5-3.8 3.5s1.7 3.5 3.8 3.5 3.8-1.5 3.8-3.5V4c0-.4-.2-.7-.6-.9z"/>
+    </g>
+</svg>`;
 // 各種音楽アプリへの検索リンクを生成
 function createServiceLinks(searchQuery) {
     const enc = encodeURIComponent(searchQuery);
