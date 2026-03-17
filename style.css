@@ -2519,3 +2519,114 @@ footer {
     transform: translateY(-3px);
     box-shadow: 2px 3px 0 var(--primary-red);
 }
+
+/* =========================================
+   アーティスト・セットリスト
+========================================= */
+.artist-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.artist-tab {
+    flex: 1;
+    text-align: center;
+    padding: 8px 0;
+    border: 2px solid var(--black);
+    background: var(--white);
+    color: var(--black);
+    font-family: 'Anton', sans-serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+    border-radius: 8px;
+}
+
+.artist-tab.active {
+    background: var(--black);
+    color: var(--white);
+    transform: translateY(-3px);
+    box-shadow: 2px 3px 0 var(--primary-red);
+}
+
+.artist-card {
+    border: 2px solid var(--black);
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 20px;
+    background: var(--white);
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.1);
+}
+
+.artist-name {
+    font-size: 1.25rem;
+    font-weight: 900;
+    border-bottom: 2px solid var(--primary-red);
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    color: var(--black);
+}
+
+.setlist {
+    list-style: none;
+    padding: 0;
+}
+
+.setlist-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed #ddd;
+    padding: 10px 0;
+}
+.setlist-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.song-title {
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: #333;
+    flex: 1;
+    line-height: 1.4;
+    padding-right: 10px;
+}
+
+/* 音楽アプリのリンクボタン */
+.song-links {
+    display: flex;
+    gap: 6px;
+}
+
+.song-links a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    color: white;
+    text-decoration: none;
+    transition: transform 0.2s;
+}
+.song-links a:hover {
+    transform: scale(1.1);
+}
+
+/* 各種サービスのブランドカラー */
+/* 各種サービスのブランドカラー */
+.link-yt { background-color: #FF0000; } /* 通常のYouTube */
+.link-ytm { background-color: #FF0000; } /* ★追加：YouTube Musicは赤色に */
+.link-sp { background-color: #1DB954; }
+.link-ap { background-color: #FA243C; }
+.link-li { background-color: #00C300; }
+
+.app-icon {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+}

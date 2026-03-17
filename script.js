@@ -1684,3 +1684,190 @@ if (streamTabs.length > 0) {
         });
     });
 }
+
+// =========================================
+// アーティスト＆セットリスト機能
+// =========================================
+
+// セットリストのデータ（検索キーワードを設定）
+const setlistData = {
+    "artist-day1": [
+        {
+            artist: "マカロニえんぴつ",
+            songs: [
+                { title: "哀しみロック", search: "マカロニえんぴつ 哀しみロック" },
+                { title: "ワンドリンク別", search: "マカロニえんぴつ ワンドリンク別" },
+                { title: "青春と一瞬", search: "マカロニえんぴつ 青春と一瞬" },
+                { title: "洗濯機と君とラヂオ", search: "マカロニえんぴつ 洗濯機と君とラヂオ" }
+            ]
+        },
+        {
+            artist: "ヒトリエ",
+            songs: [
+                { title: "絶対的", search: "ヒトリエ 絶対的" },
+                { title: "トーキーダンス", search: "ヒトリエ トーキーダンス" },
+                { title: "極夜灯", search: "ヒトリエ 極夜灯" },
+                { title: "目眩", search: "ヒトリエ 目眩" },
+                { title: "コヨーテエンゴースト", search: "ヒトリエ コヨーテエンゴースト" },
+                { title: "ステレオジュブナイル", search: "ヒトリエ ステレオジュブナイル" }
+            ]
+        },
+        {
+            artist: "ギソロオムニバス",
+            songs: [
+                { title: "あの夏に咲け", search: "ヨルシカ あの夏に咲け" },
+                { title: "泥の分際で私だけの大切を奪おうだなんて", search: "ツユ 泥の分際で私だけの大切を奪おうだなんて" },
+                { title: "三月がずっと続けばいい", search: "ヨルシカ 三月がずっと続けばいい" },
+                { title: "ミラーチューン", search: "ずっと真夜中でいいのに ミラーチューン" },
+                { title: "ジャンキーナイトタウンオーケストラ", search: "すりぃ ジャンキーナイトタウンオーケストラ" },
+                { title: "ニュー・マイ・ノーマル", search: "Mrs. GREEN APPLE ニュー・マイ・ノーマル" },
+                { title: "空想列車", search: "Orangestar 空想列車" }
+            ]
+        },
+        {
+            artist: "布袋寅泰",
+            songs: [
+                { title: "Battle Without Honor or Humanity", search: "布袋寅泰 Battle Without Honor or Humanity" },
+                { title: "スリル", search: "布袋寅泰 スリル" },
+                { title: "さらば青春の光", search: "布袋寅泰 さらば青春の光" },
+                { title: "NOBADY IS PARFECT", search: "布袋寅泰 NOBADY IS PARFECT" },
+                { title: "バンビーナ", search: "布袋寅泰 バンビーナ" },
+                { title: "POISON", search: "布袋寅泰 POISON" }
+            ]
+        },
+        {
+            artist: "サンボマスター",
+            songs: [
+                { title: "世界を変えさせておくれよ", search: "サンボマスター 世界を変えさせておくれよ" },
+                { title: "青春狂想曲", search: "サンボマスター 青春狂想曲" },
+                { title: "オレたちのすすむ道を悲しみで閉ざさないで", search: "サンボマスター オレたちのすすむ道を悲しみで閉ざさないで" },
+                { title: "光のロック", search: "サンボマスター 光のロック" },
+                { title: "世界はそれを愛と呼ぶんだぜ", search: "サンボマスター 世界はそれを愛と呼ぶんだぜ" },
+                { title: "花束", search: "サンボマスター 花束" }
+            ]
+        }
+    ],
+    "artist-day2": [
+        {
+            artist: "BLUE ENCOUNT",
+            songs: [
+                { title: "DAY×DAY", search: "BLUE ENCOUNT DAY×DAY" },
+                { title: "Survivor", search: "BLUE ENCOUNT Survivor" },
+                { title: "バッドパラドックス", search: "BLUE ENCOUNT バッドパラドックス" },
+                { title: "ポラリス", search: "BLUE ENCOUNT ポラリス" },
+                { title: "VS", search: "BLUE ENCOUNT VS" },
+                { title: "コンパス", search: "BLUE ENCOUNT コンパス" }
+            ]
+        },
+        {
+            artist: "コンテンポラリーな生活・ネクライトーキー",
+            songs: [
+                { title: "プロポーズ", search: "コンテンポラリーな生活 プロポーズ" },
+                { title: "鉄腕ナインティーン", search: "コンテンポラリーな生活 鉄腕ナインティーン" },
+                { title: "ジャックポッドなら踊らにゃソンソン", search: "ネクライトーキー ジャックポッドなら踊らにゃソンソン" },
+                { title: "夕暮れ先生", search: "ネクライトーキー 夕暮れ先生" },
+                { title: "誰が為にCHAKAPOCOは鳴る", search: "ネクライトーキー 誰が為にCHAKAPOCOは鳴る" },
+                { title: "bloom", search: "ネクライトーキー bloom" }
+            ]
+        },
+        {
+            artist: "ELLEGARDEN",
+            songs: [
+                { title: "チーズケーキ・ファクトリー", search: "ELLEGARDEN チーズケーキ・ファクトリー" },
+                { title: "No.13", search: "ELLEGARDEN No.13" },
+                { title: "Salamander", search: "ELLEGARDEN Salamander" },
+                { title: "Missing", search: "ELLEGARDEN Missing" },
+                { title: "Make a Wish", search: "ELLEGARDEN Make a Wish" },
+                { title: "スターフィッシュ", search: "ELLEGARDEN スターフィッシュ" },
+                { title: "Strawberry Margarita", search: "ELLEGARDEN Strawberry Margarita" }
+            ]
+        }
+    ]
+};
+
+// アプリアイコン（SVG）
+
+// YouTube (通常)
+const iconYT = `<svg class="app-icon" style="min-width:14px; flex-shrink:0;" viewBox="0 0 24 24"><path fill="currentColor" d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2C1 8.16 1 12 1 12s0 3.84.54 5.58a2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2C23 15.84 23 12 23 12s0-3.84-.54-5.58z"></path><polygon fill="#FF0000" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"></polygon></svg>`;
+
+// YouTube Music (赤丸の中に白枠の丸＋再生マーク)
+const iconYTM = `<svg class="app-icon" style="min-width:16px; height:16px; flex-shrink:0;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#FF0000"/><circle cx="12" cy="12" r="7.5" fill="none" stroke="#FFFFFF" stroke-width="1.5"/><polygon points="10,8 15.5,12 10,16" fill="#FFFFFF"/></svg>`;
+// Spotify
+const iconSP = `<svg class="app-icon" style="min-width:14px; flex-shrink:0;" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.6 14.4c-.18.3-.54.4-.84.22-2.3-1.4-5.2-1.72-8.62-.94-.34.08-.68-.14-.76-.48-.08-.34.14-.68.48-.76 3.76-.84 6.96-.48 9.52 1.1.3.18.4.54.22.84zm1.2-3.36c-.22.36-.7.48-1.06.26-2.64-1.62-6.68-2-10.22-1.1-.4.1-.8-.14-.9-.54-.1-.4.14-.8.54-.9 4-.98 8.44-.56 11.4 1.24.36.2.48.68.26 1.04zm.1-3.48c-3.16-1.88-8.4-2.06-11.44-1.14-.48.14-1-.12-1.14-.6-.14-.48.12-1 .6-1.14 3.52-1.06 9.32-.84 12.98 1.34.42.26.56.8.3 1.22-.24.42-.78.56-1.2.32z"/></svg>`;
+
+// Apple Music
+const iconAP = `<svg class="app-icon" style="min-width:14px; flex-shrink:0;" viewBox="0 0 24 24"><path fill="currentColor" d="M21.6 3.1c-.2-.1-.4-.2-.6-.1L8.5 5.5C7.1 5.8 6 6.9 6 8.4v8.3c-.6-.4-1.4-.7-2.2-.7C1.7 16 0 17.5 0 19.5S1.7 23 3.8 23s3.8-1.5 3.8-3.5V8.4c0-.3.2-.6.5-.7l12.5-2.5c.3-.1.5.1.5.4v7.7c-.6-.4-1.4-.7-2.2-.7-2.1 0-3.8 1.5-3.8 3.5s1.7 3.5 3.8 3.5 3.8-1.5 3.8-3.5V4c0-.4-.2-.7-.6-.9z"/></svg>`;
+
+// LINE MUSIC
+const iconLI = `<svg class="app-icon" style="min-width:14px; flex-shrink:0;" viewBox="0 0 24 24"><path fill="currentColor" d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.036 9.608.391.084.922.258 1.057.592.122.303.079.759.037 1.08l-.515 3.109c-.067.432-.32 1.391 1.222.741 1.542-.65 8.312-4.904 10.669-7.859C23.513 15.632 24 13.064 24 10.304z"/></svg>`;
+
+
+// 各種音楽アプリへの検索リンクを生成
+function createServiceLinks(searchQuery) {
+    const enc = encodeURIComponent(searchQuery);
+    return `
+        <div class="song-links">
+            <a href="https://www.youtube.com/results?search_query=${enc}" target="_blank" class="link-yt" title="YouTube">${iconYT}</a>
+            <a href="https://music.youtube.com/search?q=${enc}" target="_blank" class="link-ytm" title="YouTube Music">${iconYTM}</a>
+            <a href="https://open.spotify.com/search/$${enc}" target="_blank" class="link-sp" title="Spotify">${iconSP}</a>
+            <a href="https://music.apple.com/jp/search?term=${enc}" target="_blank" class="link-ap" title="Apple Music">${iconAP}</a>
+            <a href="https://music.line.me/webapp/search?query=${enc}" target="_blank" class="link-li" title="LINE MUSIC">${iconLI}</a>
+        </div>
+    `;
+}
+
+// リストを描画する関数
+const artistListContainer = document.getElementById('artistListContainer');
+const artistTabsList = document.querySelectorAll('.artist-tab');
+
+function renderArtistList(dayId) {
+    if (!artistListContainer) return;
+    
+    // 3日目と4日目はシークレット
+    if (dayId === "artist-day3" || dayId === "artist-day4") {
+        artistListContainer.innerHTML = `
+            <div style="text-align:center; padding: 40px 20px; border: 2px dashed #ccc; border-radius: 12px; background: #fafafa;">
+                <h3 style="color:#111; font-family:'Anton', sans-serif; font-size:2rem;">COMING SOON...</h3>
+                <p style="color:#666; font-weight:bold; margin-top:10px;"></p>
+            </div>
+        `;
+        return;
+    }
+
+    const data = setlistData[dayId];
+    if (!data) return;
+
+    let html = `<div>`;
+    data.forEach(artistBlock => {
+        html += `
+            <div class="artist-card">
+                <h3 class="artist-name">${artistBlock.artist}</h3>
+                <ul class="setlist">
+        `;
+        artistBlock.songs.forEach((song, index) => {
+            html += `
+                <li class="setlist-item">
+                    <span class="song-title">${index + 1}. ${song.title}</span>
+                    ${createServiceLinks(song.search)}
+                </li>
+            `;
+        });
+        html += `</ul></div>`;
+    });
+    html += `</div>`;
+
+    artistListContainer.innerHTML = html;
+}
+
+// タブ切り替えイベント
+if (artistTabsList.length > 0) {
+    artistTabsList.forEach(tab => {
+        tab.addEventListener('click', () => {
+            artistTabsList.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            renderArtistList(tab.getAttribute('data-target'));
+        });
+    });
+    // 初期表示はDAY1
+    renderArtistList("artist-day1");
+}
