@@ -1690,6 +1690,7 @@ if (streamTabs.length > 0) {
 // =========================================
 
 // セットリストのデータ（検索キーワードを設定）
+// セットリストのデータ（検索キーワードを設定）
 const setlistData = {
     "artist-day1": [
         {
@@ -1727,7 +1728,7 @@ const setlistData = {
         {
             artist: "布袋寅泰",
             songs: [
-                { title: "BATTLE WITHOUT HONOR OR HUMANITY", search: "布袋寅泰 BATTLE WITHOUT HONOR OR HUMANITY" },
+                { title: "Battle Without Honor or Humanity", search: "布袋寅泰 Battle Without Honor or Humanity" },
                 { title: "スリル", search: "布袋寅泰 スリル" },
                 { title: "さらば青春の光", search: "布袋寅泰 さらば青春の光" },
                 { title: "NOBADY IS PARFECT", search: "布袋寅泰 NOBADY IS PARFECT" },
@@ -1739,7 +1740,7 @@ const setlistData = {
             artist: "サンボマスター",
             songs: [
                 { title: "世界を変えさせておくれよ", search: "サンボマスター 世界を変えさせておくれよ" },
-                { title: "青春狂想曲", search: "サンボマスター 青春狂想曲" },
+                { title: "青春狂騒曲", search: "サンボマスター 青春狂騒曲" },
                 { title: "オレたちのすすむ道を悲しみで閉ざさないで", search: "サンボマスター オレたちのすすむ道を悲しみで閉ざさないで" },
                 { title: "光のロック", search: "サンボマスター 光のロック" },
                 { title: "世界はそれを愛と呼ぶんだぜ", search: "サンボマスター 世界はそれを愛と呼ぶんだぜ" },
@@ -1763,7 +1764,7 @@ const setlistData = {
             artist: "コンテンポラリーな生活・ネクライトーキー",
             songs: [
                 { title: "プロポーズ", search: "コンテンポラリーな生活 プロポーズ" },
-                { title: "鉄腕ナインティーン", search: "コンテンポラリーな生活 鉄腕ナインティーン" },
+                { title: "鉄腕ナインティーン", search: "ネクライトーキー 鉄腕ナインティーン" },
                 { title: "ジャックポッドなら踊らにゃソンソン", search: "ネクライトーキー ジャックポッドなら踊らにゃソンソン" },
                 { title: "夕暮れ先生", search: "ネクライトーキー 夕暮れ先生" },
                 { title: "誰が為にCHAKAPOCOは鳴る", search: "ネクライトーキー 誰が為にCHAKAPOCOは鳴る" },
@@ -1780,6 +1781,62 @@ const setlistData = {
                 { title: "Make a Wish", search: "ELLEGARDEN Make a Wish" },
                 { title: "スターフィッシュ", search: "ELLEGARDEN スターフィッシュ" },
                 { title: "Strawberry Margarita", search: "ELLEGARDEN Strawberry Margarita" }
+            ]
+        }
+    ],
+    // ▼ 今回追加した3日目 ▼
+    "artist-day3": [
+        {
+            artist: "さかりくオムニバス",
+            songs: [
+                { title: "スーパースターになったら", search: "back number スーパースターになったら" },
+                { title: "ミラーボールとシンデレラ", search: "back number ミラーボールとシンデレラ" },
+                { title: "シシカバブー", search: "ゆず シシカバブー" },
+                { title: "LOVE & PEACH", search: "ゆず LOVE & PEACH" },
+                { title: "マカロン(FalKKonE cover)", search: "マカロン FalKKonE" },
+                { title: "オーネヘルツ", search: "オーネヘルツ" },
+                { title: "残響", search: "残響" },
+                { title: "stay with me", search: "stay with me" }
+            ]
+        },
+        {
+            artist: "ヨルシカ",
+            songs: [
+                { title: "海底にて", search: "ヨルシカ 海底にて" },
+                { title: "夕凪、某、花惑い", search: "ヨルシカ 夕凪、某、花惑い" },
+                { title: "八月、某、月明かり", search: "ヨルシカ 八月、某、月明かり" },
+                { title: "心に穴が空いた", search: "ヨルシカ 心に穴が空いた" },
+                { title: "ルバート", search: "ヨルシカ ルバート" },
+                { title: "雨とカプチーノ", search: "ヨルシカ 雨とカプチーノ" },
+                { title: "六月は雨上がりの街を書く", search: "ヨルシカ 六月は雨上がりの街を書く" },
+                { title: "フラッシュバック", search: "ヨルシカ フラッシュバック" },
+                { title: "だから僕は音楽を辞めた", search: "ヨルシカ だから僕は音楽を辞めた" }
+            ]
+        },
+        {
+            artist: "BUMP OF CHICKEN",
+            songs: [
+                { title: "虹を待つ人", search: "BUMP OF CHICKEN 虹を待つ人" },
+                { title: "月虹", search: "BUMP OF CHICKEN 月虹" },
+                { title: "クロノスタシス", search: "BUMP OF CHICKEN クロノスタシス" },
+                { title: "Flare", search: "BUMP OF CHICKEN Flare" },
+                { title: "シリウス", search: "BUMP OF CHICKEN シリウス" },
+                { title: "Voyager,flyby", search: "BUMP OF CHICKEN Voyager,flyby" },
+                { title: "天体観測", search: "BUMP OF CHICKEN 天体観測" }
+            ]
+        },
+        {
+            artist: "みさとオムニバス",
+            songs: [
+                { title: "踊ろうぜ", search: "踊ろうぜ" },
+                { title: "言って。", search: "ヨルシカ 言って。" },
+                { title: "ショートショート", search: "ショートショート" },
+                { title: "ヤバみ", search: "ヤバイTシャツ屋さん ヤバみ" },
+                { title: "笑顔のループ", search: "AAA 笑顔のループ" },
+                { title: "Fake!Fake!", search: "Fake!Fake!" },
+                { title: "やっぱり雨は降るんだね", search: "ツユ やっぱり雨は降るんだね" },
+                { title: "パステルレイン", search: "三月のパンタシア パステルレイン" },
+                { title: "キミノヨゾラ哨戒班", search: "Orangestar キミノヨゾラ哨戒班" }
             ]
         }
     ]
@@ -1825,8 +1882,7 @@ const artistTabsList = document.querySelectorAll('.artist-tab');
 function renderArtistList(dayId) {
     if (!artistListContainer) return;
     
-    // 3日目と4日目はシークレット
-    if (dayId === "artist-day3" || dayId === "artist-day4") {
+    if (dayId === "artist-day4") {
         artistListContainer.innerHTML = `
             <div style="text-align:center; padding: 40px 20px; border: 2px dashed #ccc; border-radius: 12px; background: #fafafa;">
                 <h3 style="color:#111; font-family:'Anton', sans-serif; font-size:2rem;">COMING SOON...</h3>
