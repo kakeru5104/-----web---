@@ -1854,8 +1854,66 @@ const setlistData = {
                 { title: "Nightawks", search: "米津玄師 Nighthawks" } // 検索エラー防止のためNighthawksで検索
             ]
         }
+    ],
+
+    "artist-day4": [
+        {
+            artist: "ずっと真夜中でいいのに。",
+            songs: [
+                { title: "花一匁", search: "ずっと真夜中でいいのに 花一匁" },
+                { title: "感冴えて悔しいわ", search: "ずっと真夜中でいいのに 勘冴えて悔しいわ" },
+                { title: "君がいて水になる", search: "ずっと真夜中でいいのに 君がいて水になる" },
+                { title: "海馬成長痛", search: "ずっと真夜中でいいのに 海馬成長痛" },
+                { title: "暗く黒く", search: "ずっと真夜中でいいのに 暗く黒く" }
+            ]
+        },
+        {
+            artist: "かいせいオムニバス",
+            songs: [
+                { title: "女々しくて", search: "ゴールデンボンバー 女々しくて" },
+                { title: "Take What U Want", search: "ONE OK ROCK Take What You Want" },
+                { title: "Smells Like Teen Sprint", search: "Nirvana Smells Like Teen Spirit" },
+                { title: "Ballon Ballon", search: "BRADIO Ballon Ballon" },
+                { title: "Getting Along(Royal Republic)", search: "Royal Republic Getting Along" },
+                { title: "日本の米は世界一", search: "打首獄門同好会 日本の米は世界一" },
+                { title: "イケナイ太陽", search: "ORANGE RANGE イケナイ太陽" }
+            ]
+        },
+        {
+            artist: "Orangestar",
+            songs: [
+                { title: "雨き声残響", search: "Orangestar 雨き声残響" },
+                { title: "霽れを待つ", search: "Orangestar 霽れを待つ" },
+                { title: "Aloud", search: "Orangestar Aloud" },
+                { title: "快晴", search: "Orangestar 快晴" },
+                { title: "Nadir", search: "Orangestar Nadir" },
+                { title: "未完成タイムリミッター", search: "Orangestar 未完成タイムリミッター" },
+                { title: "DAYBREAK FRONTLINE", search: "Orangestar DAYBREAK FRONTLINE" }
+            ]
+        },
+        {
+            artist: "僕の人生オムニバス",
+            songs: [
+                { title: "Canon Rock", search: "Canon Rock" },
+                { title: "前前前世", search: "RADWIMPS 前前前世" },
+                { title: "千本桜", search: "黒うさP 千本桜" },
+                { title: "飛行艇", search: "King Gnu 飛行艇" },
+                { title: "Re:make", search: "ONE OK ROCK Re:make" },
+                { title: "Wherever you are", search: "ONE OK ROCK Wherever you are" },
+                { title: "キミシダイ列車", search: "ONE OK ROCK キミシダイ列車" },
+                { title: "完全感覚Dreamer", search: "ONE OK ROCK 完全感覚Dreamer" }
+            ]
+        },
+        {
+            artist: "？？？",
+            songs: [
+                // ★ オリジナル曲のため、search を null にしてアイコンを出さないように設定
+                { title: "ミリオンベル(オリジナル)", search: null }, 
+                { title: "ambitious japan", search: "TOKIO AMBITIOUS JAPAN" }
+            ]
+        }
     ]
-};
+}; // setlistData の閉じカッコ
 
 // アプリアイコン（SVG）
 
@@ -1877,15 +1935,19 @@ const iconLI = `<svg class="app-icon" style="min-width:14px; flex-shrink:0;" vie
     </g>
 </svg>`;
 // 各種音楽アプリへの検索リンクを生成
-// 各種音楽アプリへの検索リンクを生成
 function createServiceLinks(searchQuery) {
+    // ★ 検索キーワードが null（オリジナル曲など）の場合は、リンクのHTMLを一切出さない
+    if (!searchQuery) {
+        return ""; 
+    }
+
     const enc = encodeURIComponent(searchQuery);
     return `
         <div class="song-links">
             <a href="https://www.youtube.com/results?search_query=${enc}" target="_blank" class="link-yt" title="YouTube">${iconYT}</a>
             <a href="https://music.youtube.com/search?q=${enc}" target="_blank" class="link-ytm" title="YouTube Music">${iconYTM}</a>
-            <a href="https://open.spotify.com/search/${enc}" target="_blank" class="link-sp" title="Spotify">${iconSP}</a>
-            <a href="https://music.apple.com/jp/search?term=${enc}" class="link-ap" title="Apple Music">${iconAP}</a>
+            <a href="https://open.spotify.com/search/$$${enc}" target="_blank" class="link-sp" title="Spotify">${iconSP}</a>
+            <a href="https://music.apple.com/jp/search?term=${enc}" target="_blank" class="link-ap" title="Apple Music">${iconAP}</a>
             <a href="https://music.line.me/webapp/search?query=${enc}" target="_blank" class="link-li" title="LINE MUSIC">${iconLI}</a>
         </div>
     `;
@@ -1898,14 +1960,20 @@ const artistTabsList = document.querySelectorAll('.artist-tab');
 function renderArtistList(dayId) {
     if (!artistListContainer) return;
     
+    // ★ 4日目は指定日時（2026/3/21 20:00）までシークレットにする
     if (dayId === "artist-day4") {
-        artistListContainer.innerHTML = `
-            <div style="text-align:center; padding: 40px 20px; border: 2px dashed #ccc; border-radius: 12px; background: #fafafa;">
-                <h3 style="color:#111; font-family:'Anton', sans-serif; font-size:2rem;">COMING SOON...</h3>
-                <p style="color:#666; font-weight:bold; margin-top:10px;"></p>
-            </div>
-        `;
-        return;
+        const now = new Date();
+        const unlockDate = new Date("2026-03-21T20:00:00+09:00");
+        
+        // 今の時間が解禁時間より前なら、COMING SOONを出す
+        if (now < unlockDate) {
+            artistListContainer.innerHTML = `
+                <div style="text-align:center; padding: 40px 20px; border: 2px dashed #ccc; border-radius: 12px; background: #fafafa;">
+                    <h3 style="color:#111; font-family:'Anton', sans-serif; font-size:2rem;">COMING SOON...</h3>
+                </div>
+            `;
+            return;
+        }
     }
 
     const data = setlistData[dayId];
