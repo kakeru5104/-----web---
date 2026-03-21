@@ -1830,13 +1830,28 @@ const setlistData = {
             songs: [
                 { title: "踊ろうぜ", search: "踊ろうぜ" },
                 { title: "言って。", search: "ヨルシカ 言って。" },
-                { title: "ショートショート", search: "ショートショート" },
+                { title: "ショートショート", search: "ポルカドットスティングレイ ショートショート" },
                 { title: "ヤバみ", search: "ヤバイTシャツ屋さん ヤバみ" },
                 { title: "笑顔のループ", search: "AAA 笑顔のループ" },
                 { title: "Fake!Fake!", search: "Fake!Fake!" },
                 { title: "やっぱり雨は降るんだね", search: "ツユ やっぱり雨は降るんだね" },
                 { title: "パステルレイン", search: "三月のパンタシア パステルレイン" },
                 { title: "キミノヨゾラ哨戒班", search: "Orangestar キミノヨゾラ哨戒班" }
+            ]
+        },
+        {
+            artist: "米津玄師",
+            songs: [
+                { title: "おはよう", search: "米津玄師 おはよう" },
+                { title: "LOSER", search: "米津玄師 LOSER" },
+                { title: "パンダヒーロー", search: "ハチ パンダヒーロー" }, // ハチ名義の方がヒットしやすいため調整
+                { title: "IRIS OUT", search: "米津玄師 IRIS OUT" },
+                { title: "KICK BACK", search: "米津玄師 KICK BACK" },
+                { title: "ゴーゴー幽霊船", search: "米津玄師 ゴーゴー幽霊船" },
+                { title: "爱丽丝", search: "米津玄師 爱丽丝" },
+                { title: "眼福", search: "米津玄師 眼福" },
+                { title: "灰色と青", search: "米津玄師 灰色と青" },
+                { title: "Nightawks", search: "米津玄師 Nighthawks" } // 検索エラー防止のためNighthawksで検索
             ]
         }
     ]
@@ -1862,14 +1877,15 @@ const iconLI = `<svg class="app-icon" style="min-width:14px; flex-shrink:0;" vie
     </g>
 </svg>`;
 // 各種音楽アプリへの検索リンクを生成
+// 各種音楽アプリへの検索リンクを生成
 function createServiceLinks(searchQuery) {
     const enc = encodeURIComponent(searchQuery);
     return `
         <div class="song-links">
             <a href="https://www.youtube.com/results?search_query=${enc}" target="_blank" class="link-yt" title="YouTube">${iconYT}</a>
             <a href="https://music.youtube.com/search?q=${enc}" target="_blank" class="link-ytm" title="YouTube Music">${iconYTM}</a>
-            <a href="https://open.spotify.com/search/$${enc}" target="_blank" class="link-sp" title="Spotify">${iconSP}</a>
-            <a href="https://music.apple.com/jp/search?term=${enc}" target="_blank" class="link-ap" title="Apple Music">${iconAP}</a>
+            <a href="https://open.spotify.com/search/${enc}" target="_blank" class="link-sp" title="Spotify">${iconSP}</a>
+            <a href="https://music.apple.com/jp/search?term=${enc}" class="link-ap" title="Apple Music">${iconAP}</a>
             <a href="https://music.line.me/webapp/search?query=${enc}" target="_blank" class="link-li" title="LINE MUSIC">${iconLI}</a>
         </div>
     `;
