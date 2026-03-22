@@ -1909,7 +1909,7 @@ const setlistData = {
                 { title: "Take What U Want", search: "ONE OK ROCK Take What You Want" },
                 { title: "Smells Like Teen Sprint", search: "Nirvana Smells Like Teen Spirit" },
                 { title: "Ballon Ballon", search: "BRADIO Ballon Ballon" },
-                { title: "Getting Along(Royal Republic)", search: "Royal Republic Getting Along" },
+                { title: "Getting Along", search: "Royal Republic Getting Along" },
                 { title: "日本の米は世界一", search: "打首獄門同好会 日本の米は世界一" },
                 { title: "イケナイ太陽", search: "ORANGE RANGE イケナイ太陽" }
             ]
@@ -1923,6 +1923,7 @@ const setlistData = {
                 { title: "快晴", search: "Orangestar 快晴" },
                 { title: "Nadir", search: "Orangestar Nadir" },
                 { title: "未完成タイムリミッター", search: "Orangestar 未完成タイムリミッター" },
+                { title: "濫觴生命", search: "Orangestar 濫觴生命" },
                 { title: "DAYBREAK FRONTLINE", search: "Orangestar DAYBREAK FRONTLINE" }
             ]
         },
