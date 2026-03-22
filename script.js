@@ -228,22 +228,43 @@ async function fetchBbs() {
     }
 }
 
-// 吹き出し要素生成
+// 吹き出し要素生成 (管理者対応版)
 function createBbsElement(comment) {
     const div = document.createElement('div');
     div.classList.add('bbs-item'); 
+    div.style.position = 'relative'; // 右上のバッジを配置するために必要
 
     const dateObj = new Date(comment.created_at);
     const dateStr = `${dateObj.getFullYear()}/${dateObj.getMonth() + 1}/${dateObj.getDate()}`;
-    const safeName = comment.name ? escapeHtml(comment.name) : '名無し';
+    
+    // ▼ここから管理者判定▼
+    let safeName = comment.name ? escapeHtml(comment.name) : '名無し';
+    let isAdmin = false;
+
+    // 「NAME」欄に秘密の合言葉（パスワード）が入力された場合
+    if (comment.name === 'admin0315') { // ★ここを好きな合言葉に変更してください
+        isAdmin = true;
+        safeName = '👑 運営チーム'; // ★画面に表示させたい名前に変更してください
+    }
+    // ▲ここまで▲
+
+    // 管理者の場合のみ特別なCSSクラスを追加
+    if (isAdmin) {
+        div.classList.add('bbs-admin-item'); 
+    }
+
     const safeContent = comment.content ? escapeHtml(comment.content) : '';
 
+    // 管理者の場合のみ右上に「OFFICIAL」バッジのHTMLを用意する
+    const adminBadgeHtml = isAdmin ? `<div class="admin-badge">OFFICIAL</div>` : '';
+
     div.innerHTML = `
+        ${adminBadgeHtml}
         <div class="bbs-meta">
             <span class="bbs-date">${dateStr}</span>
-            <span class="bbs-name">${safeName}</span>
+            <span class="bbs-name ${isAdmin ? 'admin-name-text' : ''}">${safeName}</span>
         </div>
-        <p class="bbs-text">${safeContent}</p>
+        <p class="bbs-text ${isAdmin ? 'admin-msg-text' : ''}">${safeContent}</p>
     `;
     return div;
 }
@@ -793,6 +814,20 @@ window.addEventListener('load', () => {
 
 
 const newsData = [
+                    {
+        date: "2026.03.22",
+        label: "GOODS",
+        labelColor: "label-blue",
+        title: "Tシャツ再販決定！受注生産開始！詳しくはグッズへ",
+        link: "#goods"
+    },
+                {
+        date: "2026.03.22",
+        label: "INFO",
+        labelColor: "label-red",
+        title: "卒コン全日程終了！ご来場ありがとうございました！",
+        link: "#bbs"
+    },
             {
         date: "2026.03.02",
         label: "INFO",
@@ -1275,7 +1310,7 @@ if (gameTitle) {
 // =========================================
 
 // Tシャツの予約締め切り
-const TSHIRT_RESERVE_DEADLINE = new Date("2026-03-19T23:59:59");
+const TSHIRT_RESERVE_DEADLINE = new Date("2026-04-29T23:59:59");
 
 
 const openResTshirtBtn = document.getElementById('openReserveTshirtModal');
@@ -1784,7 +1819,7 @@ const setlistData = {
             ]
         }
     ],
-    // ▼ 今回追加した3日目 ▼
+
     "artist-day3": [
         {
             artist: "さかりくオムニバス",

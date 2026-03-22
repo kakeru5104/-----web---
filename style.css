@@ -2630,3 +2630,38 @@ footer {
     height: 14px;
     fill: currentColor;
 }
+
+/* =========================================
+   BBS: 管理者コメント用の特別デザイン
+========================================= */
+.bbs-admin-item {
+    /* 吹き出しの周りを赤く光らせて目立たせる */
+    filter: drop-shadow(0 0 10px rgba(230, 0, 18, 0.4)); 
+}
+
+.admin-badge {
+    position: absolute;
+    top: -15px;
+    right: -10px;
+    background: var(--primary-red);
+    color: var(--white);
+    font-family: 'Anton', sans-serif;
+    font-size: 0.9rem;
+    font-weight: bold;
+    padding: 6px 15px;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    z-index: 10;
+    transform: rotate(5deg); /* 少し傾けてポップな感じに */
+}
+
+.admin-name-text {
+    color: var(--black); /* 赤色から見やすい黒色に変更 */
+    font-size: 0.95rem;  /* 1.1remから少し小さくして枠はみ出しを防止 */
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
+}
+
+.admin-msg-text {
+    color: var(--black); /* メッセージ本文も見やすい黒色に変更 */
+    font-weight: 900;    /* 通常のコメントより少し太字にして特別感を出す */
+}
