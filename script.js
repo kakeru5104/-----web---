@@ -1830,8 +1830,8 @@ const setlistData = {
                 { title: "LOVE & PEACH", search: "ゆず LOVE & PEACH" },
                 { title: "マカロン(FalKKonE cover)", search: "マカロン FalKKonE" },
                 { title: "オーネヘルツ", search: "オーネヘルツ" },
-                { title: "残響", search: "残響" },
-                { title: "stay with me", search: "stay with me" }
+                { title: "残響", search: "164P 残響" },
+                { title: "stay with me", search: "back number stay with me" }
             ]
         },
         {
@@ -1863,12 +1863,12 @@ const setlistData = {
         {
             artist: "みさとオムニバス",
             songs: [
-                { title: "踊ろうぜ", search: "踊ろうぜ" },
+                { title: "踊ろうぜ", search: "ヨルシカ 踊ろうぜ" },
                 { title: "言って。", search: "ヨルシカ 言って。" },
                 { title: "ショートショート", search: "ポルカドットスティングレイ ショートショート" },
                 { title: "ヤバみ", search: "ヤバイTシャツ屋さん ヤバみ" },
                 { title: "笑顔のループ", search: "AAA 笑顔のループ" },
-                { title: "Fake!Fake!", search: "Fake!Fake!" },
+                { title: "Fake!Fake!", search: "カラスは真っ白 Fake!Fake!" },
                 { title: "やっぱり雨は降るんだね", search: "ツユ やっぱり雨は降るんだね" },
                 { title: "パステルレイン", search: "三月のパンタシア パステルレイン" },
                 { title: "キミノヨゾラ哨戒班", search: "Orangestar キミノヨゾラ哨戒班" }
@@ -1886,7 +1886,7 @@ const setlistData = {
                 { title: "爱丽丝", search: "米津玄師 爱丽丝" },
                 { title: "眼福", search: "米津玄師 眼福" },
                 { title: "灰色と青", search: "米津玄師 灰色と青" },
-                { title: "Nightawks", search: "米津玄師 Nighthawks" } // 検索エラー防止のためNighthawksで検索
+                { title: "Nighthawks", search: "米津玄師 Nighthawks" } // 検索エラー防止のためNighthawksで検索
             ]
         }
     ],
@@ -1940,15 +1940,14 @@ const setlistData = {
             ]
         },
         {
-            artist: "？？？",
+            artist: "お楽しみバンド",
             songs: [
-                // ★ オリジナル曲のため、search を null にしてアイコンを出さないように設定
                 { title: "ミリオンベル(オリジナル)", search: null }, 
-                { title: "ambitious japan", search: "TOKIO AMBITIOUS JAPAN" }
+                { title: "AMBITIOUS JAPAN", search: "TOKIO AMBITIOUS JAPAN" }
             ]
         }
     ]
-}; // setlistData の閉じカッコ
+}; 
 
 // アプリアイコン（SVG）
 
