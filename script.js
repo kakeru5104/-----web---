@@ -2048,3 +2048,65 @@ if (artistTabsList.length > 0) {
     // 初期表示はDAY1
     renderArtistList("artist-day1");
 }
+
+// =========================================
+// 歌詞画像の拡大表示 
+// =========================================
+const openLyricsModalBtn = document.getElementById('openLyricsModal');
+const imageModal = document.getElementById('imageModal');
+const closeImageModalBtn = document.getElementById('closeImageModal');
+const expandedImage = document.getElementById('expandedImage');
+
+if (openLyricsModalBtn && imageModal && expandedImage) {
+
+    openLyricsModalBtn.addEventListener('click', () => {
+        const imgSrc = openLyricsModalBtn.querySelector('img').src;
+        expandedImage.src = imgSrc;
+        expandedImage.classList.remove('zoomed'); 
+        expandedImage.style.transform = ''; 
+        imageModal.classList.add('active');
+    });
+
+
+    expandedImage.addEventListener('click', (e) => {
+
+        if (expandedImage.classList.contains('zoomed')) {
+            expandedImage.classList.remove('zoomed');
+            expandedImage.style.transform = ''; 
+            return;
+        }
+
+
+
+
+        const rect = expandedImage.getBoundingClientRect();
+        const offsetX = e.clientX - rect.left;
+        const offsetY = e.clientY - rect.top;
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const moveX = centerX - offsetX;
+        const moveY = centerY - offsetY;
+
+  
+        const scale = 2.5; 
+
+
+        expandedImage.style.transform = `translate(${moveX}px, ${moveY}px) scale(${scale})`;
+        expandedImage.classList.add('zoomed');
+    });
+
+
+    closeImageModalBtn.addEventListener('click', () => {
+        imageModal.classList.remove('active');
+    });
+
+
+    imageModal.addEventListener('click', (e) => {
+
+        if (e.target === imageModal) {
+            imageModal.classList.remove('active');
+        }
+    });
+}

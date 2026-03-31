@@ -2665,3 +2665,209 @@ footer {
     color: var(--black); /* メッセージ本文も見やすい黒色に変更 */
     font-weight: 900;    /* 通常のコメントより少し太字にして特別感を出す */
 }
+
+/* =========================================
+   ミリオンベル特設セクション (白基調)
+========================================= */
+.mb-section {
+    background-color: #ffffff; /* 白基調 */
+    color: #333333;
+    padding: 60px 20px;
+    margin: 40px 0;
+    border-top: 1px solid #eeeeee;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.mb-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.mb-jacket {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border-radius: 4px; /* CDジャケットのような少しの丸み */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15); /* 綺麗な影 */
+    margin-bottom: 20px;
+}
+
+.mb-title {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--black);
+    letter-spacing: 2px;
+}
+
+.mb-subtitle {
+    font-size: 0.9rem;
+    color: #888;
+    font-weight: bold;
+    font-family: 'Anton', sans-serif;
+    letter-spacing: 1px;
+}
+
+.mb-video {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.mb-mv-btn {
+    display: inline-block;
+    background-color: var(--black);
+    color: var(--white);
+    font-family: 'Anton', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    text-decoration: none;
+    padding: 12px 35px;
+    border-radius: 30px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.mb-mv-btn:hover {
+    background-color: #333;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+
+.mb-story {
+    max-width: 700px;
+    margin: 0 auto 50px auto;
+}
+
+.mb-story-block {
+    margin-bottom: 35px;
+    padding-left: 15px;
+    border-left: 3px solid var(--accent-blue); /* 「青」のテーマに合わせて左線を青に */
+}
+
+.mb-story-block h4 {
+    font-size: 1.1rem;
+    color: var(--black);
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+}
+
+.mb-story-block p {
+    font-size: 0.95rem;
+    line-height: 1.9;
+    color: #444;
+    letter-spacing: 0.03em;
+}
+
+.mb-lyrics {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.mb-lyrics-title {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.5rem;
+    color: var(--black);
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+
+.mb-lyrics-img {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+/* =========================================
+   歌詞画像＆拡大モーダル
+========================================= */
+
+.mb-lyrics-img-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+.mb-lyrics-img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    display: block;
+}
+
+
+.mb-lyrics-overlay {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background-color: rgba(0, 0, 0, 0.65);
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    pointer-events: none;
+}
+
+
+.image-modal-overlay {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0,0,0,0.85); 
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    overflow: auto;
+}
+
+.image-modal-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+
+.image-modal-content {
+
+    width: 100%;
+    height: 100%;
+    object-fit: contain; 
+    
+
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform-origin: center center; 
+    cursor: zoom-in; 
+    
+    opacity: 0; 
+}
+
+.image-modal-overlay.active .image-modal-content {
+    opacity: 1;
+}
+
+.image-modal-content.zoomed {
+
+    transform: scale(2.5);
+    cursor: zoom-out;
+}
+
+.image-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1001;
+    line-height: 1;
+}

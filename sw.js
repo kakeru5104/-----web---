@@ -1,4 +1,4 @@
-const CACHE_NAME = 'grad-live-v50'; 
+const CACHE_NAME = 'grad-live-v51'; 
 
 const urlsToCache = [
     './',
